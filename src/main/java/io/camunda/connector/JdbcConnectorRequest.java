@@ -7,7 +7,7 @@ import javax.validation.constraints.NotNull;
 
 import java.util.Objects;
 
-public class MyConnectorRequest {
+public class JdbcConnectorRequest {
 
   @NotEmpty
   private String message;
@@ -43,7 +43,7 @@ public class MyConnectorRequest {
     if (this == obj) return true;
     if (obj == null) return false;
     if (getClass() != obj.getClass()) return false;
-    MyConnectorRequest other = (MyConnectorRequest) obj;
+    JdbcConnectorRequest other = (JdbcConnectorRequest) obj;
     return Objects.equals(authentication, other.authentication)
         && Objects.equals(message, other.message);
   }

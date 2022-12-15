@@ -12,7 +12,7 @@ public class MyRequestTest {
   @Test
   void shouldReplaceTokenSecretWhenReplaceSecrets() {
     // given
-    var input = new MyConnectorRequest();
+    var input = new JdbcConnectorRequest();
     var auth = new Authentication();
     input.setMessage("Hello World!");
     input.setAuthentication(auth);
@@ -33,7 +33,7 @@ public class MyRequestTest {
   @Test
   void shouldFailWhenValidate_NoAuthentication() {
     // given
-    var input = new MyConnectorRequest();
+    var input = new JdbcConnectorRequest();
     input.setMessage("Hello World!");
     var context = OutboundConnectorContextBuilder.create().build();
     // when
@@ -46,7 +46,7 @@ public class MyRequestTest {
   @Test
   void shouldFailWhenValidate_NoToken() {
     // given
-    var input = new MyConnectorRequest();
+    var input = new JdbcConnectorRequest();
     var auth = new Authentication();
     input.setMessage("Hello World!");
     input.setAuthentication(auth);
@@ -62,7 +62,7 @@ public class MyRequestTest {
   @Test
   void shouldFailWhenValidate_NoMesage() {
     // given
-    var input = new MyConnectorRequest();
+    var input = new JdbcConnectorRequest();
     var auth = new Authentication();
     input.setAuthentication(auth);
     auth.setUser("testuser");
@@ -78,7 +78,7 @@ public class MyRequestTest {
   @Test
   void shouldFailWhenValidate_TokenWrongPattern() {
     // given
-    var input = new MyConnectorRequest();
+    var input = new JdbcConnectorRequest();
     var auth = new Authentication();
     input.setMessage("foo");
     input.setAuthentication(auth);

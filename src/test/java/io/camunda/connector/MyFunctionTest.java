@@ -12,13 +12,13 @@ public class MyFunctionTest {
   @Test
   void shouldReturnReceivedMessageWhenExecute() throws Exception {
     // given
-    var input = new MyConnectorRequest();
+    var input = new JdbcConnectorRequest();
     var auth = new Authentication();
     input.setMessage("Hello World!");
     input.setAuthentication(auth);
     auth.setToken("xobx-test");
     auth.setUser("testuser");
-    var function = new MyConnectorFunction();
+    var function = new JdbcConnectorFunction();
     var context = OutboundConnectorContextBuilder.create()
       .variables(input)
       .build();
@@ -26,7 +26,7 @@ public class MyFunctionTest {
     var result = function.execute(context);
     // then
     assertThat(result)
-      .isInstanceOf(MyConnectorResult.class)
+      .isInstanceOf(JdbcConnectorResult.class)
       .extracting("myProperty")
       .isEqualTo("Message received: Hello World!");
   }
@@ -34,13 +34,13 @@ public class MyFunctionTest {
   @Test
   void shouldThrowWithErrorCodeWhenMessageStartsWithFail() {
     // given
-    var input = new MyConnectorRequest();
+    var input = new JdbcConnectorRequest();
     var auth = new Authentication();
     input.setMessage("Fail: unauthorized");
     input.setAuthentication(auth);
     auth.setToken("xobx-test");
     auth.setUser("testuser");
-    var function = new MyConnectorFunction();
+    var function = new JdbcConnectorFunction();
     var context = OutboundConnectorContextBuilder.create()
         .variables(input)
         .build();
