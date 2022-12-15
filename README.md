@@ -13,7 +13,6 @@
 # TODO
 
 - Generate custom svg image for this connector and update the template-connector.json
-- 
 
 # Connector Template
 
