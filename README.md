@@ -1,18 +1,8 @@
-> A template for new C8 connectors.
->
-> To use this template update the following resources to match the name of your connector:
->
-> * [README](./README.md) (title, description)
-> * [Element Template](./element-templates/jdbc-connector.json)
-> * [POM](./pom.xml) (artifact name, id, description)
-> * [Connector Function](./src/main/java/io/camunda/connector/MyConnectorFunction.java) (rename, implement, update `OutboundConnector` annotation)
-> * [Service Provider Interface (SPI)](./src/main/resources/META-INF/services/io.camunda.connector.api.ConnectorFunction#L1) (rename)
->
-> ...and delete this hint.
-
 # TODO
 
 - Generate custom svg image for this connector and update the template-connector.json
+- Write unit tests
+- Configure password as a SECRET
 
 # Connector Template
 

@@ -1,40 +1,37 @@
 package io.camunda.connector;
 
-import io.camunda.connector.api.annotation.Secret;
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Pattern;
 
 import java.util.Objects;
 
 public class Authentication {
 
   @NotEmpty
-  private String user;
+  private String userName;
+
+  public String getUserName() {
+    return userName;
+  }
+
+  public void setUserName(String userName) {
+    this.userName = userName;
+  }
 
   @NotEmpty
-  @Pattern(regexp = "^(xobx|secrets\\.).+", message = "Token must start with \"xobx\" or be a secret.")
-  @Secret
-  private String token;
+  //@Secret
+  private String password;
 
-  public String getUser() {
-    return user;
+  public String getPassword() {
+    return password;
   }
 
-  public void setUser(String user) {
-    this.user = user;
-  }
-
-  public String getToken() {
-    return token;
-  }
-
-  public void setToken(String token) {
-    this.token = token;
+  public void setPassword(String password) {
+    this.password = password;
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(token, user);
+    return Objects.hash(password, userName);
   }
 
   @Override
@@ -43,11 +40,11 @@ public class Authentication {
     if (obj == null) return false;
     if (getClass() != obj.getClass()) return false;
     Authentication other = (Authentication) obj;
-    return Objects.equals(token, other.token) && Objects.equals(user, other.user);
+    return Objects.equals(password, other.password) && Objects.equals(userName, other.userName);
   }
 
   @Override
   public String toString() {
-    return "Authentication [user=" + user + ", token=" + token + "]";
+    return "Authentication [userName=" + userName + ", password=" + password + "]";
   }
 }

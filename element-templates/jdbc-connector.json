@@ -24,6 +24,14 @@
       "label": "JDBC"
     },
     {
+      "id": "authentication",
+      "label": "Authentication"
+    },
+    {
+      "id": "command",
+      "label": "command"
+    },
+    {
       "id": "output",
       "label": "Output Mapping"
     },
@@ -63,9 +71,6 @@
       "binding": {
         "type": "zeebe:input",
         "name": "jdbc.driverSubProtocol"
-      },
-      "constraints": {
-        "notEmpty": true
       }
     },
     {
@@ -77,9 +82,6 @@
       "binding": {
         "type": "zeebe:input",
         "name": "jdbc.host"
-      },
-      "constraints": {
-        "notEmpty": true
       }
     },
     {
@@ -91,9 +93,6 @@
       "binding": {
         "type": "zeebe:input",
         "name": "jdbc.port"
-      },
-      "constraints": {
-        "notEmpty": true
       }
     },
     {
@@ -105,37 +104,58 @@
       "binding": {
         "type": "zeebe:input",
         "name": "jdbc.dbName"
-      },
-      "constraints": {
-        "notEmpty": true
       }
     },
     {
       "label": "Username",
       "description": "Username to use to connect to the database",
-      "group": "jdbc",
+      "group": "authentication",
       "type": "String",
       "feel": "optional",
       "binding": {
         "type": "zeebe:input",
-        "name": "jdbc.username"
-      },
-      "constraints": {
-        "notEmpty": true
+        "name": "authentication.userName"
       }
     },
     {
       "label": "Password",
       "description": "Password to use to connect to the database",
-      "group": "jdbc",
+      "group": "authentication",
       "type": "String",
       "feel": "optional",
       "binding": {
         "type": "zeebe:input",
-        "name": "jdbc.password"
+        "name": "authentication.password"
+      }
+    },
+    {
+      "label": "Command Type",
+      "id": "commandType",
+      "group": "command",
+      "description": "Choose which type of sql command to send",
+      "value": "commandType",
+      "type": "Dropdown",
+      "choices": [
+        {"name": "SELECT", "value": "select"}
+      ],
+      "binding": {
+        "type": "zeebe:input",
+        "name": "command.commandType"
+      }
+    },
+    {
+      "label": "SELECT Statement",
+      "description": "Enter the SELECT sql statement to run",
+      "group": "command",
+      "type": "String",
+      "feel": "optional",
+      "binding": {
+        "type": "zeebe:input",
+        "name": "command.selectSql"
       },
-      "constraints": {
-        "notEmpty": true
+      "condition": {
+        "property": "commandType",
+        "equals": "select"
       }
     },
     {

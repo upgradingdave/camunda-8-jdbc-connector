@@ -9,21 +9,14 @@ import java.util.Objects;
 
 public class JdbcConnectorRequest {
 
-  @NotEmpty
-  private String message;
+  private JdbcConfig jdbc;
+
+  private CommandConfig command;
 
   @Valid
+  //@Secret
   @NotNull
-  @Secret
   private Authentication authentication;
-
-  public String getMessage() {
-    return message;
-  }
-
-  public void setMessage(String message) {
-    this.message = message;
-  }
 
   public Authentication getAuthentication() {
     return authentication;
@@ -33,9 +26,25 @@ public class JdbcConnectorRequest {
     this.authentication = authentication;
   }
 
+  public JdbcConfig getJdbc() {
+    return jdbc;
+  }
+
+  public void setJdbc(JdbcConfig jdbc) {
+    this.jdbc = jdbc;
+  }
+
+  public CommandConfig getCommand() {
+    return command;
+  }
+
+  public void setCommand(CommandConfig command) {
+    this.command = command;
+  }
+
   @Override
   public int hashCode() {
-    return Objects.hash(authentication, message);
+    return Objects.hash(authentication, jdbc, command);
   }
 
   @Override
@@ -45,11 +54,13 @@ public class JdbcConnectorRequest {
     if (getClass() != obj.getClass()) return false;
     JdbcConnectorRequest other = (JdbcConnectorRequest) obj;
     return Objects.equals(authentication, other.authentication)
-        && Objects.equals(message, other.message);
+        && Objects.equals(jdbc, other.jdbc)
+        && Objects.equals(command, other.command);
   }
 
   @Override
   public String toString() {
-    return "MyConnectorRequest [message=" + message + ", authentication=" + authentication + "]";
+    return "JdbcConnectorRequest [jdbc=" + jdbc + ", command=" + command + ", authentication=" + authentication + "]";
   }
+
 }

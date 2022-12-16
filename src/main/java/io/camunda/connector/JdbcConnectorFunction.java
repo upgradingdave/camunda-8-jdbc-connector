@@ -26,14 +26,19 @@ public class JdbcConnectorFunction implements OutboundConnectorFunction {
   }
 
   private JdbcConnectorResult executeConnector(final JdbcConnectorRequest connectorRequest) {
-    // TODO: implement connector logic
+
     LOGGER.info("Executing my connector with request {}", connectorRequest);
-    String message = connectorRequest.getMessage();
-    if (message != null && message.toLowerCase().startsWith("fail")) {
-      throw new ConnectorException("FAIL", "My property started with 'fail', was: " + message);
-    }
+
+    JdbcConfig jdbc = connectorRequest.getJdbc();
+
+    //Class.forName ("org.h2.Driver");
+    //Connection conn = DriverManager.getConnection ("jdbc:h2:~/test", "sa","");
+    //Statement st = conn.createStatement();
+    //Stmt.executeUpdate("sql statement");
+    //conn.close();
+
     var result = new JdbcConnectorResult();
-    result.setMyProperty("Message received: " + message);
+    result.setMyProperty("TODO: NOT IMPLEMENTED");
     return result;
   }
 }

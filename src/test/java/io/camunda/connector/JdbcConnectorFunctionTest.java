@@ -1,23 +1,12 @@
 package io.camunda.connector;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.catchThrowable;
+public class JdbcConnectorFunctionTest {
 
-import io.camunda.connector.api.error.ConnectorException;
-import io.camunda.connector.test.outbound.OutboundConnectorContextBuilder;
-import org.junit.jupiter.api.Test;
-
-public class MyFunctionTest {
-
-  @Test
+  /*@Test
   void shouldReturnReceivedMessageWhenExecute() throws Exception {
     // given
-    var input = new JdbcConnectorRequest();
-    var auth = new Authentication();
-    input.setMessage("Hello World!");
-    input.setAuthentication(auth);
-    auth.setToken("xobx-test");
-    auth.setUser("testuser");
+    var input = JdbcConnectorRequestTest.mockInput();
+
     var function = new JdbcConnectorFunction();
     var context = OutboundConnectorContextBuilder.create()
       .variables(input)
@@ -29,17 +18,13 @@ public class MyFunctionTest {
       .isInstanceOf(JdbcConnectorResult.class)
       .extracting("myProperty")
       .isEqualTo("Message received: Hello World!");
-  }
+  }*/
 
-  @Test
+  /* @Test
   void shouldThrowWithErrorCodeWhenMessageStartsWithFail() {
     // given
-    var input = new JdbcConnectorRequest();
-    var auth = new Authentication();
-    input.setMessage("Fail: unauthorized");
-    input.setAuthentication(auth);
-    auth.setToken("xobx-test");
-    auth.setUser("testuser");
+    var input = JdbcConnectorRequestTest.mockInput();
+
     var function = new JdbcConnectorFunction();
     var context = OutboundConnectorContextBuilder.create()
         .variables(input)
@@ -51,5 +36,5 @@ public class MyFunctionTest {
         .isInstanceOf(ConnectorException.class)
         .hasMessageContaining("started with 'fail'")
         .extracting("errorCode").isEqualTo("FAIL");
-  }
+  }*/
 }
