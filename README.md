@@ -1,12 +1,24 @@
-# TODO
+[![Community Extension](https://img.shields.io/badge/Community%20Extension-An%20open%20source%20community%20maintained%20project-FF4700)](https://github.com/camunda-community-hub/community)
+[![](https://img.shields.io/badge/Lifecycle-Proof%20of%20Concept-blueviolet)](https://github.com/Camunda-Community-Hub/community/blob/main/extension-lifecycle.md#proof-of-concept-)
+![Compatible with: Camunda Platform 8](https://img.shields.io/badge/Compatible%20with-Camunda%20Platform%208-0072Ce)
 
+# JDBC Connector Template
+
+!!! Work in progress !!!
+
+This is the very beginning of an attempt at developing a Camunda 8 Connector that is capable of connecting to Databases via JDBC and running SQL commands.
+
+At the moment it doesn't do much other than select from an empty, in-memory, H2 Database. 
+
+# TODO / Next steps
+
+- Configure Output variable. 
+- Implement Insert statements in H2 mem db.
 - Generate custom svg image for this connector and update the template-connector.json
 - Write unit tests
 - Configure password as a SECRET
+- Implement options for Database Pooling?
 
-# Connector Template
-
-Camunda Connector Template
 
 ## Build
 

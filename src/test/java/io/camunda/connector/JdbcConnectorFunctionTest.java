@@ -18,7 +18,7 @@ public class JdbcConnectorFunctionTest {
       .isInstanceOf(JdbcConnectorResult.class)
       .extracting("myProperty")
       .isEqualTo("Message received: Hello World!");
-  }*/
+  /*}
 
   /* @Test
   void shouldThrowWithErrorCodeWhenMessageStartsWithFail() {

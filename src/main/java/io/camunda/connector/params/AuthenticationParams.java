@@ -1,13 +1,13 @@
-package io.camunda.connector;
-
-import javax.validation.constraints.NotEmpty;
+package io.camunda.connector.params;
 
 import java.util.Objects;
 
-public class Authentication {
+public class AuthenticationParams {
 
-  @NotEmpty
   private String userName;
+
+  //@Secret
+  private String password;
 
   public String getUserName() {
     return userName;
@@ -16,10 +16,6 @@ public class Authentication {
   public void setUserName(String userName) {
     this.userName = userName;
   }
-
-  @NotEmpty
-  //@Secret
-  private String password;
 
   public String getPassword() {
     return password;
@@ -39,7 +35,7 @@ public class Authentication {
     if (this == obj) return true;
     if (obj == null) return false;
     if (getClass() != obj.getClass()) return false;
-    Authentication other = (Authentication) obj;
+    AuthenticationParams other = (AuthenticationParams) obj;
     return Objects.equals(password, other.password) && Objects.equals(userName, other.userName);
   }
 

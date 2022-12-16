@@ -1,17 +1,10 @@
-package io.camunda.connector;
+package io.camunda.connector.params;
 
-import io.camunda.connector.api.annotation.Secret;
-
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Pattern;
 import java.util.Objects;
 
-public class JdbcConfig {
+public class H2Params {
 
-  @NotEmpty
-  private String driverName;
-
-  private String driverSubProtocol;
+  private String connectionMode;
 
   private String host;
 
@@ -19,20 +12,12 @@ public class JdbcConfig {
 
   private String dbName;
 
-  public String getDriverName() {
-    return driverName;
+  public String getConnectionMode() {
+    return connectionMode;
   }
 
-  public void setDriverName(String driverName) {
-    this.driverName = driverName;
-  }
-
-  public String getDriverSubProtocol() {
-    return driverSubProtocol;
-  }
-
-  public void setDriverSubProtocol(String driverSubProtocol) {
-    this.driverSubProtocol = driverSubProtocol;
+  public void setConnectionMode(String connectionMode) {
+    this.connectionMode = connectionMode;
   }
 
   public String getHost() {
@@ -61,7 +46,7 @@ public class JdbcConfig {
 
   @Override
   public int hashCode() {
-    return Objects.hash(driverName, driverSubProtocol, host, port, dbName);
+    return Objects.hash(host, port, dbName);
   }
 
   @Override
@@ -69,9 +54,8 @@ public class JdbcConfig {
     if (this == obj) return true;
     if (obj == null) return false;
     if (getClass() != obj.getClass()) return false;
-    JdbcConfig other = (JdbcConfig) obj;
-    return Objects.equals(driverName, other.driverName)
-        && Objects.equals(driverSubProtocol, other.driverSubProtocol)
+    H2Params other = (H2Params) obj;
+    return Objects.equals(connectionMode, other.connectionMode)
         && Objects.equals(host, other.host)
         && Objects.equals(port, other.port)
         && Objects.equals(dbName, other.dbName);
@@ -79,8 +63,7 @@ public class JdbcConfig {
 
   @Override
   public String toString() {
-    return "JdbcConfig [driverName=" + driverName
-        + ", driverSubProtocol=" + driverSubProtocol
+    return "JdbcConfig [connectionMode=" + connectionMode
         + ", host=" + host
         + ", port=" + port
         + ", dbName=" + dbName

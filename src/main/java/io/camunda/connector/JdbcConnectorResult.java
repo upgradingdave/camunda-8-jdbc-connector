@@ -1,18 +1,18 @@
 package io.camunda.connector;
 
+import java.util.List;
 import java.util.Objects;
 
 public class JdbcConnectorResult {
 
-  // TODO: define connector result properties, which are returned to the process engine
-  private String myProperty;
+  private List<Object> resultSet;
 
-  public String getMyProperty() {
-    return myProperty;
+  public List<Object> getResultSet() {
+    return resultSet;
   }
 
-  public void setMyProperty(String myProperty) {
-    this.myProperty = myProperty;
+  public void setResultSet(List<Object> resultSet) {
+    this.resultSet = resultSet;
   }
 
   @Override
@@ -24,17 +24,17 @@ public class JdbcConnectorResult {
       return false;
     }
     final JdbcConnectorResult that = (JdbcConnectorResult) o;
-    return Objects.equals(myProperty, that.myProperty);
+    return Objects.equals(resultSet, that.resultSet);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(myProperty);
+    return Objects.hash(resultSet);
   }
 
   @Override
   public String toString() {
-    return "MyConnectorResult [myProperty=" + myProperty + "]";
+    return "JdbcConnectorResult [resultSet=" + resultSet + "]";
   }
 
 }

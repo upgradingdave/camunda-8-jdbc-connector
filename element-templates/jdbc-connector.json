@@ -49,11 +49,16 @@
       }
     },
     {
-      "label": "Driver",
-      "description": "Type of database. For example: mysql",
+      "label": "Database Type",
+      "id": "databaseDriver",
       "group": "jdbc",
-      "type": "String",
-      "feel": "optional",
+      "description": "Choose the type of database",
+      "value": "jdbc",
+      "type": "Dropdown",
+      "choices": [
+        {"name": "H2 Database", "value": "h2"},
+        {"name": "Custom JDBC Url", "value": "jdbc"}
+      ],
       "binding": {
         "type": "zeebe:input",
         "name": "jdbc.driverName"
@@ -63,47 +68,88 @@
       }
     },
     {
-      "label": "Driver sub protocol",
-      "description": "Driver sub protocol. For example: thin",
+      "label": "JDBC Url",
+      "description": "Enter a custom JDBC Url",
       "group": "jdbc",
       "type": "String",
+      "value": "",
       "feel": "optional",
       "binding": {
         "type": "zeebe:input",
-        "name": "jdbc.driverSubProtocol"
+        "name": "jdbc.jdbcUrl"
+      },
+      "condition": {
+        "property": "databaseDriver",
+        "equals": "jdbc"
       }
     },
     {
-      "label": "Host",
-      "description": "Database Server Host",
+      "label": "H2 Connection Mode",
+      "id": "h2ConnectionMode",
+      "group": "jdbc",
+      "description": "Choose H2 connection mode",
+      "value": "mem",
+      "type": "Dropdown",
+      "choices": [
+        {"name": "In Memory", "value": "mem"},
+        {"name": "File System", "value": "file"},
+        {"name": "Remote Server", "value": "url"}
+      ],
+      "binding": {
+        "type": "zeebe:input",
+        "name": "h2.connectionMode"
+      },
+      "condition": {
+        "property": "databaseDriver",
+        "oneOf": ["h2"]
+      }
+    },
+    {
+      "label": "H2 Server Host",
+      "description": "H2 Server Host",
       "group": "jdbc",
       "type": "String",
+      "value": "",
       "feel": "optional",
       "binding": {
         "type": "zeebe:input",
-        "name": "jdbc.host"
+        "name": "h2.host"
+      },
+      "condition": {
+        "property": "h2ConnectionMode",
+        "oneOf": ["url"]
       }
     },
     {
-      "label": "Port",
-      "description": "Database Server Port",
+      "label": "H2 Server Port",
+      "description": "H2 Server Port",
       "group": "jdbc",
       "type": "String",
+      "value": "",
       "feel": "optional",
       "binding": {
         "type": "zeebe:input",
-        "name": "jdbc.port"
+        "name": "h2.port"
+      },
+      "condition": {
+        "property": "h2ConnectionMode",
+        "oneOf": ["url"]
       }
     },
     {
-      "label": "Database Name",
+      "label": "H2 Database Name",
       "description": "Which database to connect to?",
       "group": "jdbc",
       "type": "String",
+      "value": "",
       "feel": "optional",
       "binding": {
         "type": "zeebe:input",
-        "name": "jdbc.dbName"
+        "name": "h2.dbName"
+      },
+      "condition": {
+      "property": "databaseDriver",
+      "oneOf": ["h2"]
       }
     },
     {
@@ -111,6 +157,7 @@
       "description": "Username to use to connect to the database",
       "group": "authentication",
       "type": "String",
+      "value": "",
       "feel": "optional",
       "binding": {
         "type": "zeebe:input",
@@ -122,6 +169,7 @@
       "description": "Password to use to connect to the database",
       "group": "authentication",
       "type": "String",
+      "value": "",
       "feel": "optional",
       "binding": {
         "type": "zeebe:input",
@@ -133,7 +181,7 @@
       "id": "commandType",
       "group": "command",
       "description": "Choose which type of sql command to send",
-      "value": "commandType",
+      "value": "select",
       "type": "Dropdown",
       "choices": [
         {"name": "SELECT", "value": "select"}
@@ -148,6 +196,7 @@
       "description": "Enter the SELECT sql statement to run",
       "group": "command",
       "type": "String",
+      "value": "",
       "feel": "optional",
       "binding": {
         "type": "zeebe:input",

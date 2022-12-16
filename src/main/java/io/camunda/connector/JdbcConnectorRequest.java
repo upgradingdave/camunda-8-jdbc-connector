@@ -1,50 +1,61 @@
 package io.camunda.connector;
 
-import io.camunda.connector.api.annotation.Secret;
-import javax.validation.Valid;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
+import io.camunda.connector.params.AuthenticationParams;
+import io.camunda.connector.params.CommandParams;
+import io.camunda.connector.params.H2Params;
+import io.camunda.connector.params.JDBCParams;
 
 import java.util.Objects;
 
 public class JdbcConnectorRequest {
 
-  private JdbcConfig jdbc;
+  private JDBCParams jdbc;
+  static final String INPUT_JDBC = "jdbc";
 
-  private CommandConfig command;
+  private CommandParams command;
+  static final String INPUT_COMMAND = "command";
 
-  @Valid
+  private H2Params h2;
+  static final String INPUT_H2 = "h2";
+
   //@Secret
-  @NotNull
-  private Authentication authentication;
+  private AuthenticationParams authentication;
 
-  public Authentication getAuthentication() {
+  public AuthenticationParams getAuthentication() {
     return authentication;
   }
 
-  public void setAuthentication(Authentication authentication) {
+  public void setAuthentication(AuthenticationParams authentication) {
     this.authentication = authentication;
   }
 
-  public JdbcConfig getJdbc() {
+  public JDBCParams getJdbc() {
     return jdbc;
   }
 
-  public void setJdbc(JdbcConfig jdbc) {
+  public void setJdbc(JDBCParams jdbc) {
     this.jdbc = jdbc;
   }
 
-  public CommandConfig getCommand() {
+  public CommandParams getCommand() {
     return command;
   }
 
-  public void setCommand(CommandConfig command) {
+  public void setCommand(CommandParams command) {
     this.command = command;
+  }
+
+  public H2Params getH2() {
+    return h2;
+  }
+
+  public void setH2(H2Params h2) {
+    this.h2 = h2;
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(authentication, jdbc, command);
+    return Objects.hash(authentication, jdbc, command, h2);
   }
 
   @Override
@@ -55,12 +66,16 @@ public class JdbcConnectorRequest {
     JdbcConnectorRequest other = (JdbcConnectorRequest) obj;
     return Objects.equals(authentication, other.authentication)
         && Objects.equals(jdbc, other.jdbc)
+        && Objects.equals(h2, other.h2)
         && Objects.equals(command, other.command);
   }
 
   @Override
   public String toString() {
-    return "JdbcConnectorRequest [jdbc=" + jdbc + ", command=" + command + ", authentication=" + authentication + "]";
+    return "JdbcConnectorRequest [jdbc=" + jdbc
+        + ", command=" + command
+        + ", authentication=" + authentication
+        + ", h2=" + h2 + "]";
   }
 
 }

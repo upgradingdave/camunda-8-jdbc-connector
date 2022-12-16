@@ -1,9 +1,9 @@
-package io.camunda.connector;
+package io.camunda.connector.params;
 
 import javax.validation.constraints.NotEmpty;
 import java.util.Objects;
 
-public class CommandConfig {
+public class CommandParams {
 
   @NotEmpty
   private String commandType;
@@ -36,7 +36,7 @@ public class CommandConfig {
     if (this == obj) return true;
     if (obj == null) return false;
     if (getClass() != obj.getClass()) return false;
-    CommandConfig other = (CommandConfig) obj;
+    CommandParams other = (CommandParams) obj;
     return Objects.equals(commandType, other.commandType)
         && Objects.equals(selectSql, other.selectSql);
   }
