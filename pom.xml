@@ -222,7 +222,7 @@
                 <resource>
                   <directory>element-templates</directory>
                   <includes>
-                    <include>jdbc-connector.json</include>
+                    <include>**/*.json</include>
                   </includes>
                 </resource>
               </resources>

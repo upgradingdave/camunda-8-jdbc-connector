@@ -17,8 +17,8 @@ At the moment it doesn't do much other than select from an empty, in-memory, H2 
 - Generate custom svg image for this connector and update the template-connector.json
 - Write unit tests
 - Configure password as a SECRET
-- Implement options for Database Pooling?
-
+- Implement options for connection pooling?
+- Create separate element templates for each type of db?
 
 ## Build
 

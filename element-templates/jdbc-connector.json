@@ -53,11 +53,13 @@
       "id": "databaseDriver",
       "group": "jdbc",
       "description": "Choose the type of database",
-      "value": "jdbc",
+      "value": "h2",
       "type": "Dropdown",
       "choices": [
-        {"name": "H2 Database", "value": "h2"},
-        {"name": "Custom JDBC Url", "value": "jdbc"}
+        {
+          "name": "H2 Database",
+          "value": "h2"
+        }
       ],
       "binding": {
         "type": "zeebe:input",
@@ -65,6 +67,25 @@
       },
       "constraints": {
         "notEmpty": true
+      }
+    },
+    {
+      "label": "Custom JDBC Url?",
+      "id": "customJdbcUrl",
+      "group": "jdbc",
+      "description": "Enter Custom JDBC Url?",
+      "type":"Dropdown",
+      "value": "no",
+      "choices": [
+        {"name": "Yes", "value": "yes"},
+        {
+          "name": "No",
+          "value": "no"
+        }
+      ],
+      "binding": {
+        "type": "zeebe:input",
+        "name": "jdbc.customJdbcUrl"
       }
     },
     {
@@ -79,8 +100,8 @@
         "name": "jdbc.jdbcUrl"
       },
       "condition": {
-        "property": "databaseDriver",
-        "equals": "jdbc"
+        "property": "customJdbcUrl",
+        "equals": "yes"
       }
     },
     {
@@ -91,17 +112,26 @@
       "value": "mem",
       "type": "Dropdown",
       "choices": [
-        {"name": "In Memory", "value": "mem"},
-        {"name": "File System", "value": "file"},
-        {"name": "Remote Server", "value": "url"}
+        {
+          "name": "In Memory",
+          "value": "mem"
+        },
+        {
+          "name": "File System",
+          "value": "file"
+        },
+        {
+          "name": "Remote Server",
+          "value": "url"
+        }
       ],
       "binding": {
         "type": "zeebe:input",
-        "name": "h2.connectionMode"
+        "name": "jdbc.connectionMode"
       },
       "condition": {
-        "property": "databaseDriver",
-        "oneOf": ["h2"]
+        "property": "customJdbcUrl",
+        "equals": "no"
       }
     },
     {
@@ -113,7 +143,7 @@
       "feel": "optional",
       "binding": {
         "type": "zeebe:input",
-        "name": "h2.host"
+        "name": "jdbc.host"
       },
       "condition": {
         "property": "h2ConnectionMode",
@@ -129,11 +159,13 @@
       "feel": "optional",
       "binding": {
         "type": "zeebe:input",
-        "name": "h2.port"
+        "name": "jdbc.port"
       },
       "condition": {
         "property": "h2ConnectionMode",
-        "oneOf": ["url"]
+        "oneOf": [
+          "url"
+        ]
       }
     },
     {
@@ -145,11 +177,11 @@
       "feel": "optional",
       "binding": {
         "type": "zeebe:input",
-        "name": "h2.dbName"
+        "name": "jdbc.dbName"
       },
       "condition": {
-      "property": "databaseDriver",
-      "oneOf": ["h2"]
+        "property": "customJdbcUrl",
+        "equals": "no"
       }
     },
     {
@@ -161,7 +193,7 @@
       "feel": "optional",
       "binding": {
         "type": "zeebe:input",
-        "name": "authentication.userName"
+        "name": "jdbc.userName"
       }
     },
     {
@@ -173,7 +205,7 @@
       "feel": "optional",
       "binding": {
         "type": "zeebe:input",
-        "name": "authentication.password"
+        "name": "jdbc.password"
       }
     },
     {
@@ -184,11 +216,14 @@
       "value": "select",
       "type": "Dropdown",
       "choices": [
-        {"name": "SELECT", "value": "select"}
+        {
+          "name": "SELECT",
+          "value": "select"
+        }
       ],
       "binding": {
         "type": "zeebe:input",
-        "name": "command.commandType"
+        "name": "jdbc.commandType"
       }
     },
     {
@@ -200,7 +235,7 @@
       "feel": "optional",
       "binding": {
         "type": "zeebe:input",
-        "name": "command.selectSql"
+        "name": "jdbc.selectSql"
       },
       "condition": {
         "property": "commandType",
