@@ -13,6 +13,9 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
+    <!-- Spring version -->
+    <version.spring>2.7.3</version.spring>
+
     <!-- connector SDK version -->
     <version.connector-core>0.4.0</version.connector-core>
     <version.spring-zeebe>8.1.10</version.spring-zeebe>
@@ -56,12 +59,23 @@
       <version>${version.slf4j}</version>
     </dependency>
 
-    <!-- JDBC Drivers -->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-data-jpa</artifactId>
+      <version>${version.spring}</version>
+    </dependency>
+
+    <!-- Mybatis and JDBC Drivers -->
+    <dependency>
+      <groupId>org.mybatis</groupId>
+      <artifactId>mybatis</artifactId>
+      <version>3.5.6</version>
+    </dependency>
+
     <dependency>
       <groupId>com.h2database</groupId>
       <artifactId>h2</artifactId>
       <version>2.1.214</version>
-      <scope>runtime</scope>
     </dependency>
 
     <!-- test dependencies -->
@@ -91,6 +105,18 @@
       <artifactId>slf4j-jdk14</artifactId>
       <version>${version.slf4j}</version>
       <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-test</artifactId>
+      <version>${version.spring}</version>
+      <exclusions>
+        <exclusion>
+          <groupId>ch.qos.logback</groupId>
+          <artifactId>logback-classic</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
 
     <!-- for testing connectors locally in bundle with runtime -->
