@@ -50,9 +50,9 @@ Here's the result:
 
 ## Query and return a Map
 
-Choose the `SELECT and return Map` option under the `SQL Command` properties panel. The following is an example of querying for a list of records from a `USERS` table.
+Choose the `SELECT and return Map` option under the `SQL Command` properties panel. 
 
-Instead of returning results as a List, it's also possible to return them as a Map. The trick here is to define the column to use as the Map Key. In this example, we define the `Map Key Column Name` as `EMAIL`. This way, the results are indexed using the value from the `USERS.EMAIL` column as the key. 
+Instead of returning results as a List, this option returns them as a Map. The trick here is to define which column to use as the Map Key. In this example, we define the `Map Key Column Name` as `EMAIL`. This way, the results are indexed using the value from the `USERS.EMAIL` column. 
 
 ![SELECT Map](images/SELECTMap.png)
 
