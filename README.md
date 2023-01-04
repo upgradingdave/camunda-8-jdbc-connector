@@ -84,10 +84,12 @@ If a process has multiple JDBC Connector Tasks, and each Task connects to a diff
 
 ## Supported Database Types
 
-As of now, this project supports the following types:
+As of now, this project supports the following database drivers.
 
 - [H2](src/main/java/io/camunda/connector/db/H2Database.java)
 - [Postgresql](src/main/java/io/camunda/connector/db/PostgresDatabase.java)
+
+In order for this project to support another type of database, all that is needed is to add a dependency to the [pom.xml](pom.xml) (in theory, at least!)
 
 # TODO / Next steps
 

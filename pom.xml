@@ -78,6 +78,12 @@
       <version>2.1.214</version>
     </dependency>
 
+    <dependency>
+      <groupId>org.postgresql</groupId>
+      <artifactId>postgresql</artifactId>
+      <version>42.5.1</version>
+    </dependency>
+
     <!-- test dependencies -->
     <dependency>
       <groupId>org.junit.jupiter</groupId>

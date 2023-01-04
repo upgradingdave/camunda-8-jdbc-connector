@@ -37,8 +37,8 @@ public class JdbcConnectorRequestTest {
     // then
     assertThat(input)
       .extracting("jdbc")
-      .extracting("driverName")
-      .isEqualTo("h2");
+      .extracting("userName")
+      .isEqualTo("testuser");
   }
 
   /*@Test
