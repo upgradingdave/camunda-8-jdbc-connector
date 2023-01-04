@@ -59,6 +59,10 @@
         {
           "name": "H2 Database",
           "value": "h2"
+        },
+        {
+          "name": "Postgresql",
+          "value": "postgres"
         }
       ],
       "binding": {
@@ -217,8 +221,28 @@
       "type": "Dropdown",
       "choices": [
         {
-          "name": "SELECT",
-          "value": "select"
+          "name": "SELECT and return a single record",
+          "value": "selectOne"
+        },
+        {
+          "name": "SELECT and return a List of records",
+          "value": "selectList"
+        },
+        {
+          "name": "SELECT and return a List of records as a Map",
+          "value": "selectMap"
+        },
+        {
+          "name": "INSERT",
+          "value": "insert"
+        },
+        {
+          "name": "UPDATE",
+          "value": "update"
+        },
+        {
+          "name": "DELETE",
+          "value": "delete"
         }
       ],
       "binding": {
@@ -239,7 +263,7 @@
       },
       "condition": {
         "property": "commandType",
-        "equals": "select"
+        "equals": "selectOne"
       }
     },
     {

@@ -10,15 +10,46 @@ This is the very beginning of an attempt at developing a Camunda 8 Connector tha
 
 At the moment it doesn't do much other than select from an empty, in-memory, H2 Database. 
 
+# Overview
+
+
+
+This connector maintains a simple in-memory cache of [DataSources](https://docs.oracle.com/javase/8/docs/api/javax/sql/DataSource.html). One `DataSource` for each unique database configuration. 
+
+Each time a process instance arrives at a JDBC Connector Task, the [JdbcConnectorFunction](src/main/java/io/camunda/connector/JdbcConnectorFunction.java) checks the in-memory cache for a matching DataSource. If the cache contains a DataSource that matches exactly to the db configuration inside the [JdbcConnectorRequest](src/main/java/io/camunda/connector/JdbcConnectorFunction.java), then the DataSource is reused. Otherwise, a new DataSource is created using the db connection configuration found inside the  `JdbcConnectorRequest` as defined in the bpmn process diagram. 
+
+In other words, if a process has multiple JDBC Connector tasks that all share same database connection configuration, a single Datasource is created and reused.
+
+This also means that if a process has multiple JDBC Connector tasks that each connect slightly differently, a separate DataSource is created for each configuration.
+
+## Supported Database Types
+
+As of now, this project supports the following types:
+
+- [H2](src/main/java/io/camunda/connector/db/H2Database.java)
+- [Postgresql](src/main/java/io/camunda/connector/db/PostgresDatabase.java)
+
+## More Design Details
+
+The [Database](src/main/java/io/camunda/connector/db/Database.java) interface is implemented for each type of database that this project supports.
+
+The `Database.`
+
 # TODO / Next steps
 
-- Configure Output variable. 
-- Implement Insert statements in H2 mem db.
+// I Think for now I'll simplify things by having only a jdbcurl as part of the jdbcparams.
+// later it will be possible to build custom element templates for different db flavors by creating custom JdbcParam classes
+
+- simplify element template to accept only jdbc url
+- Implement prepared statements by passing json map structure as params
+- write h2 unit tests
+- Configure Output variable.
+- real world test against postgresql
 - Generate custom svg image for this connector and update the template-connector.json
-- Write unit tests
 - Configure password as a SECRET
 - Implement options for connection pooling?
 - Create separate element templates for each type of db?
+- will also need separate JDBCParam classes for each type of db?
 
 ## Build
 

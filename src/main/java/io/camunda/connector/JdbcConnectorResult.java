@@ -1,18 +1,46 @@
 package io.camunda.connector;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 public class JdbcConnectorResult {
 
-  private List<Object> resultSet;
+  private Map<String, Object> oneResult;
+  private List<Map<String, Object>> listResult;
+  private Map<Object, List<Map<String, Object>>> mapResult;
+  private int resultCount;
 
-  public List<Object> getResultSet() {
-    return resultSet;
+  public Map<String, Object> getOneResult() {
+    return oneResult;
   }
 
-  public void setResultSet(List<Object> resultSet) {
-    this.resultSet = resultSet;
+  public void setOneResult(Map<String, Object> oneResult) {
+    this.oneResult = oneResult;
+  }
+
+  public List<Map<String, Object>> getListResult() {
+    return listResult;
+  }
+
+  public void setListResult(List<Map<String, Object>> listResult) {
+    this.listResult = listResult;
+  }
+
+  public Map<Object, List<Map<String, Object>>> getMapResult() {
+    return mapResult;
+  }
+
+  public void setMapResult(Map<Object, List<Map<String, Object>>> mapResult) {
+    this.mapResult = mapResult;
+  }
+
+  public int getResultCount() {
+    return resultCount;
+  }
+
+  public void setResultCount(int resultCount) {
+    this.resultCount = resultCount;
   }
 
   @Override
@@ -24,17 +52,21 @@ public class JdbcConnectorResult {
       return false;
     }
     final JdbcConnectorResult that = (JdbcConnectorResult) o;
-    return Objects.equals(resultSet, that.resultSet);
+    return Objects.equals(oneResult, that.oneResult)
+        && Objects.equals(listResult, that.listResult)
+        && Objects.equals(mapResult, that.mapResult)
+        && Objects.equals(resultCount, that.resultCount);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(resultSet);
+    return Objects.hash(oneResult, listResult, mapResult, resultCount);
   }
 
   @Override
   public String toString() {
-    return "JdbcConnectorResult [resultSet=" + resultSet + "]";
+    return "JdbcConnectorResult [oneResult=" + oneResult + "listResult=" + listResult
+        + "mapResult=" + mapResult + "resultCount=" + resultCount + "]";
   }
 
 }

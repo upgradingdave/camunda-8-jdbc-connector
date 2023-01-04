@@ -2,6 +2,7 @@ package io.camunda.connector;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import io.camunda.connector.params.CommandParams;
 import io.camunda.connector.params.JDBCParams;
 import io.camunda.connector.test.outbound.OutboundConnectorContextBuilder;
 import org.junit.jupiter.api.Test;
@@ -13,16 +14,18 @@ public class JdbcConnectorRequestTest {
 
     var jdbc = new JDBCParams();
     jdbc.setDriverName("h2");
-    jdbc.setCommandType("select");
-    jdbc.setSelectSql("SELECT * from DUAL");
     jdbc.setConnectionMode("mem");
     jdbc.setHost("localhost");
     jdbc.setPort("");
     jdbc.setDbName("camunda");
     jdbc.setPassword("secrets.JDBC_PASSWORD");
     jdbc.setUserName("testuser");
-
     input.setJdbc(jdbc);
+
+    var command = new CommandParams();
+    command.setCommandType("selectOne");
+    command.setSelectSql("SELECT * from DUAL");
+
     return input;
 
   }

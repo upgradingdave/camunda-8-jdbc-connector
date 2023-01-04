@@ -19,4 +19,11 @@ public class JpaTest {
     assertNotNull(user1);
     assertEquals("user1@email.com", user1.get().getEmail());
   }
+
+  @Test
+  public void selectCountTest() {
+    var user1 = userRepository.findById(Long.valueOf(1));
+    assertNotNull(user1);
+    assertEquals("user1@email.com", user1.get().getEmail());
+  }
 }

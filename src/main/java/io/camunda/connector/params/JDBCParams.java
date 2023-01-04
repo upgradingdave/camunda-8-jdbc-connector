@@ -24,11 +24,6 @@ public class JDBCParams {
 
   private String port;
 
-  @NotEmpty
-  private String commandType;
-
-  private String selectSql;
-
   public String getDriverName() {
     return driverName;
   }
@@ -55,22 +50,6 @@ public class JDBCParams {
 
   public void setPassword(String password) {
     this.password = password;
-  }
-
-  public String getCommandType() {
-    return commandType;
-  }
-
-  public void setCommandType(String commandType) {
-    this.commandType = commandType;
-  }
-
-  public String getSelectSql() {
-    return selectSql;
-  }
-
-  public void setSelectSql(String selectSql) {
-    this.selectSql = selectSql;
   }
 
   public void setJdbcUrl(String jdbcUrl) {
@@ -120,7 +99,7 @@ public class JDBCParams {
   @Override
   public int hashCode() {
     return Objects.hash(
-        driverName, userName, password, customJdbcUrl, jdbcUrl, dbName, host, port, connectionMode, commandType, selectSql);
+        driverName, userName, password, customJdbcUrl, jdbcUrl, dbName, host, port, connectionMode);
   }
 
   @Override
@@ -137,9 +116,7 @@ public class JDBCParams {
         && Objects.equals(dbName, other.dbName)
         && Objects.equals(host, other.host)
         && Objects.equals(port, other.port)
-        && Objects.equals(connectionMode, other.connectionMode)
-        && Objects.equals(commandType, other.commandType)
-        && Objects.equals(selectSql, other.selectSql);
+        && Objects.equals(connectionMode, other.connectionMode);
   }
 
   @Override
@@ -154,8 +131,7 @@ public class JDBCParams {
         + ", host=" + host
         + ", port=" + port
         + ", connectionMode=" + connectionMode
-        + ", commandType=" + commandType
-        + ", selectSql=" + selectSql
+
         + "]";
   }
 }
