@@ -2,13 +2,77 @@
 [![](https://img.shields.io/badge/Lifecycle-Proof%20of%20Concept-blueviolet)](https://github.com/Camunda-Community-Hub/community/blob/main/extension-lifecycle.md#proof-of-concept-)
 ![Compatible with: Camunda Platform 8](https://img.shields.io/badge/Compatible%20with-Camunda%20Platform%208-0072Ce)
 
-# JDBC Connector Template
+# Camunda 8 JDBC Connector
 
-!!! Work in progress !!!
+!!! This is a very new project and still a work in progress, please use at your own risk !!!
 
 A Camunda 8 Connector capable of connecting to Databases via JDBC and running SQL commands.
 
-# Overview
+# How to Use the JDBC Connector
+
+## Configure Desktop Modeler
+
+To use this Connector with Desktop Modeler, download the [jdbc-connector.json element template file](element-templates/jdbc-connector.json) and [follow these steps](https://docs.camunda.io/docs/components/modeler/desktop-modeler/element-templates/configuring-templates/) to add it to your local Desktop Modeler.
+
+After you have configured the element template, restart Desktop Modeler and try adding a new Service Task. Select the Service Task to open the Properties Panel and click the blue `Select` button under the `Template` section. Choose the `JDBC Connector` Template. 
+
+![Choose Template](images/ChooseTemplate.png "Choose Template")
+
+## Configure JDBC
+
+The JDBC url must point to a valid Database Server. In this example, we are connecting to an in memory H2 Database. 
+
+In this example, we are using the same JDBC url (`jdbc:h2:mem:camunda`), and same username (`sa`) and password (`password`) for Multiple JDBC Connector Tasks. Under the hood, the connector will reuse connections from a single connection pool for all of these tasks.
+
+![JDBC Config](images/JDBCConfig.png "JDBC Config")
+
+It's also possible to configure each JDBC Connector to connect to a different database (or use a different username and password). In this case, a separate connection pool will be created for each different jdbc configuration. 
+
+## Query for single result
+
+Choose the `SELECT and return single record` option under the `SQL Command` properties panel. The following is an example of selecting a single record from a `USERS` table. 
+
+![SELECT single result](./images/SELECTSingleResult.png "SELECT Single Result")
+
+Here's the result: 
+
+![SELECT single result variables](images/SELECTSingleResultVariables.png "SELECT Single Result Variables")
+
+## Query for List of results
+
+Choose the `SELECT and return list of records` option under the `SQL Command` properties panel. The following is an example of querying for a list of records from a `USERS` table.
+
+![SELECT List](images/SELECTList.png)
+
+Here's the result: 
+
+![SELECT List Variables](images/SELECTListVariables.png)
+
+## Query and return a Map
+
+Choose the `SELECT and return Map` option under the `SQL Command` properties panel. The following is an example of querying for a list of records from a `USERS` table.
+
+Instead of returning results as a List, it's also possible to return them as a Map. The trick here is to define the column to use as the Map Key. In this example, we define the `Map Key Column Name` as `EMAIL`. This way, the results are indexed using the value from the `USERS.EMAIL` column as the key. 
+
+![SELECT Map](images/SELECTMap.png)
+
+Here's the result, notice that the results of the query are indexed by email: 
+
+![SELECT Map Variables](images/SELECTMapVariables.png)
+
+## INSERT / UPDATE / DELETE
+
+Choose either `INSERT`, `UPDATE`, or `DELETE` option under the `SQL Command` properties panel. The following is an example of inserting a record into the `USERS` table.
+
+![INSERT](images/INSERT.png)
+
+Here's the result: 
+
+![INSERT Variables](images/INSERTVariables.png)
+
+`UPDATE`, and `DELETE` work the same as `INSERT`
+
+# Technical Overview
 
 This connector maintains a simple in-memory cache of [DatabaseManagers](src/main/java/io/camunda/connector/db/DatabaseManager.java). One `DatabaseManager` is created for each unique jdbc  configuration. 
 
@@ -27,10 +91,7 @@ As of now, this project supports the following types:
 
 # TODO / Next steps
 
-- simplify element template to accept only jdbc url
 - Implement prepared statements by passing json map structure as params
-- write h2 unit tests
-- Configure Output variable.
 - real world test against postgresql
 - Generate custom svg image for this connector and update the template-connector.json
 - Configure password as a SECRET

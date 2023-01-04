@@ -34,7 +34,7 @@ public class JdbcConnectorFunction implements OutboundConnectorFunction {
     return executeConnector(connectorRequest);
   }
 
-  private JdbcConnectorResult executeConnector(final JdbcConnectorRequest connectorRequest) {
+  private Object executeConnector(final JdbcConnectorRequest connectorRequest) {
 
     LOGGER.info("Executing my connector with request {}", connectorRequest);
 
@@ -47,26 +47,25 @@ public class JdbcConnectorFunction implements OutboundConnectorFunction {
     }
 
     CommandParams command = connectorRequest.getCommand();
-    JdbcConnectorResult result = new JdbcConnectorResult();
+    //JdbcConnectorResult result = new JdbcConnectorResult();
     //TODO: implement params by getting some input from the process diagram. But for now, it's just empty
     //TODO: also should change from map to list
     Map<String, Object> params = new HashMap<>();
 
     if(command.getCommandType().equals("selectOne")) {
-      result.setOneResult(db.selectOne(command.getSql(), params));
+      return db.selectOne(command.getSql(), params);
     } else if(command.getCommandType().equals("selectList")) {
-      result.setListResult(db.selectList(command.getSql(), params));
+      return db.selectList(command.getSql(), params);
     } else if(command.getCommandType().equals("selectMap")) {
-      result.setMapResult(db.selectMap(command.getSql(), params, command.getMapKey()));
+      return db.selectMap(command.getSql(), params, command.getMapKey());
     } else if(command.getCommandType().equals("insert")) {
-      result.setResultCount(db.update(command.getSql(), params));
+      return db.update(command.getSql(), params);
     } else if(command.getCommandType().equals("update")) {
-      result.setResultCount(db.update(command.getSql(), params));
+      return db.update(command.getSql(), params);
     } else if(command.getCommandType().equals("delete")) {
-      result.setResultCount(db.update(command.getSql(), params));
+      return db.update(command.getSql(), params);
     } else {
       throw new UnsupportedOperationException("The command type" + command.getCommandType() + " is not currently supported");
     }
-    return result;
   }
 }

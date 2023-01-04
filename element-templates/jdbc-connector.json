@@ -29,7 +29,7 @@
     },
     {
       "id": "command",
-      "label": "command"
+      "label": "SQL Command"
     },
     {
       "id": "output",
@@ -49,143 +49,19 @@
       }
     },
     {
-      "label": "Database Type",
-      "id": "databaseDriver",
-      "group": "jdbc",
-      "description": "Choose the type of database",
-      "value": "h2",
-      "type": "Dropdown",
-      "choices": [
-        {
-          "name": "H2 Database",
-          "value": "h2"
-        },
-        {
-          "name": "Postgresql",
-          "value": "postgres"
-        }
-      ],
-      "binding": {
-        "type": "zeebe:input",
-        "name": "jdbc.driverName"
-      },
-      "constraints": {
-        "notEmpty": true
-      }
-    },
-    {
-      "label": "Custom JDBC Url?",
-      "id": "customJdbcUrl",
-      "group": "jdbc",
-      "description": "Enter Custom JDBC Url?",
-      "type":"Dropdown",
-      "value": "no",
-      "choices": [
-        {"name": "Yes", "value": "yes"},
-        {
-          "name": "No",
-          "value": "no"
-        }
-      ],
-      "binding": {
-        "type": "zeebe:input",
-        "name": "jdbc.customJdbcUrl"
-      }
-    },
-    {
       "label": "JDBC Url",
-      "description": "Enter a custom JDBC Url",
+      "id": "jdbcUrl",
       "group": "jdbc",
-      "type": "String",
+      "description": "Enter a valid JDBC Url. Remember that the JDBC Connector's JVM Process must be able to communicate via this JDBC URL",
+      "type":"String",
       "value": "",
       "feel": "optional",
       "binding": {
         "type": "zeebe:input",
         "name": "jdbc.jdbcUrl"
       },
-      "condition": {
-        "property": "customJdbcUrl",
-        "equals": "yes"
-      }
-    },
-    {
-      "label": "H2 Connection Mode",
-      "id": "h2ConnectionMode",
-      "group": "jdbc",
-      "description": "Choose H2 connection mode",
-      "value": "mem",
-      "type": "Dropdown",
-      "choices": [
-        {
-          "name": "In Memory",
-          "value": "mem"
-        },
-        {
-          "name": "File System",
-          "value": "file"
-        },
-        {
-          "name": "Remote Server",
-          "value": "url"
-        }
-      ],
-      "binding": {
-        "type": "zeebe:input",
-        "name": "jdbc.connectionMode"
-      },
-      "condition": {
-        "property": "customJdbcUrl",
-        "equals": "no"
-      }
-    },
-    {
-      "label": "H2 Server Host",
-      "description": "H2 Server Host",
-      "group": "jdbc",
-      "type": "String",
-      "value": "",
-      "feel": "optional",
-      "binding": {
-        "type": "zeebe:input",
-        "name": "jdbc.host"
-      },
-      "condition": {
-        "property": "h2ConnectionMode",
-        "oneOf": ["url"]
-      }
-    },
-    {
-      "label": "H2 Server Port",
-      "description": "H2 Server Port",
-      "group": "jdbc",
-      "type": "String",
-      "value": "",
-      "feel": "optional",
-      "binding": {
-        "type": "zeebe:input",
-        "name": "jdbc.port"
-      },
-      "condition": {
-        "property": "h2ConnectionMode",
-        "oneOf": [
-          "url"
-        ]
-      }
-    },
-    {
-      "label": "H2 Database Name",
-      "description": "Which database to connect to?",
-      "group": "jdbc",
-      "type": "String",
-      "value": "",
-      "feel": "optional",
-      "binding": {
-        "type": "zeebe:input",
-        "name": "jdbc.dbName"
-      },
-      "condition": {
-        "property": "customJdbcUrl",
-        "equals": "no"
+      "constraints": {
+        "notEmpty": true
       }
     },
     {
@@ -217,7 +93,7 @@
       "id": "commandType",
       "group": "command",
       "description": "Choose which type of sql command to send",
-      "value": "select",
+      "value": "selectList",
       "type": "Dropdown",
       "choices": [
         {
@@ -247,23 +123,140 @@
       ],
       "binding": {
         "type": "zeebe:input",
-        "name": "jdbc.commandType"
+        "name": "command.commandType"
       }
     },
     {
       "label": "SELECT Statement",
-      "description": "Enter the SELECT sql statement to run",
+      "description": "Enter the SELECT sql statement to run. The first record will be returned as a Map Data Structure",
       "group": "command",
       "type": "String",
       "value": "",
       "feel": "optional",
       "binding": {
         "type": "zeebe:input",
-        "name": "jdbc.selectSql"
+        "name": "command.sql"
       },
       "condition": {
         "property": "commandType",
         "equals": "selectOne"
+      },
+      "constraints": {
+        "notEmpty": true
+      }
+    },
+    {
+      "label": "SELECT Statement",
+      "description": "Enter the SELECT sql statement to run. Results will be returned as a list. Each List item will be a Map Data Structure",
+      "group": "command",
+      "type": "String",
+      "value": "",
+      "feel": "optional",
+      "binding": {
+        "type": "zeebe:input",
+        "name": "command.sql"
+      },
+      "condition": {
+        "property": "commandType",
+        "equals": "selectList"
+      },
+      "constraints": {
+        "notEmpty": true
+      }
+    },
+    {
+      "label": "SELECT Statement",
+      "description": "Enter the SELECT sql statement to run. Results will be returned as a Map. The keys of the Result Map will be determined using the Map Key Column Name specified below. The values of the Map will be Lists of records that correspond to the Map Key.",
+      "group": "command",
+      "type": "String",
+      "value": "",
+      "feel": "optional",
+      "binding": {
+        "type": "zeebe:input",
+        "name": "command.sql"
+      },
+      "condition": {
+        "property": "commandType",
+        "equals": "selectMap"
+      },
+      "constraints": {
+        "notEmpty": true
+      }
+    },
+    {
+      "label": "Map Key Column Name",
+      "description": "Enter the name of the column to be used to index the results as a Map. For example, if the query results contain an `EMAIL` column, then entering `EMAIL` here will index results using email addresses as the Keys of the Result Map.",
+      "group": "command",
+      "type": "String",
+      "value": "",
+      "feel": "optional",
+      "binding": {
+        "type": "zeebe:input",
+        "name": "command.mapKey"
+      },
+      "condition": {
+        "property": "commandType",
+        "equals": "selectMap"
+      },
+      "constraints": {
+        "notEmpty": true
+      }
+    },
+    {
+      "label": "INSERT Statement",
+      "description": "Enter the INSERT sql statement to run. The number of records inserted will be returned",
+      "group": "command",
+      "type": "String",
+      "value": "",
+      "feel": "optional",
+      "binding": {
+        "type": "zeebe:input",
+        "name": "command.sql"
+      },
+      "condition": {
+        "property": "commandType",
+        "equals": "insert"
+      },
+      "constraints": {
+        "notEmpty": true
+      }
+    },
+    {
+      "label": "UPDATE Statement",
+      "description": "Enter the UPDATE sql statement to run. The number of records updated will be returned",
+      "group": "command",
+      "type": "String",
+      "value": "",
+      "feel": "optional",
+      "binding": {
+        "type": "zeebe:input",
+        "name": "command.sql"
+      },
+      "condition": {
+        "property": "commandType",
+        "equals": "update"
+      },
+      "constraints": {
+        "notEmpty": true
+      }
+    },
+    {
+      "label": "DELETE Statement",
+      "description": "Enter the DELETE sql statement to run. The number of records deleted will be returned",
+      "group": "command",
+      "type": "String",
+      "value": "",
+      "feel": "optional",
+      "binding": {
+        "type": "zeebe:input",
+        "name": "command.sql"
+      },
+      "condition": {
+        "property": "commandType",
+        "equals": "delete"
+      },
+      "constraints": {
+        "notEmpty": true
       }
     },
     {
