@@ -13,18 +13,13 @@ public class JdbcConnectorRequestTest {
     var input = new JdbcConnectorRequest();
 
     var jdbc = new JDBCParams();
-    jdbc.setDriverName("h2");
-    jdbc.setConnectionMode("mem");
-    jdbc.setHost("localhost");
-    jdbc.setPort("");
-    jdbc.setDbName("camunda");
     jdbc.setPassword("secrets.JDBC_PASSWORD");
     jdbc.setUserName("testuser");
     input.setJdbc(jdbc);
 
     var command = new CommandParams();
     command.setCommandType("selectOne");
-    command.setSelectSql("SELECT * from DUAL");
+    command.setSql("SELECT * from DUAL");
 
     return input;
 

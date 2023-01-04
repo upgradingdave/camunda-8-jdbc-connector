@@ -18,7 +18,7 @@ public class DatabaseManager {
     HikariConfig config = new HikariConfig();
     config.setJdbcUrl( jdbcParams.getJdbcUrl() );
     config.setUsername( jdbcParams.getUserName() );
-    config.setUsername( jdbcParams.getPassword() );
+    config.setPassword( jdbcParams.getPassword() );
     config.addDataSourceProperty( "cachePrepStmts" , "true" );
     config.addDataSourceProperty( "prepStmtCacheSize" , "250" );
     config.addDataSourceProperty( "prepStmtCacheSqlLimit" , "2048" );
@@ -98,6 +98,7 @@ public class DatabaseManager {
     }
     try (PreparedStatement pst = prepareStatement(statement, params)) {
       ResultSet rs = pst.executeQuery();
+      rs.next();
       return getRow(rs);
     } catch (SQLException e) {
       throw new IllegalStateException(e);

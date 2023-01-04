@@ -5,32 +5,12 @@ import java.util.Objects;
 
 public class JDBCParams {
 
-  @NotEmpty
-  private String driverName;
-
   private String userName;
 
   //@Secret
   private String password;
 
-  private Boolean customJdbcUrl;
   private String jdbcUrl;
-
-  private String dbName;
-
-  private String connectionMode;
-
-  private String host;
-
-  private String port;
-
-  public String getDriverName() {
-    return driverName;
-  }
-
-  public void setDriverName(String driverName) {
-    this.driverName = driverName;
-  }
 
   public String getJdbcUrl() {
     return jdbcUrl;
@@ -56,50 +36,10 @@ public class JDBCParams {
     this.jdbcUrl = jdbcUrl;
   }
 
-  public Boolean getCustomJdbcUrl() {
-    return customJdbcUrl;
-  }
-
-  public void setCustomJdbcUrl(Boolean customJdbcUrl) {
-    this.customJdbcUrl = customJdbcUrl;
-  }
-
-  public String getDbName() {
-    return dbName;
-  }
-
-  public void setDbName(String dbName) {
-    this.dbName = dbName;
-  }
-
-  public String getConnectionMode() {
-    return connectionMode;
-  }
-
-  public void setConnectionMode(String connectionMode) {
-    this.connectionMode = connectionMode;
-  }
-
-  public String getHost() {
-    return host;
-  }
-
-  public void setHost(String host) {
-    this.host = host;
-  }
-
-  public String getPort() {
-    return port;
-  }
-
-  public void setPort(String port) {
-    this.port = port;
-  }
-
   @Override
   public int hashCode() {
     return Objects.hash(
-        driverName, userName, password, customJdbcUrl, jdbcUrl, dbName, host, port, connectionMode);
+        userName, password, jdbcUrl);
   }
 
   @Override
@@ -108,30 +48,17 @@ public class JDBCParams {
     if (obj == null) return false;
     if (getClass() != obj.getClass()) return false;
     JDBCParams other = (JDBCParams) obj;
-    return Objects.equals(driverName, other.driverName)
-        && Objects.equals(userName, other.userName)
+    return Objects.equals(userName, other.userName)
         && Objects.equals(password, other.password)
-        && Objects.equals(customJdbcUrl, other.customJdbcUrl)
-        && Objects.equals(jdbcUrl, other.jdbcUrl)
-        && Objects.equals(dbName, other.dbName)
-        && Objects.equals(host, other.host)
-        && Objects.equals(port, other.port)
-        && Objects.equals(connectionMode, other.connectionMode);
+        && Objects.equals(jdbcUrl, other.jdbcUrl);
   }
 
   @Override
   public String toString() {
     return "JdbcConfig ["
-        + "driverName=" + driverName
+        + "jdbcUrl=" + jdbcUrl
         + ", userName=" + userName
-        + ", password=" + password
-        + ", password=" + customJdbcUrl
-        + ", jdbcUrl=" + jdbcUrl
-        + ", dbName=" + dbName
-        + ", host=" + host
-        + ", port=" + port
-        + ", connectionMode=" + connectionMode
-
+        + ", password= (elided)"
         + "]";
   }
 }

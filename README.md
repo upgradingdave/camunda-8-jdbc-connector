@@ -6,21 +6,17 @@
 
 !!! Work in progress !!!
 
-This is the very beginning of an attempt at developing a Camunda 8 Connector that is capable of connecting to Databases via JDBC and running SQL commands.
-
-At the moment it doesn't do much other than select from an empty, in-memory, H2 Database. 
+A Camunda 8 Connector capable of connecting to Databases via JDBC and running SQL commands.
 
 # Overview
 
+This connector maintains a simple in-memory cache of [DatabaseManagers](src/main/java/io/camunda/connector/db/DatabaseManager.java). One `DatabaseManager` is created for each unique jdbc  configuration. 
 
+Each time a process instance arrives at a JDBC Connector Task, the [JdbcConnectorFunction](src/main/java/io/camunda/connector/JdbcConnectorFunction.java) checks the in-memory cache for a matching `DatabaseManager` and if one is found it is used. Otherwise, a new `DatabaseManager` is created using the jdbc configuration passed via the [JdbcConnectorRequest](src/main/java/io/camunda/connector/JdbcConnectorRequest.java) as defined in the bpmn process diagram. 
 
-This connector maintains a simple in-memory cache of [DataSources](https://docs.oracle.com/javase/8/docs/api/javax/sql/DataSource.html). One `DataSource` for each unique database configuration. 
+If a bpmn process diagram has multiple JDBC Connector Tasks that all share same jdbc configuration, a single [DatabaseManager](src/main/java/io/camunda/connector/db/DatabaseManager.java) is created and reused.
 
-Each time a process instance arrives at a JDBC Connector Task, the [JdbcConnectorFunction](src/main/java/io/camunda/connector/JdbcConnectorFunction.java) checks the in-memory cache for a matching DataSource. If the cache contains a DataSource that matches exactly to the db configuration inside the [JdbcConnectorRequest](src/main/java/io/camunda/connector/JdbcConnectorFunction.java), then the DataSource is reused. Otherwise, a new DataSource is created using the db connection configuration found inside the  `JdbcConnectorRequest` as defined in the bpmn process diagram. 
-
-In other words, if a process has multiple JDBC Connector tasks that all share same database connection configuration, a single Datasource is created and reused.
-
-This also means that if a process has multiple JDBC Connector tasks that each connect slightly differently, a separate DataSource is created for each configuration.
+If a process has multiple JDBC Connector Tasks, and each Task connects to a different database or uses different database credentials, then a separate [DatabaseManager](src/main/java/io/camunda/connector/db/DatabaseManager.java) is created for each configuration.
 
 ## Supported Database Types
 
@@ -29,16 +25,7 @@ As of now, this project supports the following types:
 - [H2](src/main/java/io/camunda/connector/db/H2Database.java)
 - [Postgresql](src/main/java/io/camunda/connector/db/PostgresDatabase.java)
 
-## More Design Details
-
-The [Database](src/main/java/io/camunda/connector/db/Database.java) interface is implemented for each type of database that this project supports.
-
-The `Database.`
-
 # TODO / Next steps
-
-// I Think for now I'll simplify things by having only a jdbcurl as part of the jdbcparams.
-// later it will be possible to build custom element templates for different db flavors by creating custom JdbcParam classes
 
 - simplify element template to accept only jdbc url
 - Implement prepared statements by passing json map structure as params
@@ -115,6 +102,12 @@ Use the [Camunda Connector Runtime](https://github.com/camunda-community-hub/spr
 
 In your IDE you can also simply navigate to the `LocalContainerRuntime` class in test scope and run it via your IDE.
 If necessary, you can adjust `application.properties` in test scope.
+
+### H2 Console
+
+The `LocalContainerRuntime` spring boot application is configured to create a H2 Database Schema and insert some records. 
+
+The H2 console can be accessed here: [http://localhost:9898/h2-console](http://localhost:9898/h2-console)
 
 ## Element Template
 
