@@ -36,8 +36,6 @@
     <plugin.version.maven-shade-plugin>3.4.1</plugin.version.maven-shade-plugin>
     <plugin.version.maven-surefire-plugin>3.0.0-M7</plugin.version.maven-surefire-plugin>
 
-    <!-- The maven resources plugin will copy the element template to the desktop modeler install directory -->
-    <camunda.element.templates.dir>/Users/dave/Library/Application Support/camunda-modeler/resources/element-templates</camunda.element.templates.dir>
   </properties>
 
   <dependencies>
@@ -138,7 +136,51 @@
         </exclusion>
       </exclusions>
     </dependency>
+
   </dependencies>
+
+  <profiles>
+    <profile>
+      <id>MacOS</id>
+      <activation>
+        <os>
+          <family>mac</family>
+        </os>
+      </activation>
+      <properties>
+        <!-- The maven resources plugin will copy the element template to the desktop modeler install directory -->
+        <camunda.element.templates.dir>${user.home}/Library/Application Support/camunda-modeler/resources/element-templates</camunda.element.templates.dir>
+      </properties>
+      <build>
+        <plugins>
+          <plugin>
+            <artifactId>maven-resources-plugin</artifactId>
+            <version>${plugin.version.maven-resources-plugin}</version>
+            <executions>
+              <execution>
+                <id>copy-resource-one</id>
+                <phase>generate-sources</phase>
+                <goals>
+                  <goal>copy-resources</goal>
+                </goals>
+                <configuration>
+                  <outputDirectory>${camunda.element.templates.dir}</outputDirectory>
+                  <resources>
+                    <resource>
+                      <directory>element-templates</directory>
+                      <includes>
+                        <include>**/*.json</include>
+                      </includes>
+                    </resource>
+                  </resources>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
 
   <build>
     <pluginManagement>
@@ -237,30 +279,6 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-shade-plugin</artifactId>
-      </plugin>
-      <plugin>
-        <artifactId>maven-resources-plugin</artifactId>
-        <version>${plugin.version.maven-resources-plugin}</version>
-        <executions>
-          <execution>
-            <id>copy-resource-one</id>
-            <phase>generate-sources</phase>
-            <goals>
-              <goal>copy-resources</goal>
-            </goals>
-            <configuration>
-              <outputDirectory>${camunda.element.templates.dir}</outputDirectory>
-              <resources>
-                <resource>
-                  <directory>element-templates</directory>
-                  <includes>
-                    <include>**/*.json</include>
-                  </includes>
-                </resource>
-              </resources>
-            </configuration>
-          </execution>
-        </executions>
       </plugin>
     </plugins>
   </build>
