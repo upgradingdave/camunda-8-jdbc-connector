@@ -4,37 +4,39 @@
 
 # Camunda 8 JDBC Connector
 
-!!! This is a very new project and still a work in progress, please use at your own risk !!!
+!!! Work in progress, use at your own risk !!!
 
 A Camunda 8 Connector capable of connecting to Databases via JDBC and running SQL commands.
 
-# How to Use the JDBC Connector
+# Configure Desktop Modeler
 
-## Configure Desktop Modeler
+To use this Connector with Desktop Modeler, download the [jdbc-connector.json](element-templates/jdbc-connector.json) and [follow these steps](https://docs.camunda.io/docs/components/modeler/desktop-modeler/element-templates/configuring-templates/) to configure it with Desktop Modeler.
 
-To use this Connector with Desktop Modeler, download the [jdbc-connector.json element template file](element-templates/jdbc-connector.json) and [follow these steps](https://docs.camunda.io/docs/components/modeler/desktop-modeler/element-templates/configuring-templates/) to add it to your local Desktop Modeler.
-
-After you have configured the element template, restart Desktop Modeler and try adding a new Service Task. Select the Service Task to open the Properties Panel and click the blue `Select` button under the `Template` section. Choose the `JDBC Connector` Template. 
+After you have configured the element template, restart Desktop Modeler and try adding a new Service Task. Click the blue `Select` button under the `Template` section in the properties panel. Choose the `JDBC Connector` Template. 
 
 ![Choose Template](images/ChooseTemplate.png "Choose Template")
 
-## Configure JDBC
+# JDBC Url and Connection Pooling
 
-The JDBC url must point to a valid Database Server. In this example, we are connecting to an in memory H2 Database. 
+The JDBC url must point to a valid database server. 
 
-In this example, we are using the same JDBC url (`jdbc:h2:mem:camunda`), and same username (`sa`) and password (`password`) for Multiple JDBC Connector Tasks. Under the hood, the connector will reuse connections from a single connection pool for all of these tasks.
+The connector uses the [HikariCP library](https://github.com/brettwooldridge/HikariCP) for connection pooling.
+
+A separate Connection Pool will be created for each unique combination of `Jdbc Url` + `Username` + `Password`. 
+
+This example uses the same JDBC configuration (`jdbc:h2:mem:camunda` + `sa` + `password`) for several JDBC Connector Tasks. Therefore, the same Connection Pool is used for all JDBC Connector Tasks. 
 
 ![JDBC Config](images/JDBCConfig.png "JDBC Config")
 
-It's also possible to configure each JDBC Connector to connect to a different database (or use a different username and password). In this case, a separate connection pool will be created for each different jdbc configuration. 
+If an additional JDBC Connector Task was added with a different `Jdbc Url`, or a different `Username`/`Password`, then a separate Connection Pool will be created and used for instances arriving at this new Task.  
 
-## Query for single result
+# Query for single result
 
 Choose the `SELECT and return single record` option under the `SQL Command` properties panel. The following is an example of selecting a single record from a `USERS` table. 
 
 ![SELECT single result](./images/SELECTSingleResult.png "SELECT Single Result")
 
-Here's the result: 
+The result is a single Map Data Structure: 
 
 ![SELECT single result variables](images/SELECTSingleResultVariables.png "SELECT Single Result Variables")
 
@@ -44,7 +46,7 @@ Choose the `SELECT and return list of records` option under the `SQL Command` pr
 
 ![SELECT List](images/SELECTList.png)
 
-Here's the result: 
+The result is a list of Map Objects: 
 
 ![SELECT List Variables](images/SELECTListVariables.png)
 
@@ -72,31 +74,21 @@ Here's the result:
 
 `UPDATE`, and `DELETE` work the same as `INSERT`
 
-# Technical Overview
-
-This connector maintains a simple in-memory cache of [DatabaseManagers](src/main/java/io/camunda/connector/db/DatabaseManager.java). One `DatabaseManager` is created for each unique jdbc  configuration. 
-
-Each time a process instance arrives at a JDBC Connector Task, the [JdbcConnectorFunction](src/main/java/io/camunda/connector/JdbcConnectorFunction.java) checks the in-memory cache for a matching `DatabaseManager` and if one is found it is used. Otherwise, a new `DatabaseManager` is created using the jdbc configuration passed via the [JdbcConnectorRequest](src/main/java/io/camunda/connector/JdbcConnectorRequest.java) as defined in the bpmn process diagram. 
-
-If a bpmn process diagram has multiple JDBC Connector Tasks that all share same jdbc configuration, a single [DatabaseManager](src/main/java/io/camunda/connector/db/DatabaseManager.java) is created and reused.
-
-If a process has multiple JDBC Connector Tasks, and each Task connects to a different database or uses different database credentials, then a separate [DatabaseManager](src/main/java/io/camunda/connector/db/DatabaseManager.java) is created for each configuration.
-
 ## Supported Database Types
 
-As of now, this project supports the following database drivers.
+As of now, this project supports the following database drivers. Additional database types can be added easily by adding a new dependency to the pom.xml.
 
 - [H2](src/main/java/io/camunda/connector/db/H2Database.java)
 - [Postgresql](src/main/java/io/camunda/connector/db/PostgresDatabase.java)
 
-In order for this project to support another type of database, all that is needed is to add a dependency to the [pom.xml](pom.xml) (in theory, at least!)
-
 # TODO / Next steps
 
 - Implement prepared statements by passing json map structure as params
-- real world test against postgresql
-- Generate custom svg image for this connector and update the template-connector.json
 - Configure password as a SECRET
+- real world test against postgresql
+- add support for mysql and test
+- add support for sqlserver and test
+- Generate custom svg image for this connector and update the template-connector.json
 - Implement options for connection pooling?
 - Create separate element templates for each type of db?
 - will also need separate JDBCParam classes for each type of db?
