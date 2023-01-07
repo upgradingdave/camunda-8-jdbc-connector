@@ -32,9 +32,34 @@ The `Password` field supports [Connector Secrets](https://docs.camunda.io/docs/c
 
 If an additional JDBC Connector Task was added with a different `Jdbc Url`, or a different `Username`/`Password`, then a separate Connection Pool will be created and used for instances arriving at this new Task.  
 
+# Placeholders in sql
+
+If useful, `?` placeholders can be used inside sql statements. For example: 
+
+```java
+SELECT * from USERS where email = ? and firstName = ?
+```
+
+This statement contains two `?` placeholders. This means that we need to provide a `Placeholder parameter Map` with 2 entries. For example: 
+
+```json
+{
+  "1": "user1@email.com", 
+  "2": "dave"
+}
+```
+
+Here's what it would look like in Modeler: 
+
+![Placeholders Example 1](images/PlaceholdersExample1.png)
+
+Note that it's possible to use FEEL expressions within the Placeholder Map! 
+
 # Query for single result
 
-Choose the `SELECT and return single record` option under the `SQL Command` properties panel. The following is an example of selecting a single record from a `USERS` table. 
+Choose the `SELECT and return single record` option under the `SQL Command` properties panel. 
+
+The following is an example of selecting a single record from a `USERS` table. 
 
 ![SELECT single result](./images/SELECTSingleResult.png "SELECT Single Result")
 

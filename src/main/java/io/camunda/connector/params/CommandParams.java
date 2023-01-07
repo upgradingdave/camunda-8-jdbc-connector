@@ -1,6 +1,7 @@
 package io.camunda.connector.params;
 
 import javax.validation.constraints.NotEmpty;
+import java.util.Map;
 import java.util.Objects;
 
 public class CommandParams {
@@ -10,6 +11,8 @@ public class CommandParams {
 
   private String sql;
 
+  private Map<Integer, Object> params;
+
   private String mapKey;
 
   public String getSql() {
@@ -18,6 +21,14 @@ public class CommandParams {
 
   public void setSql(String sql) {
     this.sql = sql;
+  }
+
+  public Map<Integer, Object> getParams() {
+    return params;
+  }
+
+  public void setParams(Map<Integer, Object> params) {
+    this.params = params;
   }
 
   public String getCommandType() {
@@ -49,6 +60,7 @@ public class CommandParams {
     CommandParams other = (CommandParams) obj;
     return Objects.equals(commandType, other.commandType)
         && Objects.equals(sql, other.sql)
+        && Objects.equals(params, other.params)
         && Objects.equals(mapKey, other.mapKey);
   }
 
@@ -57,6 +69,7 @@ public class CommandParams {
     return "JdbcConfig ["
         + "commandType=" + commandType
         + ", sql=" + sql
+        + ", params=" + params
         + ", mapKey=" + mapKey
         + "]";
   }

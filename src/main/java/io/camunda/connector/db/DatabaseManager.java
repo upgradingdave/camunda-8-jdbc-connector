@@ -67,12 +67,11 @@ public class DatabaseManager {
     return result;
   }
 
-  public PreparedStatement prepareStatement(String statement, Map<String, Object> params) throws SQLException {
+  public PreparedStatement prepareStatement(String statement, Map<Integer, Object> params) throws SQLException {
     Connection con = dataSource.getConnection();
-    int paramNumber = 1;
     PreparedStatement pst = con.prepareStatement( statement );
-    for(String paramName : params.keySet()) {
-      Object paramValue = params.get(paramName);
+    for(Integer paramNumber : params.keySet()) {
+      Object paramValue = params.get(paramNumber);
       if (paramValue != null) {
         if (paramValue instanceof Date) {
           pst.setTimestamp(paramNumber, new Timestamp(((Date) paramValue).getTime()));
@@ -88,11 +87,10 @@ public class DatabaseManager {
           pst.setString(paramNumber, (String) paramValue);
         }
       }
-      paramNumber = paramNumber + 1;
     }
     return pst;
   }
-  public Map<String, Object> selectOne(String statement, Map<String, Object> params) {
+  public Map<String, Object> selectOne(String statement, Map<Integer, Object> params) {
     if(params == null) {
       params = new HashMap<>();
     }
@@ -105,7 +103,7 @@ public class DatabaseManager {
     }
   }
 
-  public List<Map<String, Object>> selectList(String statement, Map<String, Object> params) {
+  public List<Map<String, Object>> selectList(String statement, Map<Integer, Object> params) {
     if(params == null) {
       params = new HashMap<>();
     }
@@ -117,7 +115,7 @@ public class DatabaseManager {
     }
   }
 
-  public Map<Object, List<Map<String, Object>>> selectMap(String statement, Map<String, Object> params, String mapKey) {
+  public Map<Object, List<Map<String, Object>>> selectMap(String statement, Map<Integer, Object> params, String mapKey) {
     if(params == null) {
       params = new HashMap<>();
     }
@@ -129,7 +127,7 @@ public class DatabaseManager {
     }
   }
 
-  public int update(String statement, Map<String, Object> params) {
+  public int update(String statement, Map<Integer, Object> params) {
     if(params == null) {
       params = new HashMap<>();
     }

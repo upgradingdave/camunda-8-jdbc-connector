@@ -47,23 +47,19 @@ public class JdbcConnectorFunction implements OutboundConnectorFunction {
     }
 
     CommandParams command = connectorRequest.getCommand();
-    //JdbcConnectorResult result = new JdbcConnectorResult();
-    //TODO: implement params by getting some input from the process diagram. But for now, it's just empty
-    //TODO: also should change from map to list
-    Map<String, Object> params = new HashMap<>();
 
     if(command.getCommandType().equals("selectOne")) {
-      return db.selectOne(command.getSql(), params);
+      return db.selectOne(command.getSql(), command.getParams());
     } else if(command.getCommandType().equals("selectList")) {
-      return db.selectList(command.getSql(), params);
+      return db.selectList(command.getSql(), command.getParams());
     } else if(command.getCommandType().equals("selectMap")) {
-      return db.selectMap(command.getSql(), params, command.getMapKey());
+      return db.selectMap(command.getSql(), command.getParams(), command.getMapKey());
     } else if(command.getCommandType().equals("insert")) {
-      return db.update(command.getSql(), params);
+      return db.update(command.getSql(), command.getParams());
     } else if(command.getCommandType().equals("update")) {
-      return db.update(command.getSql(), params);
+      return db.update(command.getSql(), command.getParams());
     } else if(command.getCommandType().equals("delete")) {
-      return db.update(command.getSql(), params);
+      return db.update(command.getSql(), command.getParams());
     } else {
       throw new UnsupportedOperationException("The command type" + command.getCommandType() + " is not currently supported");
     }

@@ -130,7 +130,7 @@
       "label": "SELECT Statement",
       "description": "Enter the SELECT sql statement to run. The first record will be returned as a Map Data Structure",
       "group": "command",
-      "type": "String",
+      "type": "Text",
       "value": "",
       "feel": "optional",
       "binding": {
@@ -149,7 +149,7 @@
       "label": "SELECT Statement",
       "description": "Enter the SELECT sql statement to run. Results will be returned as a list. Each List item will be a Map Data Structure",
       "group": "command",
-      "type": "String",
+      "type": "Text",
       "value": "",
       "feel": "optional",
       "binding": {
@@ -168,7 +168,7 @@
       "label": "SELECT Statement",
       "description": "Enter the SELECT sql statement to run. Results will be returned as a Map. The keys of the Result Map will be determined using the Map Key Column Name specified below. The values of the Map will be Lists of records that correspond to the Map Key.",
       "group": "command",
-      "type": "String",
+      "type": "Text",
       "value": "",
       "feel": "optional",
       "binding": {
@@ -187,7 +187,7 @@
       "label": "Map Key Column Name",
       "description": "Enter the name of the column to be used to index the results as a Map. For example, if the query results contain an `EMAIL` column, then entering `EMAIL` here will index results using email addresses as the Keys of the Result Map.",
       "group": "command",
-      "type": "String",
+      "type": "Text",
       "value": "",
       "feel": "optional",
       "binding": {
@@ -206,7 +206,7 @@
       "label": "INSERT Statement",
       "description": "Enter the INSERT sql statement to run. The number of records inserted will be returned",
       "group": "command",
-      "type": "String",
+      "type": "Text",
       "value": "",
       "feel": "optional",
       "binding": {
@@ -225,7 +225,7 @@
       "label": "UPDATE Statement",
       "description": "Enter the UPDATE sql statement to run. The number of records updated will be returned",
       "group": "command",
-      "type": "String",
+      "type": "Text",
       "value": "",
       "feel": "optional",
       "binding": {
@@ -244,7 +244,7 @@
       "label": "DELETE Statement",
       "description": "Enter the DELETE sql statement to run. The number of records deleted will be returned",
       "group": "command",
-      "type": "String",
+      "type": "Text",
       "value": "",
       "feel": "optional",
       "binding": {
@@ -257,6 +257,18 @@
       },
       "constraints": {
         "notEmpty": true
+      }
+    },
+    {
+      "label": "Placeholder Parameter Map",
+      "description": "A map of parameter values to replace `?` placeholders in the sql statement. For example, the following sql statement has one `?` parameter: `SELECT * from USERS where email = ?`. The parameter map could look like this: `{\"1\" : \"name@email.com\"}`",
+      "group": "command",
+      "type": "Text",
+      "value": "",
+      "feel": "optional",
+      "binding": {
+        "type": "zeebe:input",
+        "name": "command.params"
       }
     },
     {

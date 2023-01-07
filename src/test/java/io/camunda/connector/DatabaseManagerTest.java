@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -40,7 +41,9 @@ public class DatabaseManagerTest {
   @Test
   public void selectOneTest() {
     DatabaseManager databaseManager = new DatabaseManager(getJdbcParams());
-    Map<String, Object> user1 =  databaseManager.selectOne("SELECT * from USERS where email = 'user1@email.com'", null);
+    Map<Integer, Object> params = new HashMap<>();
+    params.put(1, "user1@email.com");
+    Map<String, Object> user1 =  databaseManager.selectOne("SELECT * from USERS where email = ?", params);
     assertNotNull(user1);
     assertEquals("user1@email.com", user1.get("EMAIL"));
 
