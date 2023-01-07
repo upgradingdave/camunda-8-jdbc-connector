@@ -1,5 +1,7 @@
 package io.camunda.connector.params;
 
+import io.camunda.connector.api.annotation.Secret;
+
 import javax.validation.constraints.NotEmpty;
 import java.util.Objects;
 
@@ -7,7 +9,7 @@ public class JDBCParams {
 
   private String userName;
 
-  //@Secret
+  @Secret
   private String password;
 
   private String jdbcUrl;

@@ -14,9 +14,9 @@
         <zeebe:ioMapping>
           <zeebe:input source="jdbc:h2:mem:camunda" target="jdbc.jdbcUrl" />
           <zeebe:input source="sa" target="jdbc.userName" />
-          <zeebe:input source="password" target="jdbc.password" />
           <zeebe:input source="selectOne" target="command.commandType" />
           <zeebe:input source="SELECT * from USERS where email=&#39;user1@email.com&#39;" target="command.sql" />
+          <zeebe:input source="secrets.JDBC_PASSWORD" target="jdbc.password" />
         </zeebe:ioMapping>
         <zeebe:taskHeaders>
           <zeebe:header key="resultVariable" value="SELECTSingleResult" />
@@ -34,8 +34,8 @@
           <zeebe:input source="selectList" target="command.commandType" />
           <zeebe:input source="jdbc:h2:mem:camunda" target="jdbc.jdbcUrl" />
           <zeebe:input source="sa" target="jdbc.userName" />
-          <zeebe:input source="password" target="jdbc.password" />
           <zeebe:input source="SELECT * FROM USERS;" target="command.sql" />
+          <zeebe:input source="secrets.JDBC_PASSWORD" target="jdbc.password" />
         </zeebe:ioMapping>
         <zeebe:taskHeaders>
           <zeebe:header key="resultVariable" value="SELECTListOfResults" />
@@ -51,10 +51,10 @@
         <zeebe:ioMapping>
           <zeebe:input source="jdbc:h2:mem:camunda" target="jdbc.jdbcUrl" />
           <zeebe:input source="sa" target="jdbc.userName" />
-          <zeebe:input source="password" target="jdbc.password" />
           <zeebe:input source="selectMap" target="command.commandType" />
           <zeebe:input source="SELECT * FROM USERS" target="command.sql" />
           <zeebe:input source="EMAIL" target="command.mapKey" />
+          <zeebe:input source="secrets.JDBC_PASSWORD" target="jdbc.password" />
         </zeebe:ioMapping>
         <zeebe:taskHeaders>
           <zeebe:header key="resultVariable" value="SELECTMapResults" />
@@ -70,9 +70,9 @@
         <zeebe:ioMapping>
           <zeebe:input source="jdbc:h2:mem:camunda" target="jdbc.jdbcUrl" />
           <zeebe:input source="sa" target="jdbc.userName" />
-          <zeebe:input source="password" target="jdbc.password" />
           <zeebe:input source="insert" target="command.commandType" />
           <zeebe:input source="INSERT INTO users (id, username, password, email, first_name, last_name, created_at) VALUES (12, &#39;user12&#39;, &#39;password12&#39;, &#39;user12@email.com&#39;, &#39;James&#39;, &#39;Madison&#39;, &#39;2021-01-01 12:00:00&#39;)" target="command.sql" />
+          <zeebe:input source="secrets.JDBC_PASSWORD" target="jdbc.password" />
         </zeebe:ioMapping>
         <zeebe:taskHeaders>
           <zeebe:header key="resultVariable" value="INSERTResult" />

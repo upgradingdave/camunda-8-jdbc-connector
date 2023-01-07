@@ -1,5 +1,6 @@
 package io.camunda.connector;
 
+import io.camunda.connector.api.annotation.Secret;
 import io.camunda.connector.params.CommandParams;
 import io.camunda.connector.params.JDBCParams;
 
@@ -7,6 +8,7 @@ import java.util.Objects;
 
 public class JdbcConnectorRequest {
 
+  @Secret
   private JDBCParams jdbc;
   static final String INPUT_JDBC = "jdbc";
 

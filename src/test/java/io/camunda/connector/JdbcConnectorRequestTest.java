@@ -34,11 +34,21 @@ public class JdbcConnectorRequestTest {
     var context = OutboundConnectorContextBuilder.create()
       .secret("JDBC_PASSWORD", "password value")
       .build();
+
+    context.replaceSecrets(input);
+
     // then
     assertThat(input)
-      .extracting("jdbc")
-      .extracting("userName")
-      .isEqualTo("testuser");
+        .extracting("jdbc")
+        .extracting("userName")
+        .isEqualTo("testuser");
+
+    assertThat(input)
+        .extracting("jdbc")
+        .extracting("password")
+        .isEqualTo("password value");
+
+
   }
 
   /*@Test

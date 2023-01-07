@@ -10,9 +10,9 @@ A Camunda 8 Connector capable of connecting to Databases via JDBC and running SQ
 
 # Configure Desktop Modeler
 
-To use this Connector with Desktop Modeler, download the [jdbc-connector.json](element-templates/jdbc-connector.json) and [follow these steps](https://docs.camunda.io/docs/components/modeler/desktop-modeler/element-templates/configuring-templates/) to configure it with Desktop Modeler.
+Download the the element template ([jdbc-connector.json](element-templates/jdbc-connector.json)) and [follow these steps](https://docs.camunda.io/docs/components/modeler/desktop-modeler/element-templates/configuring-templates/) to use it with your local Desktop Modeler.
 
-After you have configured the element template, restart Desktop Modeler and try adding a new Service Task. Click the blue `Select` button under the `Template` section in the properties panel. Choose the `JDBC Connector` Template. 
+After you have configured the element template, restart Desktop Modeler and try adding a new Service Task. Click the blue `Select` button under the `Template` section in the properties panel and then choose the `JDBC Connector` Template. 
 
 ![Choose Template](images/ChooseTemplate.png "Choose Template")
 
@@ -20,11 +20,13 @@ After you have configured the element template, restart Desktop Modeler and try 
 
 The JDBC url must point to a valid database server. 
 
-The connector uses the [HikariCP library](https://github.com/brettwooldridge/HikariCP) for connection pooling.
+This connector uses the [HikariCP library](https://github.com/brettwooldridge/HikariCP) for connection pooling.
 
 A separate Connection Pool will be created for each unique combination of `Jdbc Url` + `Username` + `Password`. 
 
-This example uses the same JDBC configuration (`jdbc:h2:mem:camunda` + `sa` + `password`) for several JDBC Connector Tasks. Therefore, the same Connection Pool is used for all JDBC Connector Tasks. 
+This example uses the same JDBC configuration (`jdbc:h2:mem:camunda` + `sa` + `password`) for several JDBC Connector Tasks. Therefore, the same Connection Pool is used for all JDBC Connector Tasks.
+
+The `Password` field supports [Connector Secrets](https://docs.camunda.io/docs/components/connectors/custom-built-connectors/connector-sdk/#secrets).
 
 ![JDBC Config](images/JDBCConfig.png "JDBC Config")
 
@@ -84,11 +86,9 @@ As of now, this project supports the following database drivers. Additional data
 # TODO / Next steps
 
 - Implement prepared statements by passing json map structure as params
-- Configure password as a SECRET
 - real world test against postgresql
 - add support for mysql and test
 - add support for sqlserver and test
-- Generate custom svg image for this connector and update the template-connector.json
 - Implement options for connection pooling?
 - Create separate element templates for each type of db?
 - will also need separate JDBCParam classes for each type of db?

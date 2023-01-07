@@ -3,6 +3,7 @@ package io.camunda.connector;
 import io.camunda.connector.db.DatabaseManager;
 import io.camunda.connector.params.JDBCParams;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;
@@ -14,15 +15,24 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 @SpringBootTest(classes = LocalConnectorRuntime.class)
 public class DatabaseManagerTest {
 
+  @Value("${spring.datasource.url}")
+  private String jdbcUrl;
+
+  @Value("${spring.datasource.username}")
+  private String dbUsername;
+
+  @Value("${spring.datasource.password}")
+  private String dbPassword;
+
   private JDBCParams jdbcParams;
 
   private JDBCParams getJdbcParams() {
     if(jdbcParams == null) {
       jdbcParams = new JDBCParams();
-      // These settings must match definitions inside `/src/test/resources/application.properties`
-      jdbcParams.setJdbcUrl("jdbc:h2:mem:camunda");
-      jdbcParams.setUserName("sa");
-      jdbcParams.setPassword("password");
+
+      jdbcParams.setJdbcUrl(jdbcUrl);
+      jdbcParams.setUserName(dbUsername);
+      jdbcParams.setPassword(dbPassword);
     }
     return jdbcParams;
   }
