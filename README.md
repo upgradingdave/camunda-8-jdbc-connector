@@ -11,8 +11,9 @@ A Camunda 8 Connector capable of connecting to Databases via JDBC and running SQ
 In theory, this connector should be able to connect to any database with a jdbc driver. So far, it's been tested against
 the following types of databases:
 
-- [H2](src/main/java/io/camunda/connector/db/H2Database.java)
-- [Postgresql](src/main/java/io/camunda/connector/db/PostgresDatabase.java)
+- [H2](#h2)
+- [MySql](#mysql)
+- [Postgres](#postgres)
 
 # Configure Desktop Modeler
 
@@ -119,13 +120,25 @@ The [LocalConnectorRuntime](src/test/java/io/camunda/connector/LocalConnectorRun
 
 The `docker-compose.yaml` contains a `postgres` service which is useful for testing this connector against Postgresql.
 
-Run the following to start postgres listening on 5432: 
+Run the following to start postgres listening on 5432 that can be accessed using username `postgres` and password `camunda`:
 
 ```shell
 docker compose -f docker-compose.yaml up
 ```
 
-Then try experimenting with [this](src/test/resources/SamplePostgresJdbcProcess.bpmn) sample postgres bpmn process
+Then try experimenting with [this](src/test/resources/SamplePostgresJdbcProcess.bpmn) sample bpmn process
+
+# MySql
+
+The `docker-compose.yaml` contains a `mysql` service which is useful for testing this connector against MySql.
+
+Run the following to start postgres listening on 3306 that can be accessed using username `camunda` and password `camunda`:
+
+```shell
+docker compose -f docker-compose.yaml up
+```
+
+Then try experimenting with [this](src/test/resources/SampleMySqlJdbcProcess.bpmn) sample bpmn process
 
 # TODO / Next steps
 

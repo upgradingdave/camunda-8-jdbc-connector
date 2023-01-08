@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:zeebe="http://camunda.org/schema/zeebe/1.0" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_1quhjr9" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.6.0" modeler:executionPlatform="Camunda Cloud" modeler:executionPlatformVersion="8.1.0">
+  <bpmn:process id="Process_sampleMySqlJDBCProcess" name="Sample MySql JDBC Process" isExecutable="true">
+    <bpmn:startEvent id="StartEvent_1">
+      <bpmn:extensionElements>
+        <zeebe:ioMapping>
+          <zeebe:output source="={&#10;  email: &#34;user1@email.com&#34;&#10;}" target="currentUser" />
+        </zeebe:ioMapping>
+      </bpmn:extensionElements>
+      <bpmn:outgoing>Flow_06oa1vo</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:sequenceFlow id="Flow_06oa1vo" sourceRef="StartEvent_1" targetRef="Activity_selectSingleResult" />
+    <bpmn:endEvent id="Event_1wyy9lw">
+      <bpmn:incoming>Flow_0fq5f7g</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:serviceTask id="Activity_selectSingleResult" name="SELECT single result" zeebe:modelerTemplate="io.camunda.connector.JDBC.v1" zeebe:modelerTemplateVersion="1" zeebe:modelerTemplateIcon="data:image/svg+xml,%3C%3Fxml version=&#39;1.0&#39; encoding=&#39;utf-8&#39;%3F%3E%3C!-- Generator: Adobe Illustrator 26.2.1, SVG Export Plug-In . SVG Version: 6.00 Build 0) --%3E%3Csvg version=&#39;1.1&#39; id=&#39;uuid-29bf2835-028c-4a53-a2c7-a2d36262388a&#39; xmlns=&#39;http://www.w3.org/2000/svg&#39; xmlns:xlink=&#39;http://www.w3.org/1999/xlink&#39; x=&#39;0px&#39; y=&#39;0px&#39; viewBox=&#39;0 0 512 512&#39; style=&#39;enable-background:new 0 0 512 512;&#39; xml:space=&#39;preserve&#39;%3E%3Cstyle type=&#39;text/css&#39;%3E .st0%7Bfill:%23FC5D0D;%7D%0A%3C/style%3E%3Cg%3E%3Cpath class=&#39;st0&#39; d=&#39;M270.7,278.4c-4.9,0.2-9.8,0.2-14.7,0.2s-9.8-0.1-14.8-0.2c-41.5-1.1-74.5-7-98.3-15.3 c-9.9-3.1-19.4-7.6-28.1-13.3v53.1c16.1,16.8,70,32.3,141.2,32.3s125.1-15.5,141.2-32.3v-53.1c-8.8,5.7-18.4,10.2-28.4,13.4 C345,271.5,312.1,277.3,270.7,278.4L270.7,278.4z&#39;/%3E%3Cpath class=&#39;st0&#39; d=&#39;M114.8,175.7v53.1c14.9,15.5,62.3,30,125.9,32h2c1.9,0,3.7,0.1,5.6,0.1h15.6c1.9,0,3.7-0.1,5.6-0.1h2 c63.6-2,111-16.5,125.9-32v-53.1c-27.5,18.9-85.6,28.9-141.2,28.9S142.3,194.6,114.8,175.7L114.8,175.7z&#39;/%3E%3Cpath class=&#39;st0&#39; d=&#39;M396.4,139.9c-6.3-24.3-55.1-48.2-140.4-48.2c-85.2,0-133.8,23.8-140.4,48.1c-0.5,0.8-0.8,1.8-0.8,2.8v13.1 c16,16.7,69.6,32.2,141.2,32.2s125.2-15.4,141.2-32.2v-13C397.2,141.6,396.9,140.7,396.4,139.9L396.4,139.9z&#39;/%3E%3Cpath class=&#39;st0&#39; d=&#39;M114.8,323.2v46.3c0,0.9,0.2,1.8,0.7,2.5c6.7,27.7,66.3,48.3,140.5,48.3s133.6-20.5,140.5-48.1 c0.5-0.8,0.7-1.8,0.7-2.7v-46.3c-23.3,16.4-71.5,29.4-141.2,29.4S138.2,339.6,114.8,323.2L114.8,323.2z&#39;/%3E%3C/g%3E%3C/svg%3E">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="io.camunda:connector-jdbc:1" />
+        <zeebe:ioMapping>
+          <zeebe:input source="selectOne" target="command.commandType" />
+          <zeebe:input source="SELECT * from USERS where email = ?" target="command.sql" />
+          <zeebe:input source="={&#10;  &#34;1&#34;: currentUser.email&#10;}" target="command.params" />
+          <zeebe:input source="jdbc:mysql://localhost:3306/camunda" target="jdbc.jdbcUrl" />
+          <zeebe:input source="camunda" target="jdbc.userName" />
+          <zeebe:input source="secrets.MYSQL_PASSWORD" target="jdbc.password" />
+        </zeebe:ioMapping>
+        <zeebe:taskHeaders>
+          <zeebe:header key="resultVariable" value="SELECTSingleResult" />
+        </zeebe:taskHeaders>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_06oa1vo</bpmn:incoming>
+      <bpmn:outgoing>Flow_1c49z55</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="Flow_1c49z55" sourceRef="Activity_selectSingleResult" targetRef="Activity_selectListResults" />
+    <bpmn:sequenceFlow id="Flow_1ighcjc" sourceRef="Activity_selectListResults" targetRef="Activity_selectMap" />
+    <bpmn:serviceTask id="Activity_selectListResults" name="SELECT list of results" zeebe:modelerTemplate="io.camunda.connector.JDBC.v1" zeebe:modelerTemplateVersion="1" zeebe:modelerTemplateIcon="data:image/svg+xml,%3C%3Fxml version=&#39;1.0&#39; encoding=&#39;utf-8&#39;%3F%3E%3C!-- Generator: Adobe Illustrator 26.2.1, SVG Export Plug-In . SVG Version: 6.00 Build 0) --%3E%3Csvg version=&#39;1.1&#39; id=&#39;uuid-29bf2835-028c-4a53-a2c7-a2d36262388a&#39; xmlns=&#39;http://www.w3.org/2000/svg&#39; xmlns:xlink=&#39;http://www.w3.org/1999/xlink&#39; x=&#39;0px&#39; y=&#39;0px&#39; viewBox=&#39;0 0 512 512&#39; style=&#39;enable-background:new 0 0 512 512;&#39; xml:space=&#39;preserve&#39;%3E%3Cstyle type=&#39;text/css&#39;%3E .st0%7Bfill:%23FC5D0D;%7D%0A%3C/style%3E%3Cg%3E%3Cpath class=&#39;st0&#39; d=&#39;M270.7,278.4c-4.9,0.2-9.8,0.2-14.7,0.2s-9.8-0.1-14.8-0.2c-41.5-1.1-74.5-7-98.3-15.3 c-9.9-3.1-19.4-7.6-28.1-13.3v53.1c16.1,16.8,70,32.3,141.2,32.3s125.1-15.5,141.2-32.3v-53.1c-8.8,5.7-18.4,10.2-28.4,13.4 C345,271.5,312.1,277.3,270.7,278.4L270.7,278.4z&#39;/%3E%3Cpath class=&#39;st0&#39; d=&#39;M114.8,175.7v53.1c14.9,15.5,62.3,30,125.9,32h2c1.9,0,3.7,0.1,5.6,0.1h15.6c1.9,0,3.7-0.1,5.6-0.1h2 c63.6-2,111-16.5,125.9-32v-53.1c-27.5,18.9-85.6,28.9-141.2,28.9S142.3,194.6,114.8,175.7L114.8,175.7z&#39;/%3E%3Cpath class=&#39;st0&#39; d=&#39;M396.4,139.9c-6.3-24.3-55.1-48.2-140.4-48.2c-85.2,0-133.8,23.8-140.4,48.1c-0.5,0.8-0.8,1.8-0.8,2.8v13.1 c16,16.7,69.6,32.2,141.2,32.2s125.2-15.4,141.2-32.2v-13C397.2,141.6,396.9,140.7,396.4,139.9L396.4,139.9z&#39;/%3E%3Cpath class=&#39;st0&#39; d=&#39;M114.8,323.2v46.3c0,0.9,0.2,1.8,0.7,2.5c6.7,27.7,66.3,48.3,140.5,48.3s133.6-20.5,140.5-48.1 c0.5-0.8,0.7-1.8,0.7-2.7v-46.3c-23.3,16.4-71.5,29.4-141.2,29.4S138.2,339.6,114.8,323.2L114.8,323.2z&#39;/%3E%3C/g%3E%3C/svg%3E">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="io.camunda:connector-jdbc:1" />
+        <zeebe:ioMapping>
+          <zeebe:input source="selectList" target="command.commandType" />
+          <zeebe:input source="SELECT * FROM USERS;" target="command.sql" />
+          <zeebe:input source="jdbc:mysql://localhost:3306/camunda" target="jdbc.jdbcUrl" />
+          <zeebe:input source="camunda" target="jdbc.userName" />
+          <zeebe:input source="secrets.MYSQL_PASSWORD" target="jdbc.password" />
+        </zeebe:ioMapping>
+        <zeebe:taskHeaders>
+          <zeebe:header key="resultVariable" value="SELECTListOfResults" />
+        </zeebe:taskHeaders>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_1c49z55</bpmn:incoming>
+      <bpmn:outgoing>Flow_1ighcjc</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="Flow_0td7tzn" sourceRef="Activity_selectMap" targetRef="Activity_insert" />
+    <bpmn:serviceTask id="Activity_selectMap" name="SELECT map of results" zeebe:modelerTemplate="io.camunda.connector.JDBC.v1" zeebe:modelerTemplateVersion="1" zeebe:modelerTemplateIcon="data:image/svg+xml,%3C%3Fxml version=&#39;1.0&#39; encoding=&#39;utf-8&#39;%3F%3E%3C!-- Generator: Adobe Illustrator 26.2.1, SVG Export Plug-In . SVG Version: 6.00 Build 0) --%3E%3Csvg version=&#39;1.1&#39; id=&#39;uuid-29bf2835-028c-4a53-a2c7-a2d36262388a&#39; xmlns=&#39;http://www.w3.org/2000/svg&#39; xmlns:xlink=&#39;http://www.w3.org/1999/xlink&#39; x=&#39;0px&#39; y=&#39;0px&#39; viewBox=&#39;0 0 512 512&#39; style=&#39;enable-background:new 0 0 512 512;&#39; xml:space=&#39;preserve&#39;%3E%3Cstyle type=&#39;text/css&#39;%3E .st0%7Bfill:%23FC5D0D;%7D%0A%3C/style%3E%3Cg%3E%3Cpath class=&#39;st0&#39; d=&#39;M270.7,278.4c-4.9,0.2-9.8,0.2-14.7,0.2s-9.8-0.1-14.8-0.2c-41.5-1.1-74.5-7-98.3-15.3 c-9.9-3.1-19.4-7.6-28.1-13.3v53.1c16.1,16.8,70,32.3,141.2,32.3s125.1-15.5,141.2-32.3v-53.1c-8.8,5.7-18.4,10.2-28.4,13.4 C345,271.5,312.1,277.3,270.7,278.4L270.7,278.4z&#39;/%3E%3Cpath class=&#39;st0&#39; d=&#39;M114.8,175.7v53.1c14.9,15.5,62.3,30,125.9,32h2c1.9,0,3.7,0.1,5.6,0.1h15.6c1.9,0,3.7-0.1,5.6-0.1h2 c63.6-2,111-16.5,125.9-32v-53.1c-27.5,18.9-85.6,28.9-141.2,28.9S142.3,194.6,114.8,175.7L114.8,175.7z&#39;/%3E%3Cpath class=&#39;st0&#39; d=&#39;M396.4,139.9c-6.3-24.3-55.1-48.2-140.4-48.2c-85.2,0-133.8,23.8-140.4,48.1c-0.5,0.8-0.8,1.8-0.8,2.8v13.1 c16,16.7,69.6,32.2,141.2,32.2s125.2-15.4,141.2-32.2v-13C397.2,141.6,396.9,140.7,396.4,139.9L396.4,139.9z&#39;/%3E%3Cpath class=&#39;st0&#39; d=&#39;M114.8,323.2v46.3c0,0.9,0.2,1.8,0.7,2.5c6.7,27.7,66.3,48.3,140.5,48.3s133.6-20.5,140.5-48.1 c0.5-0.8,0.7-1.8,0.7-2.7v-46.3c-23.3,16.4-71.5,29.4-141.2,29.4S138.2,339.6,114.8,323.2L114.8,323.2z&#39;/%3E%3C/g%3E%3C/svg%3E">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="io.camunda:connector-jdbc:1" />
+        <zeebe:ioMapping>
+          <zeebe:input source="selectMap" target="command.commandType" />
+          <zeebe:input source="SELECT * FROM USERS" target="command.sql" />
+          <zeebe:input source="email" target="command.mapKey" />
+          <zeebe:input source="jdbc:mysql://localhost:3306/camunda" target="jdbc.jdbcUrl" />
+          <zeebe:input source="camunda" target="jdbc.userName" />
+          <zeebe:input source="secrets.MYSQL_PASSWORD" target="jdbc.password" />
+        </zeebe:ioMapping>
+        <zeebe:taskHeaders>
+          <zeebe:header key="resultVariable" value="SELECTMapResults" />
+        </zeebe:taskHeaders>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_1ighcjc</bpmn:incoming>
+      <bpmn:outgoing>Flow_0td7tzn</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="Flow_0fq5f7g" sourceRef="Activity_insert" targetRef="Event_1wyy9lw" />
+    <bpmn:serviceTask id="Activity_insert" name="INSERT" zeebe:modelerTemplate="io.camunda.connector.JDBC.v1" zeebe:modelerTemplateVersion="1" zeebe:modelerTemplateIcon="data:image/svg+xml,%3C%3Fxml version=&#39;1.0&#39; encoding=&#39;utf-8&#39;%3F%3E%3C!-- Generator: Adobe Illustrator 26.2.1, SVG Export Plug-In . SVG Version: 6.00 Build 0) --%3E%3Csvg version=&#39;1.1&#39; id=&#39;uuid-29bf2835-028c-4a53-a2c7-a2d36262388a&#39; xmlns=&#39;http://www.w3.org/2000/svg&#39; xmlns:xlink=&#39;http://www.w3.org/1999/xlink&#39; x=&#39;0px&#39; y=&#39;0px&#39; viewBox=&#39;0 0 512 512&#39; style=&#39;enable-background:new 0 0 512 512;&#39; xml:space=&#39;preserve&#39;%3E%3Cstyle type=&#39;text/css&#39;%3E .st0%7Bfill:%23FC5D0D;%7D%0A%3C/style%3E%3Cg%3E%3Cpath class=&#39;st0&#39; d=&#39;M270.7,278.4c-4.9,0.2-9.8,0.2-14.7,0.2s-9.8-0.1-14.8-0.2c-41.5-1.1-74.5-7-98.3-15.3 c-9.9-3.1-19.4-7.6-28.1-13.3v53.1c16.1,16.8,70,32.3,141.2,32.3s125.1-15.5,141.2-32.3v-53.1c-8.8,5.7-18.4,10.2-28.4,13.4 C345,271.5,312.1,277.3,270.7,278.4L270.7,278.4z&#39;/%3E%3Cpath class=&#39;st0&#39; d=&#39;M114.8,175.7v53.1c14.9,15.5,62.3,30,125.9,32h2c1.9,0,3.7,0.1,5.6,0.1h15.6c1.9,0,3.7-0.1,5.6-0.1h2 c63.6-2,111-16.5,125.9-32v-53.1c-27.5,18.9-85.6,28.9-141.2,28.9S142.3,194.6,114.8,175.7L114.8,175.7z&#39;/%3E%3Cpath class=&#39;st0&#39; d=&#39;M396.4,139.9c-6.3-24.3-55.1-48.2-140.4-48.2c-85.2,0-133.8,23.8-140.4,48.1c-0.5,0.8-0.8,1.8-0.8,2.8v13.1 c16,16.7,69.6,32.2,141.2,32.2s125.2-15.4,141.2-32.2v-13C397.2,141.6,396.9,140.7,396.4,139.9L396.4,139.9z&#39;/%3E%3Cpath class=&#39;st0&#39; d=&#39;M114.8,323.2v46.3c0,0.9,0.2,1.8,0.7,2.5c6.7,27.7,66.3,48.3,140.5,48.3s133.6-20.5,140.5-48.1 c0.5-0.8,0.7-1.8,0.7-2.7v-46.3c-23.3,16.4-71.5,29.4-141.2,29.4S138.2,339.6,114.8,323.2L114.8,323.2z&#39;/%3E%3C/g%3E%3C/svg%3E">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="io.camunda:connector-jdbc:1" />
+        <zeebe:ioMapping>
+          <zeebe:input source="insert" target="command.commandType" />
+          <zeebe:input source="INSERT INTO users (id, username, password, email, first_name, last_name, created_at) VALUES (12, &#39;user12&#39;, &#39;password12&#39;, &#39;user12@email.com&#39;, &#39;James&#39;, &#39;Madison&#39;, &#39;2021-01-01 12:00:00&#39;)" target="command.sql" />
+          <zeebe:input source="jdbc:mysql://localhost:3306/camunda" target="jdbc.jdbcUrl" />
+          <zeebe:input source="camunda" target="jdbc.userName" />
+          <zeebe:input source="secrets.MYSQL_PASSWORD" target="jdbc.password" />
+        </zeebe:ioMapping>
+        <zeebe:taskHeaders>
+          <zeebe:header key="resultVariable" value="INSERTResult" />
+        </zeebe:taskHeaders>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_0td7tzn</bpmn:incoming>
+      <bpmn:outgoing>Flow_0fq5f7g</bpmn:outgoing>
+    </bpmn:serviceTask>
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_sampleMySqlJDBCProcess">
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
+        <dc:Bounds x="179" y="99" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1wyy9lw_di" bpmnElement="Event_1wyy9lw">
+        <dc:Bounds x="912" y="99" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0fntdc6_di" bpmnElement="Activity_selectSingleResult">
+        <dc:Bounds x="280" y="77" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0pbw9om_di" bpmnElement="Activity_selectListResults">
+        <dc:Bounds x="440" y="77" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0pjebsr_di" bpmnElement="Activity_selectMap">
+        <dc:Bounds x="600" y="77" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_03xqnxs_di" bpmnElement="Activity_insert">
+        <dc:Bounds x="760" y="77" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_06oa1vo_di" bpmnElement="Flow_06oa1vo">
+        <di:waypoint x="215" y="117" />
+        <di:waypoint x="280" y="117" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1c49z55_di" bpmnElement="Flow_1c49z55">
+        <di:waypoint x="380" y="117" />
+        <di:waypoint x="440" y="117" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1ighcjc_di" bpmnElement="Flow_1ighcjc">
+        <di:waypoint x="540" y="117" />
+        <di:waypoint x="600" y="117" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0td7tzn_di" bpmnElement="Flow_0td7tzn">
+        <di:waypoint x="700" y="117" />
+        <di:waypoint x="760" y="117" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0fq5f7g_di" bpmnElement="Flow_0fq5f7g">
+        <di:waypoint x="860" y="117" />
+        <di:waypoint x="912" y="117" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>
