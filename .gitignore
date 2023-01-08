@@ -1,3 +1,6 @@
+# database data directories used for testing
+data/postgres/pgdata
+
 # Compiled class file
 *.class
 

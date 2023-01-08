@@ -8,6 +8,12 @@
 
 A Camunda 8 Connector capable of connecting to Databases via JDBC and running SQL commands.
 
+In theory, this connector should be able to connect to any database with a jdbc driver. So far, it's been tested against
+the following types of databases:
+
+- [H2](src/main/java/io/camunda/connector/db/H2Database.java)
+- [Postgresql](src/main/java/io/camunda/connector/db/PostgresDatabase.java)
+
 # Configure Desktop Modeler
 
 Download the the element template ([jdbc-connector.json](element-templates/jdbc-connector.json)) and [follow these steps](https://docs.camunda.io/docs/components/modeler/desktop-modeler/element-templates/configuring-templates/) to use it with your local Desktop Modeler.
@@ -36,7 +42,7 @@ If an additional JDBC Connector Task was added with a different `Jdbc Url`, or a
 
 If useful, `?` placeholders can be used inside sql statements. For example: 
 
-```java
+```sql
 SELECT * from USERS where email = ? and firstName = ?
 ```
 
@@ -101,12 +107,25 @@ Here's the result:
 
 `UPDATE`, and `DELETE` work the same as `INSERT`
 
-## Supported Database Types
+# H2 
 
-As of now, this project supports the following database drivers. Additional database types can be added easily by adding a new dependency to the pom.xml.
+This has been tested against H2. In fact the [unit tests](src/test/java/io/camunda/connector) use an in memory H2 database to run tests. 
 
-- [H2](src/main/java/io/camunda/connector/db/H2Database.java)
-- [Postgresql](src/main/java/io/camunda/connector/db/PostgresDatabase.java)
+## H2 Console
+
+The [LocalConnectorRuntime](src/test/java/io/camunda/connector/LocalConnectorRuntime.java) spring boot application can be used to test the connector. Each time it starts, it will create a H2 Database Schema and insert some records. It is also configured to host a H2 console here: [http://localhost:9898/h2-console](http://localhost:9898/h2-console)
+
+# Postgres
+
+The `docker-compose.yaml` contains a `postgres` service which is useful for testing this connector against Postgresql.
+
+Run the following to start postgres listening on 5432: 
+
+```shell
+docker compose -f docker-compose.yaml up
+```
+
+Then try experimenting with [this](src/test/resources/SamplePostgresJdbcProcess.bpmn) sample postgres bpmn process
 
 # TODO / Next steps
 
@@ -183,11 +202,6 @@ Use the [Camunda Connector Runtime](https://github.com/camunda-community-hub/spr
 In your IDE you can also simply navigate to the `LocalContainerRuntime` class in test scope and run it via your IDE.
 If necessary, you can adjust `application.properties` in test scope.
 
-### H2 Console
-
-The `LocalContainerRuntime` spring boot application is configured to create a H2 Database Schema and insert some records. 
-
-The H2 console can be accessed here: [http://localhost:9898/h2-console](http://localhost:9898/h2-console)
 
 ## Element Template
 

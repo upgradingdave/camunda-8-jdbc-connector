@@ -1,0 +1,12 @@
+version: "3.9"
+services:
+  postgres:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: camunda
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./data/postgres/pgdata:/var/lib/postgresql/data
+      - ./data/init:/docker-entrypoint-initdb.d

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:zeebe="http://camunda.org/schema/zeebe/1.0" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_1quhjr9" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.6.0" modeler:executionPlatform="Camunda Cloud" modeler:executionPlatformVersion="8.1.0">
-  <bpmn:process id="Process_sampleJDBCProcess" name="Sample JDBC Process" isExecutable="true">
+  <bpmn:process id="Process_samplePostgresJDBCProcess" name="Sample Postgres JDBC Process" isExecutable="true">
     <bpmn:startEvent id="StartEvent_1">
       <bpmn:extensionElements>
         <zeebe:ioMapping>
@@ -17,12 +17,12 @@
       <bpmn:extensionElements>
         <zeebe:taskDefinition type="io.camunda:connector-jdbc:1" />
         <zeebe:ioMapping>
-          <zeebe:input source="jdbc:h2:mem:camunda" target="jdbc.jdbcUrl" />
-          <zeebe:input source="sa" target="jdbc.userName" />
           <zeebe:input source="selectOne" target="command.commandType" />
-          <zeebe:input source="secrets.JDBC_PASSWORD" target="jdbc.password" />
           <zeebe:input source="SELECT * from USERS where email = ?" target="command.sql" />
           <zeebe:input source="={&#10;  &#34;1&#34;: currentUser.email&#10;}" target="command.params" />
+          <zeebe:input source="jdbc:postgresql://localhost:5432/postgres" target="jdbc.jdbcUrl" />
+          <zeebe:input source="postgres" target="jdbc.userName" />
+          <zeebe:input source="secrets.POSTGRES_PASSWORD" target="jdbc.password" />
         </zeebe:ioMapping>
         <zeebe:taskHeaders>
           <zeebe:header key="resultVariable" value="SELECTSingleResult" />
@@ -38,10 +38,10 @@
         <zeebe:taskDefinition type="io.camunda:connector-jdbc:1" />
         <zeebe:ioMapping>
           <zeebe:input source="selectList" target="command.commandType" />
-          <zeebe:input source="jdbc:h2:mem:camunda" target="jdbc.jdbcUrl" />
-          <zeebe:input source="sa" target="jdbc.userName" />
           <zeebe:input source="SELECT * FROM USERS;" target="command.sql" />
-          <zeebe:input source="secrets.JDBC_PASSWORD" target="jdbc.password" />
+          <zeebe:input source="jdbc:postgresql://localhost:5432/postgres" target="jdbc.jdbcUrl" />
+          <zeebe:input source="secrets.POSTGRES_PASSWORD" target="jdbc.password" />
+          <zeebe:input source="postgres" target="jdbc.userName" />
         </zeebe:ioMapping>
         <zeebe:taskHeaders>
           <zeebe:header key="resultVariable" value="SELECTListOfResults" />
@@ -55,12 +55,12 @@
       <bpmn:extensionElements>
         <zeebe:taskDefinition type="io.camunda:connector-jdbc:1" />
         <zeebe:ioMapping>
-          <zeebe:input source="jdbc:h2:mem:camunda" target="jdbc.jdbcUrl" />
-          <zeebe:input source="sa" target="jdbc.userName" />
           <zeebe:input source="selectMap" target="command.commandType" />
           <zeebe:input source="SELECT * FROM USERS" target="command.sql" />
-          <zeebe:input source="EMAIL" target="command.mapKey" />
-          <zeebe:input source="secrets.JDBC_PASSWORD" target="jdbc.password" />
+          <zeebe:input source="jdbc:postgresql://localhost:5432/postgres" target="jdbc.jdbcUrl" />
+          <zeebe:input source="secrets.POSTGRES_PASSWORD" target="jdbc.password" />
+          <zeebe:input source="postgres" target="jdbc.userName" />
+          <zeebe:input source="email" target="command.mapKey" />
         </zeebe:ioMapping>
         <zeebe:taskHeaders>
           <zeebe:header key="resultVariable" value="SELECTMapResults" />
@@ -74,11 +74,11 @@
       <bpmn:extensionElements>
         <zeebe:taskDefinition type="io.camunda:connector-jdbc:1" />
         <zeebe:ioMapping>
-          <zeebe:input source="jdbc:h2:mem:camunda" target="jdbc.jdbcUrl" />
-          <zeebe:input source="sa" target="jdbc.userName" />
           <zeebe:input source="insert" target="command.commandType" />
           <zeebe:input source="INSERT INTO users (id, username, password, email, first_name, last_name, created_at) VALUES (12, &#39;user12&#39;, &#39;password12&#39;, &#39;user12@email.com&#39;, &#39;James&#39;, &#39;Madison&#39;, &#39;2021-01-01 12:00:00&#39;)" target="command.sql" />
-          <zeebe:input source="secrets.JDBC_PASSWORD" target="jdbc.password" />
+          <zeebe:input source="jdbc:postgresql://localhost:5432/postgres" target="jdbc.jdbcUrl" />
+          <zeebe:input source="secrets.POSTGRES_PASSWORD" target="jdbc.password" />
+          <zeebe:input source="postgres" target="jdbc.userName" />
         </zeebe:ioMapping>
         <zeebe:taskHeaders>
           <zeebe:header key="resultVariable" value="INSERTResult" />
@@ -89,7 +89,7 @@
     </bpmn:serviceTask>
   </bpmn:process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
-    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_sampleJDBCProcess">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_samplePostgresJDBCProcess">
       <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
         <dc:Bounds x="179" y="99" width="36" height="36" />
       </bpmndi:BPMNShape>
