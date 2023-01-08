@@ -8,8 +8,8 @@
 
 A Camunda 8 Connector capable of connecting to Databases via JDBC and running SQL commands.
 
-In theory, this connector should be able to connect to any database with a jdbc driver. So far, it's been tested against
-the following types of databases:
+In theory, this connector can use [any type](#other-database-types) of jdbc driver. So far, it's been tested against
+the following types of databases (and the drivers for these types of databases are included by default): 
 
 - [H2](#h2)
 - [MySql](#mysql)
@@ -19,7 +19,7 @@ the following types of databases:
 
 Download the the element template ([jdbc-connector.json](element-templates/jdbc-connector.json)) and [follow these steps](https://docs.camunda.io/docs/components/modeler/desktop-modeler/element-templates/configuring-templates/) to use it with your local Desktop Modeler.
 
-After you have configured the element template, restart Desktop Modeler and try adding a new Service Task. Click the blue `Select` button under the `Template` section in the properties panel and then choose the `JDBC Connector` Template. 
+After you've configured the element template, restart Desktop Modeler and try adding a new Service Task. Click the blue `Select` button under the `Template` section in the properties panel and then choose the `JDBC Connector` Template. 
 
 ![Choose Template](images/ChooseTemplate.png "Choose Template")
 
@@ -27,17 +27,13 @@ After you have configured the element template, restart Desktop Modeler and try 
 
 The JDBC url must point to a valid database server. 
 
-This connector uses the [HikariCP library](https://github.com/brettwooldridge/HikariCP) for connection pooling.
-
-A separate Connection Pool will be created for each unique combination of `Jdbc Url` + `Username` + `Password`. 
-
-This example uses the same JDBC configuration (`jdbc:h2:mem:camunda` + `sa` + `password`) for several JDBC Connector Tasks. Therefore, the same Connection Pool is used for all JDBC Connector Tasks.
+This connector uses the [HikariCP library](https://github.com/brettwooldridge/HikariCP) for connection pooling. A separate Connection Pool will be created for each unique combination of `Jdbc Url` + `Username` + `Password`.
 
 The `Password` field supports [Connector Secrets](https://docs.camunda.io/docs/components/connectors/custom-built-connectors/connector-sdk/#secrets).
 
 ![JDBC Config](images/JDBCConfig.png "JDBC Config")
 
-If an additional JDBC Connector Task was added with a different `Jdbc Url`, or a different `Username`/`Password`, then a separate Connection Pool will be created and used for instances arriving at this new Task.  
+Feel free to add multiple JDBC Connector tasks to a single process diagram. When multiple JDBC Connector Tasks with the same `Jdbc Url` + `Username` + `Password` combo exist, the same connection pool will be reused. If different JDBC Connector Tasks connect to a different database (via a different `Jdbc Url`), or connect to the same database using different `Username`/`Password`, then a separate connection pools will be created and used. 
 
 # Placeholders in sql
 
@@ -60,7 +56,7 @@ Here's what it would look like in Modeler:
 
 ![Placeholders Example 1](images/PlaceholdersExample1.png)
 
-Note that it's possible to use FEEL expressions within the Placeholder Map! 
+Note that it's possible to use FEEL expressions within the Placeholder Map :muscle: 
 
 # Query for single result
 
@@ -90,6 +86,8 @@ Choose the `SELECT and return Map` option under the `SQL Command` properties pan
 
 Instead of returning results as a List, this option returns them as a Map. The trick here is to define which column to use as the Map Key. In this example, we define the `Map Key Column Name` as `EMAIL`. This way, the results are indexed using the value from the `USERS.EMAIL` column. 
 
+> :warning: **Heads Up!** The case of the `Map Key Column Name` must match exactly with the case of the column name found in the query results. For example, in H2 databases, column names in results are uppercase. However, other databases might return column names as lowercase.
+
 ![SELECT Map](images/SELECTMap.png)
 
 Here's the result, notice that the results of the query are indexed by email: 
@@ -118,9 +116,9 @@ The [LocalConnectorRuntime](src/test/java/io/camunda/connector/LocalConnectorRun
 
 # Postgres
 
-The `docker-compose.yaml` contains a `postgres` service which is useful for testing this connector against Postgresql.
+The [docker-compose.yaml](docker-compose.yaml) contains a `postgres` service which is useful for testing this connector against Postgresql.
 
-Run the following to start postgres listening on 5432 that can be accessed using username `postgres` and password `camunda`:
+Run the following to start postgres listening on 5432 and accessible using username `postgres` and password `camunda`:
 
 ```shell
 docker compose -f docker-compose.yaml up
@@ -130,9 +128,9 @@ Then try experimenting with [this](src/test/resources/SamplePostgresJdbcProcess.
 
 # MySql
 
-The `docker-compose.yaml` contains a `mysql` service which is useful for testing this connector against MySql.
+The [docker-compose.yaml](docker-compose.yaml) contains a `mysql` service which is useful for testing this connector against MySql.
 
-Run the following to start postgres listening on 3306 that can be accessed using username `camunda` and password `camunda`:
+Run the following to start MySql listening on 3306 and accessible using username `camunda` and password `camunda`:
 
 ```shell
 docker compose -f docker-compose.yaml up
@@ -140,17 +138,14 @@ docker compose -f docker-compose.yaml up
 
 Then try experimenting with [this](src/test/resources/SampleMySqlJdbcProcess.bpmn) sample bpmn process
 
-# TODO / Next steps
+# Other Database Types
 
-- Implement prepared statements by passing json map structure as params
-- real world test against postgresql
-- add support for mysql and test
-- add support for sqlserver and test
-- Implement options for connection pooling?
-- Create separate element templates for each type of db?
-- will also need separate JDBCParam classes for each type of db?
+If you would like to use this connector to connect to a Database Type that isn't listed here, here are two options: 
 
-## Build
+1. When you deploy and/or run the connector, place the correct jdbc driver on the classpath.
+2. Clone this repository and add your driver as a dependency in the [pom.xml](pom.xml) file. Then use maven to [build](#build), and [test](#test-with-local-runtime). 
+
+# Build
 
 You can package the Connector by running the following command:
 
@@ -163,7 +158,7 @@ This will create the following artifacts:
 - A thin JAR without dependencies.
 - An uber JAR containing all dependencies, potentially shaded to avoid classpath conflicts. This will not include the SDK artifacts since those are in scope `provided` and will be brought along by the respective Connector Runtime executing the Connector.
 
-### Shading dependencies
+## Shading dependencies
 
 You can use the `maven-shade-plugin` defined in the [Maven configuration](./pom.xml) to relocate common dependencies
 that are used in other Connectors and the [Connector Runtime](https://github.com/camunda-community-hub/spring-zeebe/tree/master/connector-runtime#building-connector-runtime-bundles).
@@ -173,49 +168,10 @@ Use the `relocations` configuration in the Maven Shade plugin to define the depe
 The [Maven Shade documentation](https://maven.apache.org/plugins/maven-shade-plugin/examples/class-relocation.html) 
 provides more details on relocations.
 
-## API
-
-### Input
-
-```json
-{
-  "token": ".....",
-  "message": "....."
-}
-```
-
-### Output
-
-```json
-{
-  "result": {
-    "myProperty": "....."
-  }
-}
-```
-
-### Error codes
-
-| Code | Description |
-| - | - |
-| FAIL | Message starts with 'fail' (ignoring case) |
-
-## Test locally
-
-Run unit tests
-
-```bash
-mvn clean verify
-```
-
-### Test with local runtime
+## Test with local runtime
 
 Use the [Camunda Connector Runtime](https://github.com/camunda-community-hub/spring-zeebe/tree/master/connector-runtime#building-connector-runtime-bundles) to run your function as a local Java application.
 
 In your IDE you can also simply navigate to the `LocalContainerRuntime` class in test scope and run it via your IDE.
 If necessary, you can adjust `application.properties` in test scope.
 
-
-## Element Template
-
-The element templates can be found in the [element-templates/template-connector.json](element-templates/jdbc-connector.json) file.
