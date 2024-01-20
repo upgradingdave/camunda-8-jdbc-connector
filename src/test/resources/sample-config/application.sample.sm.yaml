@@ -1,0 +1,24 @@
+# https://github.com/camunda-community-hub/spring-zeebe#configuring-camunda-platform-8-saas-connection
+# https://github.com/camunda-community-hub/spring-zeebe#additional-configuration-options
+
+zeebe:
+  client:
+    broker:
+      gatewayAddress: <ZEEBE_GATEWAY>:443
+    security:
+      plaintext: false
+    cloud:
+      clientId: <CLIENT_ID>
+      clientSecret: <CLIENT_SECRET>
+      authUrl: https://<KEYCLOAK_URL>/auth/realms/camunda-platform/protocol/openid-connect/token
+
+camunda:
+  operate:
+    client:
+      url: https://<OPERATE_URL>
+      client-id: <CLIENT_ID>
+      client-secret: <CLIENT_SECRET>
+
+  connector:
+    webhook:
+      enabled: true

@@ -1,0 +1,21 @@
+# https://github.com/camunda-community-hub/spring-zeebe#configuring-camunda-platform-8-saas-connection
+# https://github.com/camunda-community-hub/spring-zeebe#additional-configuration-options
+
+zeebe:
+  client:
+    cloud:
+      clusterId: <YOUR_CLUSTER_ID>
+      region: <YOUR_REGION_ID>
+      clientSecret: <CLIENT_SECRET>
+      clientId: <CLIENT_ID>
+
+camunda:
+  operate:
+    client:
+      url: https://<OPERATE_URL>
+      client-id: <CLIENT_ID>
+      client-secret: <CLIENT_SECRET>
+
+  connector:
+    webhook:
+      enabled: true
