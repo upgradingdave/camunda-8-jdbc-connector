@@ -1,17 +1,32 @@
+/*
+ * Copyright Camunda Services GmbH and/or licensed to Camunda Services GmbH
+ * under one or more contributor license agreements. See the NOTICE file
+ * distributed with this work for additional information regarding copyright
+ * ownership. Camunda licenses this file to you under the Apache License,
+ * Version 2.0; you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package io.camunda.connector;
-
-import io.camunda.connector.db.DatabaseManager;
-import io.camunda.connector.params.JDBCParams;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.test.context.SpringBootTest;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+
+import io.camunda.connector.db.DatabaseManager;
+import io.camunda.connector.params.JDBCParams;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest(classes = LocalConnectorRuntime.class)
 public class DatabaseManagerTest {
@@ -28,7 +43,7 @@ public class DatabaseManagerTest {
   private JDBCParams jdbcParams;
 
   private JDBCParams getJdbcParams() {
-    if(jdbcParams == null) {
+    if (jdbcParams == null) {
       jdbcParams = new JDBCParams();
 
       jdbcParams.setJdbcUrl(jdbcUrl);
@@ -43,16 +58,16 @@ public class DatabaseManagerTest {
     DatabaseManager databaseManager = new DatabaseManager(getJdbcParams());
     Map<Integer, Object> params = new HashMap<>();
     params.put(1, "user1@email.com");
-    Map<String, Object> user1 =  databaseManager.selectOne("SELECT * from USERS where email = ?", params);
+    Map<String, Object> user1 =
+        databaseManager.selectOne("SELECT * from USERS where email = ?", params);
     assertNotNull(user1);
     assertEquals("user1@email.com", user1.get("EMAIL"));
-
   }
 
   @Test
   public void selectListTest() {
     DatabaseManager databaseManager = new DatabaseManager(getJdbcParams());
-    List<Map<String, Object>> users =  databaseManager.selectList("SELECT * from USERS", null);
+    List<Map<String, Object>> users = databaseManager.selectList("SELECT * from USERS", null);
     assertNotNull(users);
     assertEquals(11, users.size());
     assertEquals("user1@email.com", users.get(0).get("EMAIL"));
@@ -61,7 +76,8 @@ public class DatabaseManagerTest {
   @Test
   public void selectMapTest() {
     DatabaseManager databaseManager = new DatabaseManager(getJdbcParams());
-    Map<Object, List<Map<String, Object>>> users =  databaseManager.selectMap("SELECT * from USERS", null, "ID");
+    Map<Object, List<Map<String, Object>>> users =
+        databaseManager.selectMap("SELECT * from USERS", null, "ID");
     assertNotNull(users);
     assertEquals("user1@email.com", users.get(1).get(0).get("EMAIL"));
     assertEquals("user2@email.com", users.get(2).get(0).get("EMAIL"));
@@ -72,20 +88,20 @@ public class DatabaseManagerTest {
     DatabaseManager databaseManager = new DatabaseManager(getJdbcParams());
 
     // INSERT
-    String sql = "INSERT INTO users (id, username, password, email, first_name, last_name, created_at)\n" +
-        "VALUES (12, 'user12', 'password12', 'user12@email.com', 'James', 'Madison', '2021-01-01 12:00:00');";
-    int resultCount =  databaseManager.update(sql, null);
+    String sql =
+        "INSERT INTO users (id, username, password, email, first_name, last_name, created_at)\n"
+            + "VALUES (12, 'user12', 'password12', 'user12@email.com', 'James', 'Madison', '2021-01-01 12:00:00');";
+    int resultCount = databaseManager.update(sql, null);
     assertEquals(1, resultCount);
 
     // UPDATE
     sql = "UPDATE USERS SET UPDATED_AT='2023-01-01 12:00:00'";
-    resultCount =  databaseManager.update(sql, null);
+    resultCount = databaseManager.update(sql, null);
     assertEquals(12, resultCount);
 
     // DELETE
     sql = "DELETE FROM USERS WHERE ID=12";
-    resultCount =  databaseManager.update(sql, null);
+    resultCount = databaseManager.update(sql, null);
     assertEquals(1, resultCount);
   }
-
 }
