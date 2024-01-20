@@ -1,18 +1,8 @@
 /*
  * Copyright Camunda Services GmbH and/or licensed to Camunda Services GmbH
- * under one or more contributor license agreements. See the NOTICE file
- * distributed with this work for additional information regarding copyright
- * ownership. Camunda licenses this file to you under the Apache License,
- * Version 2.0; you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * under one or more contributor license agreements. Licensed under a proprietary license.
+ * See the License.txt file for more information. You may not use this file
+ * except in compliance with the proprietary license.
  */
 package io.camunda.connector;
 
@@ -41,19 +31,11 @@ public class JdbcConnectorFunction implements OutboundConnectorFunction {
 
   @Override
   public Object execute(OutboundConnectorContext context) {
-    var connectorRequest = context.getVariablesAsType(JdbcConnectorRequest.class);
+    final var request = context.bindVariables(JdbcConnectorRequest.class);
 
-    context.validate(connectorRequest);
-    context.replaceSecrets(connectorRequest);
+    LOGGER.info("Executing my connector with request {}", request);
 
-    return executeConnector(connectorRequest);
-  }
-
-  private Object executeConnector(final JdbcConnectorRequest connectorRequest) {
-
-    LOGGER.info("Executing my connector with request {}", connectorRequest);
-
-    JDBCParams jdbc = connectorRequest.getJdbc();
+    JDBCParams jdbc = request.getJdbc();
     DatabaseManager db = databaseManagers.get(jdbc);
 
     if (db == null) {
@@ -61,23 +43,15 @@ public class JdbcConnectorFunction implements OutboundConnectorFunction {
       databaseManagers.put(jdbc, db);
     }
 
-    CommandParams command = connectorRequest.getCommand();
+    CommandParams command = request.getCommand();
 
-    if (command.getCommandType().equals("selectOne")) {
-      return db.selectOne(command.getSql(), command.getParams());
-    } else if (command.getCommandType().equals("selectList")) {
-      return db.selectList(command.getSql(), command.getParams());
-    } else if (command.getCommandType().equals("selectMap")) {
-      return db.selectMap(command.getSql(), command.getParams(), command.getMapKey());
-    } else if (command.getCommandType().equals("insert")) {
-      return db.update(command.getSql(), command.getParams());
-    } else if (command.getCommandType().equals("update")) {
-      return db.update(command.getSql(), command.getParams());
-    } else if (command.getCommandType().equals("delete")) {
-      return db.update(command.getSql(), command.getParams());
-    } else {
-      throw new UnsupportedOperationException(
+    return switch (command.getCommandType()) {
+      case "selectOne" -> db.selectOne(command.getSql(), command.getParams());
+      case "selectList" -> db.selectList(command.getSql(), command.getParams());
+      case "selectMap" -> db.selectMap(command.getSql(), command.getParams(), command.getMapKey());
+      case "insert", "delete", "update" -> db.update(command.getSql(), command.getParams());
+      default -> throw new UnsupportedOperationException(
           "The command type" + command.getCommandType() + " is not currently supported");
-    }
+    };
   }
 }

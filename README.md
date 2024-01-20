@@ -4,8 +4,6 @@
 
 # Camunda 8 JDBC Connector
 
-!!! Work in progress, use at your own risk !!!
-
 A Camunda 8 Connector capable of connecting to Databases via JDBC and running SQL commands.
 
 In theory, this connector can use [any type](#other-database-types) of jdbc driver. So far, it's been tested against
@@ -17,7 +15,7 @@ the following types of databases (and the drivers for these types of databases a
 
 # Configure Desktop Modeler
 
-Download the the element template ([jdbc-connector.json](element-templates/jdbc-connector.json)) and [follow these steps](https://docs.camunda.io/docs/components/modeler/desktop-modeler/element-templates/configuring-templates/) to use it with your local Desktop Modeler.
+Download the element template ([jdbc-connector.json](element-templates/jdbc-connector.json)) and [follow these steps](https://docs.camunda.io/docs/components/modeler/desktop-modeler/element-templates/configuring-templates/) to use it with your local Desktop Modeler.
 
 After you've configured the element template, restart Desktop Modeler and try adding a new Service Task. Click the blue `Select` button under the `Template` section in the properties panel and then choose the `JDBC Connector` Template.
 
@@ -33,7 +31,7 @@ The `Password` field supports [Connector Secrets](https://docs.camunda.io/docs/c
 
 ![JDBC Config](images/JDBCConfig.png "JDBC Config")
 
-Feel free to add multiple JDBC Connector tasks to a single process diagram. When multiple JDBC Connector Tasks with the same `Jdbc Url` + `Username` + `Password` combo exist, the same connection pool will be reused. If different JDBC Connector Tasks connect to a different database (via a different `Jdbc Url`), or connect to the same database using different `Username`/`Password`, then a separate connection pools will be created and used.
+When multiple JDBC Connector tasks that connect to the same database are added to the same process diagram, jdbc connections are pooled. For example, when Tasks with the same `Jdbc Url` + `Username` + `Password` combo exist, the same connection pool will be reused. A separate jdbc pool is created for each unique combination of `Jdbc Url` + `Username` + `Password`.
 
 # Placeholders in sql
 
@@ -86,7 +84,7 @@ Choose the `SELECT and return Map` option under the `SQL Command` properties pan
 
 Instead of returning results as a List, this option returns them as a Map. The trick here is to define which column to use as the Map Key. In this example, we define the `Map Key Column Name` as `EMAIL`. This way, the results are indexed using the value from the `USERS.EMAIL` column.
 
-> :warning: **Heads Up!** The case of the `Map Key Column Name` must match exactly with the case of the column name found in the query results. For example, in H2 databases, column names in results are uppercase. However, other databases might return column names as lowercase.
+> [!WARNING] The case of the `Map Key Column Name` must match exactly with the case of the column name found in the query results. For example, in H2 databases, column names in results are uppercase. However, other databases might return column names as lowercase.
 
 ![SELECT Map](images/SELECTMap.png)
 
@@ -121,7 +119,7 @@ The [docker-compose.yaml](docker-compose.yaml) contains a `postgres` service whi
 Run the following to start postgres listening on 5432 and accessible using username `postgres` and password `camunda`:
 
 ```shell
-docker compose -f docker-compose.yaml up
+docker compose -f docker-compose.yaml up -d
 ```
 
 Then try experimenting with [this](src/test/resources/SamplePostgresJdbcProcess.bpmn) sample bpmn process
