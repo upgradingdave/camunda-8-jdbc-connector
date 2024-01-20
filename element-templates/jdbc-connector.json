@@ -2,7 +2,7 @@
   "$schema": "https://unpkg.com/@camunda/zeebe-element-templates-json-schema/resources/schema.json",
   "name": "JDBC Connector",
   "id": "io.camunda.connector.JDBC",
-  "version": 840,
+  "version": 8401,
   "description": "Run JDBC statements",
   "documentationRef": "https://github.com/camunda/connectors",
   "icon": {
@@ -36,21 +36,25 @@
       "label": "Output Mapping"
     },
     {
-      "id": "errors",
+      "id": "error",
       "label": "Error Handling"
+    },
+    {
+      "id" : "retries",
+      "label" : "Retries"
     }
   ],
   "properties": [
     {
       "type": "Hidden",
-      "value": "io.camunda:connector-jdbc:1",
+      "value": "io.camunda:connector-jdbc:8401",
       "binding": {
         "type": "zeebe:taskDefinition:type"
       }
     },
     {
       "label": "JDBC Url",
-      "id": "jdbcUrl",
+      "id": "jdbc.jdbcUrl",
       "group": "jdbc",
       "description": "Enter a valid JDBC Url. Remember that the JDBC Connector's JVM Process must be able to communicate via this JDBC URL",
       "type":"String",
@@ -65,6 +69,7 @@
       }
     },
     {
+      "id": "jdbc.userName",
       "label": "Username",
       "description": "Username to use to connect to the database",
       "group": "authentication",
@@ -77,6 +82,7 @@
       }
     },
     {
+      "id": "jdbc.password",
       "label": "Password",
       "description": "Password to use to connect to the database",
       "group": "authentication",
@@ -127,6 +133,7 @@
       }
     },
     {
+      "id": "command.sqlSelect",
       "label": "SELECT Statement",
       "description": "Enter the SELECT sql statement to run. The first record will be returned as a Map Data Structure",
       "group": "command",
@@ -146,6 +153,7 @@
       }
     },
     {
+      "id": "command.sqlSelectList",
       "label": "SELECT Statement",
       "description": "Enter the SELECT sql statement to run. Results will be returned as a list. Each List item will be a Map Data Structure",
       "group": "command",
@@ -165,6 +173,7 @@
       }
     },
     {
+      "id": "command.sqlSelectMap",
       "label": "SELECT Statement",
       "description": "Enter the SELECT sql statement to run. Results will be returned as a Map. The keys of the Result Map will be determined using the Map Key Column Name specified below. The values of the Map will be Lists of records that correspond to the Map Key.",
       "group": "command",
@@ -184,6 +193,7 @@
       }
     },
     {
+      "id": "command.mapKey",
       "label": "Map Key Column Name",
       "description": "Enter the name of the column to be used to index the results as a Map. For example, if the query results contain an `EMAIL` column, then entering `EMAIL` here will index results using email addresses as the Keys of the Result Map.",
       "group": "command",
@@ -203,6 +213,7 @@
       }
     },
     {
+      "id": "command.sqlInsert",
       "label": "INSERT Statement",
       "description": "Enter the INSERT sql statement to run. The number of records inserted will be returned",
       "group": "command",
@@ -222,6 +233,7 @@
       }
     },
     {
+      "id": "command.sqlUpdate",
       "label": "UPDATE Statement",
       "description": "Enter the UPDATE sql statement to run. The number of records updated will be returned",
       "group": "command",
@@ -241,6 +253,7 @@
       }
     },
     {
+      "id": "command.sqlDelete",
       "label": "DELETE Statement",
       "description": "Enter the DELETE sql statement to run. The number of records deleted will be returned",
       "group": "command",
@@ -260,6 +273,7 @@
       }
     },
     {
+      "id": "command.params",
       "label": "Placeholder Parameter Map",
       "description": "A map of parameter values to replace `?` placeholders in the sql statement. For example, the following sql statement has one `?` parameter: `SELECT * from USERS where email = ?`. The parameter map could look like this: `{\"1\" : \"name@email.com\"}`",
       "group": "command",
@@ -272,36 +286,63 @@
       }
     },
     {
+      "id": "resultVariable",
       "label": "Result Variable",
       "description": "Name of variable to store the response in",
       "group": "output",
-      "type": "String",
       "binding": {
         "type": "zeebe:taskHeader",
         "key": "resultVariable"
-      }
+      },
+      "type": "String"
     },
     {
+      "id": "resultExpression",
       "label": "Result Expression",
       "description": "Expression to map the response into process variables",
       "group": "output",
-      "type": "Text",
       "feel": "required",
       "binding": {
         "type": "zeebe:taskHeader",
         "key": "resultExpression"
-      }
+      },
+      "type": "Text"
     },
     {
+      "id": "errorExpression",
       "label": "Error Expression",
       "description": "Expression to handle errors. Details in the <a href=\"https://docs.camunda.io/docs/components/connectors/use-connectors/\" target=\"_blank\">documentation</a>.",
-      "group": "errors",
-      "type": "Text",
+      "group": "error",
       "feel": "required",
       "binding": {
         "type": "zeebe:taskHeader",
         "key": "errorExpression"
-      }
+      },
+      "type": "Text"
+    },
+    {
+      "id" : "retryCount",
+      "label" : "Retries",
+      "description" : "Number of retries",
+      "value" : "1",
+      "group" : "retries",
+      "binding" : {
+        "key" : "retries",
+        "type" : "zeebe:taskHeader"
+      },
+      "type" : "Hidden"
+    },
+    {
+      "id" : "retryBackoff",
+      "label" : "Retry backoff",
+      "description" : "ISO-8601 duration to wait between retries",
+      "value" : "PT3S",
+      "group" : "retries",
+      "binding" : {
+        "key" : "retryBackoff",
+        "type" : "zeebe:taskHeader"
+      },
+      "type" : "Hidden"
     }
   ]
 }

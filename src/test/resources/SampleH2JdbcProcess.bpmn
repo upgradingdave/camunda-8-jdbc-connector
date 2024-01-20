@@ -35,9 +35,135 @@
       <bpmn:incoming>Flow_0v2n6w0</bpmn:incoming>
       <bpmn:errorEventDefinition id="ErrorEventDefinition_0onux38" errorRef="Error_0i1obqm" />
     </bpmn:endEvent>
-    <bpmn:serviceTask id="Activity_selectRecord1" name="SELECT Record" zeebe:modelerTemplate="io.camunda.connector.JDBC" zeebe:modelerTemplateVersion="840" zeebe:modelerTemplateIcon="data:image/svg+xml,%3C%3Fxml version=&#39;1.0&#39; encoding=&#39;utf-8&#39;%3F%3E%3C!-- Generator: Adobe Illustrator 26.2.1, SVG Export Plug-In . SVG Version: 6.00 Build 0) --%3E%3Csvg version=&#39;1.1&#39; id=&#39;uuid-29bf2835-028c-4a53-a2c7-a2d36262388a&#39; xmlns=&#39;http://www.w3.org/2000/svg&#39; xmlns:xlink=&#39;http://www.w3.org/1999/xlink&#39; x=&#39;0px&#39; y=&#39;0px&#39; viewBox=&#39;0 0 512 512&#39; style=&#39;enable-background:new 0 0 512 512;&#39; xml:space=&#39;preserve&#39;%3E%3Cstyle type=&#39;text/css&#39;%3E .st0%7Bfill:%23FC5D0D;%7D%0A%3C/style%3E%3Cg%3E%3Cpath class=&#39;st0&#39; d=&#39;M270.7,278.4c-4.9,0.2-9.8,0.2-14.7,0.2s-9.8-0.1-14.8-0.2c-41.5-1.1-74.5-7-98.3-15.3 c-9.9-3.1-19.4-7.6-28.1-13.3v53.1c16.1,16.8,70,32.3,141.2,32.3s125.1-15.5,141.2-32.3v-53.1c-8.8,5.7-18.4,10.2-28.4,13.4 C345,271.5,312.1,277.3,270.7,278.4L270.7,278.4z&#39;/%3E%3Cpath class=&#39;st0&#39; d=&#39;M114.8,175.7v53.1c14.9,15.5,62.3,30,125.9,32h2c1.9,0,3.7,0.1,5.6,0.1h15.6c1.9,0,3.7-0.1,5.6-0.1h2 c63.6-2,111-16.5,125.9-32v-53.1c-27.5,18.9-85.6,28.9-141.2,28.9S142.3,194.6,114.8,175.7L114.8,175.7z&#39;/%3E%3Cpath class=&#39;st0&#39; d=&#39;M396.4,139.9c-6.3-24.3-55.1-48.2-140.4-48.2c-85.2,0-133.8,23.8-140.4,48.1c-0.5,0.8-0.8,1.8-0.8,2.8v13.1 c16,16.7,69.6,32.2,141.2,32.2s125.2-15.4,141.2-32.2v-13C397.2,141.6,396.9,140.7,396.4,139.9L396.4,139.9z&#39;/%3E%3Cpath class=&#39;st0&#39; d=&#39;M114.8,323.2v46.3c0,0.9,0.2,1.8,0.7,2.5c6.7,27.7,66.3,48.3,140.5,48.3s133.6-20.5,140.5-48.1 c0.5-0.8,0.7-1.8,0.7-2.7v-46.3c-23.3,16.4-71.5,29.4-141.2,29.4S138.2,339.6,114.8,323.2L114.8,323.2z&#39;/%3E%3C/g%3E%3C/svg%3E">
+    <bpmn:sequenceFlow id="Flow_1axqf3g" sourceRef="Activity_insertRecor" targetRef="Gateway_1o37svu" />
+    <bpmn:sequenceFlow id="Flow_0v99c7o" sourceRef="Activity_selectRecordList" targetRef="Activity_selectRecordMap" />
+    <bpmn:sequenceFlow id="Flow_1kz2cbh" sourceRef="Activity_selectRecordMap" targetRef="Activity_deleteRecord" />
+    <bpmn:sequenceFlow id="Flow_1j1pzrv" sourceRef="Activity_deleteRecord" targetRef="Event_1wyy9lw" />
+    <bpmn:sequenceFlow id="Flow_18rg0so" sourceRef="Activity_04bbg3e" targetRef="Activity_selectRecord1" />
+    <bpmn:boundaryEvent id="Event_0r2nd7b" attachedToRef="Activity_selectRecord1">
+      <bpmn:outgoing>Flow_10jwhxh</bpmn:outgoing>
+      <bpmn:errorEventDefinition id="ErrorEventDefinition_1phvis6" errorRef="Error_0i1obqm" />
+    </bpmn:boundaryEvent>
+    <bpmn:sequenceFlow id="Flow_10jwhxh" sourceRef="Event_0r2nd7b" targetRef="Activity_insertRecor" />
+    <bpmn:sequenceFlow id="Flow_02li12d" sourceRef="Activity_selectRecord1" targetRef="Gateway_1o37svu" />
+    <bpmn:serviceTask id="Activity_insertRecor" name="INSERT Record">
       <bpmn:extensionElements>
-        <zeebe:taskDefinition type="io.camunda:connector-jdbc:1" />
+        <zeebe:taskDefinition type="io.camunda:connector-jdbc:841" />
+        <zeebe:ioMapping>
+          <zeebe:input source="=jdbc.url" target="jdbc.jdbcUrl" />
+          <zeebe:input source="=jdbc.username" target="jdbc.userName" />
+          <zeebe:input source="=jdbc.password" target="jdbc.password" />
+          <zeebe:input source="insert" target="command.commandType" />
+          <zeebe:input source="={&#10;  &#34;1&#34;: user.email,&#10;  &#34;2&#34;: timestamp&#10;}" target="command.params" />
+        </zeebe:ioMapping>
+        <zeebe:taskHeaders>
+          <zeebe:header key="resultVariable" value="insertRecordResult" />
+          <zeebe:header key="retries" value="1" />
+          <zeebe:header key="retryBackoff" value="PT3S" />
+        </zeebe:taskHeaders>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_10jwhxh</bpmn:incoming>
+      <bpmn:outgoing>Flow_1axqf3g</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:serviceTask id="Activity_selectRecord2" name="SELECT Record">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="io.camunda:connector-jdbc:841" />
+        <zeebe:ioMapping>
+          <zeebe:input source="=jdbc.url" target="jdbc.jdbcUrl" />
+          <zeebe:input source="=jdbc.username" target="jdbc.userName" />
+          <zeebe:input source="=jdbc.password" target="jdbc.password" />
+          <zeebe:input source="selectOne" target="command.commandType" />
+          <zeebe:input source="={&#10;  &#34;1&#34;: user.email&#10;}" target="command.params" />
+        </zeebe:ioMapping>
+        <zeebe:taskHeaders>
+          <zeebe:header key="resultVariable" value="selectRecordResult2" />
+          <zeebe:header key="retries" value="1" />
+          <zeebe:header key="retryBackoff" value="PT3S" />
+        </zeebe:taskHeaders>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_130xsy0</bpmn:incoming>
+      <bpmn:outgoing>Flow_0xii01d</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:serviceTask id="Activity_selectRecordList" name="SELECT List of Records">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="io.camunda:connector-jdbc:841" />
+        <zeebe:ioMapping>
+          <zeebe:input source="=jdbc.url" target="jdbc.jdbcUrl" />
+          <zeebe:input source="=jdbc.username" target="jdbc.userName" />
+          <zeebe:input source="=jdbc.password" target="jdbc.password" />
+          <zeebe:input source="selectList" target="command.commandType" />
+          <zeebe:input source="={}" target="command.params" />
+        </zeebe:ioMapping>
+        <zeebe:taskHeaders>
+          <zeebe:header key="resultVariable" value="selectRecordListResult" />
+          <zeebe:header key="retries" value="1" />
+          <zeebe:header key="retryBackoff" value="PT3S" />
+        </zeebe:taskHeaders>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_0w49lem</bpmn:incoming>
+      <bpmn:outgoing>Flow_0v99c7o</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:serviceTask id="Activity_selectRecordMap" name="SELECT Map of Records">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="io.camunda:connector-jdbc:841" />
+        <zeebe:ioMapping>
+          <zeebe:input source="=jdbc.url" target="jdbc.jdbcUrl" />
+          <zeebe:input source="=jdbc.username" target="jdbc.userName" />
+          <zeebe:input source="=jdbc.password" target="jdbc.password" />
+          <zeebe:input source="selectMap" target="command.commandType" />
+          <zeebe:input source="={}" target="command.params" />
+        </zeebe:ioMapping>
+        <zeebe:taskHeaders>
+          <zeebe:header key="resultVariable" value="selectRecordMapResult" />
+          <zeebe:header key="retries" value="1" />
+          <zeebe:header key="retryBackoff" value="PT3S" />
+        </zeebe:taskHeaders>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_0v99c7o</bpmn:incoming>
+      <bpmn:outgoing>Flow_1kz2cbh</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:serviceTask id="Activity_deleteRecord" name="DELETE Record">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="io.camunda:connector-jdbc:841" />
+        <zeebe:ioMapping>
+          <zeebe:input source="=jdbc.url" target="jdbc.jdbcUrl" />
+          <zeebe:input source="=jdbc.username" target="jdbc.userName" />
+          <zeebe:input source="=jdbc.password" target="jdbc.password" />
+          <zeebe:input source="delete" target="command.commandType" />
+          <zeebe:input source="={}" target="command.params" />
+        </zeebe:ioMapping>
+        <zeebe:taskHeaders>
+          <zeebe:header key="resultVariable" value="deleteRecordMapResult" />
+          <zeebe:header key="retries" value="1" />
+          <zeebe:header key="retryBackoff" value="PT3S" />
+        </zeebe:taskHeaders>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_1kz2cbh</bpmn:incoming>
+      <bpmn:outgoing>Flow_1j1pzrv</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:serviceTask id="Activity_04bbg3e" name="SELECT List of Records" zeebe:modelerTemplate="io.camunda.connector.JDBC" zeebe:modelerTemplateVersion="8401" zeebe:modelerTemplateIcon="data:image/svg+xml,%3C%3Fxml version=&#39;1.0&#39; encoding=&#39;utf-8&#39;%3F%3E%3C!-- Generator: Adobe Illustrator 26.2.1, SVG Export Plug-In . SVG Version: 6.00 Build 0) --%3E%3Csvg version=&#39;1.1&#39; id=&#39;uuid-29bf2835-028c-4a53-a2c7-a2d36262388a&#39; xmlns=&#39;http://www.w3.org/2000/svg&#39; xmlns:xlink=&#39;http://www.w3.org/1999/xlink&#39; x=&#39;0px&#39; y=&#39;0px&#39; viewBox=&#39;0 0 512 512&#39; style=&#39;enable-background:new 0 0 512 512;&#39; xml:space=&#39;preserve&#39;%3E%3Cstyle type=&#39;text/css&#39;%3E .st0%7Bfill:%23FC5D0D;%7D%0A%3C/style%3E%3Cg%3E%3Cpath class=&#39;st0&#39; d=&#39;M270.7,278.4c-4.9,0.2-9.8,0.2-14.7,0.2s-9.8-0.1-14.8-0.2c-41.5-1.1-74.5-7-98.3-15.3 c-9.9-3.1-19.4-7.6-28.1-13.3v53.1c16.1,16.8,70,32.3,141.2,32.3s125.1-15.5,141.2-32.3v-53.1c-8.8,5.7-18.4,10.2-28.4,13.4 C345,271.5,312.1,277.3,270.7,278.4L270.7,278.4z&#39;/%3E%3Cpath class=&#39;st0&#39; d=&#39;M114.8,175.7v53.1c14.9,15.5,62.3,30,125.9,32h2c1.9,0,3.7,0.1,5.6,0.1h15.6c1.9,0,3.7-0.1,5.6-0.1h2 c63.6-2,111-16.5,125.9-32v-53.1c-27.5,18.9-85.6,28.9-141.2,28.9S142.3,194.6,114.8,175.7L114.8,175.7z&#39;/%3E%3Cpath class=&#39;st0&#39; d=&#39;M396.4,139.9c-6.3-24.3-55.1-48.2-140.4-48.2c-85.2,0-133.8,23.8-140.4,48.1c-0.5,0.8-0.8,1.8-0.8,2.8v13.1 c16,16.7,69.6,32.2,141.2,32.2s125.2-15.4,141.2-32.2v-13C397.2,141.6,396.9,140.7,396.4,139.9L396.4,139.9z&#39;/%3E%3Cpath class=&#39;st0&#39; d=&#39;M114.8,323.2v46.3c0,0.9,0.2,1.8,0.7,2.5c6.7,27.7,66.3,48.3,140.5,48.3s133.6-20.5,140.5-48.1 c0.5-0.8,0.7-1.8,0.7-2.7v-46.3c-23.3,16.4-71.5,29.4-141.2,29.4S138.2,339.6,114.8,323.2L114.8,323.2z&#39;/%3E%3C/g%3E%3C/svg%3E">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="io.camunda:connector-jdbc:8401" />
+        <zeebe:ioMapping>
+          <zeebe:input source="=jdbc.url" target="jdbc.jdbcUrl" />
+          <zeebe:input source="=jdbc.username" target="jdbc.userName" />
+          <zeebe:input source="=jdbc.password" target="jdbc.password" />
+          <zeebe:input source="selectOne" target="command.commandType" />
+          <zeebe:input source="SELECT * from USERS" target="command.sql" />
+          <zeebe:input source="={}" target="command.params" />
+        </zeebe:ioMapping>
+        <zeebe:taskHeaders>
+          <zeebe:header key="resultVariable" value="selectRecordListResult" />
+          <zeebe:header key="retries" value="1" />
+          <zeebe:header key="retryBackoff" value="PT3S" />
+        </zeebe:taskHeaders>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_06oa1vo</bpmn:incoming>
+      <bpmn:outgoing>Flow_18rg0so</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:serviceTask id="Activity_selectRecord1" name="SELECT Record" zeebe:modelerTemplate="io.camunda.connector.JDBC" zeebe:modelerTemplateVersion="8401" zeebe:modelerTemplateIcon="data:image/svg+xml,%3C%3Fxml version=&#39;1.0&#39; encoding=&#39;utf-8&#39;%3F%3E%3C!-- Generator: Adobe Illustrator 26.2.1, SVG Export Plug-In . SVG Version: 6.00 Build 0) --%3E%3Csvg version=&#39;1.1&#39; id=&#39;uuid-29bf2835-028c-4a53-a2c7-a2d36262388a&#39; xmlns=&#39;http://www.w3.org/2000/svg&#39; xmlns:xlink=&#39;http://www.w3.org/1999/xlink&#39; x=&#39;0px&#39; y=&#39;0px&#39; viewBox=&#39;0 0 512 512&#39; style=&#39;enable-background:new 0 0 512 512;&#39; xml:space=&#39;preserve&#39;%3E%3Cstyle type=&#39;text/css&#39;%3E .st0%7Bfill:%23FC5D0D;%7D%0A%3C/style%3E%3Cg%3E%3Cpath class=&#39;st0&#39; d=&#39;M270.7,278.4c-4.9,0.2-9.8,0.2-14.7,0.2s-9.8-0.1-14.8-0.2c-41.5-1.1-74.5-7-98.3-15.3 c-9.9-3.1-19.4-7.6-28.1-13.3v53.1c16.1,16.8,70,32.3,141.2,32.3s125.1-15.5,141.2-32.3v-53.1c-8.8,5.7-18.4,10.2-28.4,13.4 C345,271.5,312.1,277.3,270.7,278.4L270.7,278.4z&#39;/%3E%3Cpath class=&#39;st0&#39; d=&#39;M114.8,175.7v53.1c14.9,15.5,62.3,30,125.9,32h2c1.9,0,3.7,0.1,5.6,0.1h15.6c1.9,0,3.7-0.1,5.6-0.1h2 c63.6-2,111-16.5,125.9-32v-53.1c-27.5,18.9-85.6,28.9-141.2,28.9S142.3,194.6,114.8,175.7L114.8,175.7z&#39;/%3E%3Cpath class=&#39;st0&#39; d=&#39;M396.4,139.9c-6.3-24.3-55.1-48.2-140.4-48.2c-85.2,0-133.8,23.8-140.4,48.1c-0.5,0.8-0.8,1.8-0.8,2.8v13.1 c16,16.7,69.6,32.2,141.2,32.2s125.2-15.4,141.2-32.2v-13C397.2,141.6,396.9,140.7,396.4,139.9L396.4,139.9z&#39;/%3E%3Cpath class=&#39;st0&#39; d=&#39;M114.8,323.2v46.3c0,0.9,0.2,1.8,0.7,2.5c6.7,27.7,66.3,48.3,140.5,48.3s133.6-20.5,140.5-48.1 c0.5-0.8,0.7-1.8,0.7-2.7v-46.3c-23.3,16.4-71.5,29.4-141.2,29.4S138.2,339.6,114.8,323.2L114.8,323.2z&#39;/%3E%3C/g%3E%3C/svg%3E">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="io.camunda:connector-jdbc:8401" />
         <zeebe:ioMapping>
           <zeebe:input source="=jdbc.url" target="jdbc.jdbcUrl" />
           <zeebe:input source="=jdbc.username" target="jdbc.userName" />
@@ -48,132 +174,14 @@
         </zeebe:ioMapping>
         <zeebe:taskHeaders>
           <zeebe:header key="resultVariable" value="selectRecordResult1" />
-          <zeebe:header key="errorExpression" value="=if error.code = &#34;2000&#34; then &#10;  bpmError(&#34;JDBC_RecordNotFound&#34;, &#34;Record Not Found&#34;)&#10;else null" />
+          <zeebe:header key="errorExpression" value="=if error.code = &#34;2000&#34; then &#10;  bpmnError(&#34;JDBC_RecordNotFound&#34;, &#34;Record Not Found&#34;)&#10;else null" />
+          <zeebe:header key="retries" value="1" />
+          <zeebe:header key="retryBackoff" value="PT3S" />
         </zeebe:taskHeaders>
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_18rg0so</bpmn:incoming>
       <bpmn:outgoing>Flow_02li12d</bpmn:outgoing>
     </bpmn:serviceTask>
-    <bpmn:serviceTask id="Activity_insertRecor" name="INSERT Record" zeebe:modelerTemplate="io.camunda.connector.JDBC" zeebe:modelerTemplateVersion="840" zeebe:modelerTemplateIcon="data:image/svg+xml,%3C%3Fxml version=&#39;1.0&#39; encoding=&#39;utf-8&#39;%3F%3E%3C!-- Generator: Adobe Illustrator 26.2.1, SVG Export Plug-In . SVG Version: 6.00 Build 0) --%3E%3Csvg version=&#39;1.1&#39; id=&#39;uuid-29bf2835-028c-4a53-a2c7-a2d36262388a&#39; xmlns=&#39;http://www.w3.org/2000/svg&#39; xmlns:xlink=&#39;http://www.w3.org/1999/xlink&#39; x=&#39;0px&#39; y=&#39;0px&#39; viewBox=&#39;0 0 512 512&#39; style=&#39;enable-background:new 0 0 512 512;&#39; xml:space=&#39;preserve&#39;%3E%3Cstyle type=&#39;text/css&#39;%3E .st0%7Bfill:%23FC5D0D;%7D%0A%3C/style%3E%3Cg%3E%3Cpath class=&#39;st0&#39; d=&#39;M270.7,278.4c-4.9,0.2-9.8,0.2-14.7,0.2s-9.8-0.1-14.8-0.2c-41.5-1.1-74.5-7-98.3-15.3 c-9.9-3.1-19.4-7.6-28.1-13.3v53.1c16.1,16.8,70,32.3,141.2,32.3s125.1-15.5,141.2-32.3v-53.1c-8.8,5.7-18.4,10.2-28.4,13.4 C345,271.5,312.1,277.3,270.7,278.4L270.7,278.4z&#39;/%3E%3Cpath class=&#39;st0&#39; d=&#39;M114.8,175.7v53.1c14.9,15.5,62.3,30,125.9,32h2c1.9,0,3.7,0.1,5.6,0.1h15.6c1.9,0,3.7-0.1,5.6-0.1h2 c63.6-2,111-16.5,125.9-32v-53.1c-27.5,18.9-85.6,28.9-141.2,28.9S142.3,194.6,114.8,175.7L114.8,175.7z&#39;/%3E%3Cpath class=&#39;st0&#39; d=&#39;M396.4,139.9c-6.3-24.3-55.1-48.2-140.4-48.2c-85.2,0-133.8,23.8-140.4,48.1c-0.5,0.8-0.8,1.8-0.8,2.8v13.1 c16,16.7,69.6,32.2,141.2,32.2s125.2-15.4,141.2-32.2v-13C397.2,141.6,396.9,140.7,396.4,139.9L396.4,139.9z&#39;/%3E%3Cpath class=&#39;st0&#39; d=&#39;M114.8,323.2v46.3c0,0.9,0.2,1.8,0.7,2.5c6.7,27.7,66.3,48.3,140.5,48.3s133.6-20.5,140.5-48.1 c0.5-0.8,0.7-1.8,0.7-2.7v-46.3c-23.3,16.4-71.5,29.4-141.2,29.4S138.2,339.6,114.8,323.2L114.8,323.2z&#39;/%3E%3C/g%3E%3C/svg%3E">
-      <bpmn:extensionElements>
-        <zeebe:taskDefinition type="io.camunda:connector-jdbc:1" />
-        <zeebe:ioMapping>
-          <zeebe:input source="=jdbc.url" target="jdbc.jdbcUrl" />
-          <zeebe:input source="=jdbc.username" target="jdbc.userName" />
-          <zeebe:input source="=jdbc.password" target="jdbc.password" />
-          <zeebe:input source="insert" target="command.commandType" />
-          <zeebe:input source="INSERT INTO users (username, password, email, first_name, last_name, created_at) VALUES (&#39;demo&#39;, &#39;demo&#39;, ?, &#39;Demo&#39;, &#39;Demo&#39;, ?)" target="command.sql" />
-          <zeebe:input source="={&#10;  &#34;1&#34;: user.email,&#10;  &#34;2&#34;: timestamp&#10;}" target="command.params" />
-        </zeebe:ioMapping>
-        <zeebe:taskHeaders>
-          <zeebe:header key="resultVariable" value="insertRecordResult" />
-        </zeebe:taskHeaders>
-      </bpmn:extensionElements>
-      <bpmn:incoming>Flow_10jwhxh</bpmn:incoming>
-      <bpmn:outgoing>Flow_1axqf3g</bpmn:outgoing>
-    </bpmn:serviceTask>
-    <bpmn:sequenceFlow id="Flow_1axqf3g" sourceRef="Activity_insertRecor" targetRef="Gateway_1o37svu" />
-    <bpmn:serviceTask id="Activity_selectRecord2" name="SELECT Record" zeebe:modelerTemplate="io.camunda.connector.JDBC" zeebe:modelerTemplateVersion="840" zeebe:modelerTemplateIcon="data:image/svg+xml,%3C%3Fxml version=&#39;1.0&#39; encoding=&#39;utf-8&#39;%3F%3E%3C!-- Generator: Adobe Illustrator 26.2.1, SVG Export Plug-In . SVG Version: 6.00 Build 0) --%3E%3Csvg version=&#39;1.1&#39; id=&#39;uuid-29bf2835-028c-4a53-a2c7-a2d36262388a&#39; xmlns=&#39;http://www.w3.org/2000/svg&#39; xmlns:xlink=&#39;http://www.w3.org/1999/xlink&#39; x=&#39;0px&#39; y=&#39;0px&#39; viewBox=&#39;0 0 512 512&#39; style=&#39;enable-background:new 0 0 512 512;&#39; xml:space=&#39;preserve&#39;%3E%3Cstyle type=&#39;text/css&#39;%3E .st0%7Bfill:%23FC5D0D;%7D%0A%3C/style%3E%3Cg%3E%3Cpath class=&#39;st0&#39; d=&#39;M270.7,278.4c-4.9,0.2-9.8,0.2-14.7,0.2s-9.8-0.1-14.8-0.2c-41.5-1.1-74.5-7-98.3-15.3 c-9.9-3.1-19.4-7.6-28.1-13.3v53.1c16.1,16.8,70,32.3,141.2,32.3s125.1-15.5,141.2-32.3v-53.1c-8.8,5.7-18.4,10.2-28.4,13.4 C345,271.5,312.1,277.3,270.7,278.4L270.7,278.4z&#39;/%3E%3Cpath class=&#39;st0&#39; d=&#39;M114.8,175.7v53.1c14.9,15.5,62.3,30,125.9,32h2c1.9,0,3.7,0.1,5.6,0.1h15.6c1.9,0,3.7-0.1,5.6-0.1h2 c63.6-2,111-16.5,125.9-32v-53.1c-27.5,18.9-85.6,28.9-141.2,28.9S142.3,194.6,114.8,175.7L114.8,175.7z&#39;/%3E%3Cpath class=&#39;st0&#39; d=&#39;M396.4,139.9c-6.3-24.3-55.1-48.2-140.4-48.2c-85.2,0-133.8,23.8-140.4,48.1c-0.5,0.8-0.8,1.8-0.8,2.8v13.1 c16,16.7,69.6,32.2,141.2,32.2s125.2-15.4,141.2-32.2v-13C397.2,141.6,396.9,140.7,396.4,139.9L396.4,139.9z&#39;/%3E%3Cpath class=&#39;st0&#39; d=&#39;M114.8,323.2v46.3c0,0.9,0.2,1.8,0.7,2.5c6.7,27.7,66.3,48.3,140.5,48.3s133.6-20.5,140.5-48.1 c0.5-0.8,0.7-1.8,0.7-2.7v-46.3c-23.3,16.4-71.5,29.4-141.2,29.4S138.2,339.6,114.8,323.2L114.8,323.2z&#39;/%3E%3C/g%3E%3C/svg%3E">
-      <bpmn:extensionElements>
-        <zeebe:taskDefinition type="io.camunda:connector-jdbc:1" />
-        <zeebe:ioMapping>
-          <zeebe:input source="=jdbc.url" target="jdbc.jdbcUrl" />
-          <zeebe:input source="=jdbc.username" target="jdbc.userName" />
-          <zeebe:input source="=jdbc.password" target="jdbc.password" />
-          <zeebe:input source="selectOne" target="command.commandType" />
-          <zeebe:input source="SELECT * from USERS where email = ?" target="command.sql" />
-          <zeebe:input source="={&#10;  &#34;1&#34;: user.email&#10;}" target="command.params" />
-        </zeebe:ioMapping>
-        <zeebe:taskHeaders>
-          <zeebe:header key="resultVariable" value="selectRecordResult2" />
-        </zeebe:taskHeaders>
-      </bpmn:extensionElements>
-      <bpmn:incoming>Flow_130xsy0</bpmn:incoming>
-      <bpmn:outgoing>Flow_0xii01d</bpmn:outgoing>
-    </bpmn:serviceTask>
-    <bpmn:serviceTask id="Activity_selectRecordList" name="SELECT List of Records" zeebe:modelerTemplate="io.camunda.connector.JDBC" zeebe:modelerTemplateVersion="840" zeebe:modelerTemplateIcon="data:image/svg+xml,%3C%3Fxml version=&#39;1.0&#39; encoding=&#39;utf-8&#39;%3F%3E%3C!-- Generator: Adobe Illustrator 26.2.1, SVG Export Plug-In . SVG Version: 6.00 Build 0) --%3E%3Csvg version=&#39;1.1&#39; id=&#39;uuid-29bf2835-028c-4a53-a2c7-a2d36262388a&#39; xmlns=&#39;http://www.w3.org/2000/svg&#39; xmlns:xlink=&#39;http://www.w3.org/1999/xlink&#39; x=&#39;0px&#39; y=&#39;0px&#39; viewBox=&#39;0 0 512 512&#39; style=&#39;enable-background:new 0 0 512 512;&#39; xml:space=&#39;preserve&#39;%3E%3Cstyle type=&#39;text/css&#39;%3E .st0%7Bfill:%23FC5D0D;%7D%0A%3C/style%3E%3Cg%3E%3Cpath class=&#39;st0&#39; d=&#39;M270.7,278.4c-4.9,0.2-9.8,0.2-14.7,0.2s-9.8-0.1-14.8-0.2c-41.5-1.1-74.5-7-98.3-15.3 c-9.9-3.1-19.4-7.6-28.1-13.3v53.1c16.1,16.8,70,32.3,141.2,32.3s125.1-15.5,141.2-32.3v-53.1c-8.8,5.7-18.4,10.2-28.4,13.4 C345,271.5,312.1,277.3,270.7,278.4L270.7,278.4z&#39;/%3E%3Cpath class=&#39;st0&#39; d=&#39;M114.8,175.7v53.1c14.9,15.5,62.3,30,125.9,32h2c1.9,0,3.7,0.1,5.6,0.1h15.6c1.9,0,3.7-0.1,5.6-0.1h2 c63.6-2,111-16.5,125.9-32v-53.1c-27.5,18.9-85.6,28.9-141.2,28.9S142.3,194.6,114.8,175.7L114.8,175.7z&#39;/%3E%3Cpath class=&#39;st0&#39; d=&#39;M396.4,139.9c-6.3-24.3-55.1-48.2-140.4-48.2c-85.2,0-133.8,23.8-140.4,48.1c-0.5,0.8-0.8,1.8-0.8,2.8v13.1 c16,16.7,69.6,32.2,141.2,32.2s125.2-15.4,141.2-32.2v-13C397.2,141.6,396.9,140.7,396.4,139.9L396.4,139.9z&#39;/%3E%3Cpath class=&#39;st0&#39; d=&#39;M114.8,323.2v46.3c0,0.9,0.2,1.8,0.7,2.5c6.7,27.7,66.3,48.3,140.5,48.3s133.6-20.5,140.5-48.1 c0.5-0.8,0.7-1.8,0.7-2.7v-46.3c-23.3,16.4-71.5,29.4-141.2,29.4S138.2,339.6,114.8,323.2L114.8,323.2z&#39;/%3E%3C/g%3E%3C/svg%3E">
-      <bpmn:extensionElements>
-        <zeebe:taskDefinition type="io.camunda:connector-jdbc:1" />
-        <zeebe:ioMapping>
-          <zeebe:input source="=jdbc.url" target="jdbc.jdbcUrl" />
-          <zeebe:input source="=jdbc.username" target="jdbc.userName" />
-          <zeebe:input source="=jdbc.password" target="jdbc.password" />
-          <zeebe:input source="selectList" target="command.commandType" />
-          <zeebe:input source="SELECT * from USERS" target="command.sql" />
-          <zeebe:input source="={}" target="command.params" />
-        </zeebe:ioMapping>
-        <zeebe:taskHeaders>
-          <zeebe:header key="resultVariable" value="selectRecordListResult" />
-        </zeebe:taskHeaders>
-      </bpmn:extensionElements>
-      <bpmn:incoming>Flow_0w49lem</bpmn:incoming>
-      <bpmn:outgoing>Flow_0v99c7o</bpmn:outgoing>
-    </bpmn:serviceTask>
-    <bpmn:sequenceFlow id="Flow_0v99c7o" sourceRef="Activity_selectRecordList" targetRef="Activity_selectRecordMap" />
-    <bpmn:serviceTask id="Activity_selectRecordMap" name="SELECT Map of Records" zeebe:modelerTemplate="io.camunda.connector.JDBC" zeebe:modelerTemplateVersion="840" zeebe:modelerTemplateIcon="data:image/svg+xml,%3C%3Fxml version=&#39;1.0&#39; encoding=&#39;utf-8&#39;%3F%3E%3C!-- Generator: Adobe Illustrator 26.2.1, SVG Export Plug-In . SVG Version: 6.00 Build 0) --%3E%3Csvg version=&#39;1.1&#39; id=&#39;uuid-29bf2835-028c-4a53-a2c7-a2d36262388a&#39; xmlns=&#39;http://www.w3.org/2000/svg&#39; xmlns:xlink=&#39;http://www.w3.org/1999/xlink&#39; x=&#39;0px&#39; y=&#39;0px&#39; viewBox=&#39;0 0 512 512&#39; style=&#39;enable-background:new 0 0 512 512;&#39; xml:space=&#39;preserve&#39;%3E%3Cstyle type=&#39;text/css&#39;%3E .st0%7Bfill:%23FC5D0D;%7D%0A%3C/style%3E%3Cg%3E%3Cpath class=&#39;st0&#39; d=&#39;M270.7,278.4c-4.9,0.2-9.8,0.2-14.7,0.2s-9.8-0.1-14.8-0.2c-41.5-1.1-74.5-7-98.3-15.3 c-9.9-3.1-19.4-7.6-28.1-13.3v53.1c16.1,16.8,70,32.3,141.2,32.3s125.1-15.5,141.2-32.3v-53.1c-8.8,5.7-18.4,10.2-28.4,13.4 C345,271.5,312.1,277.3,270.7,278.4L270.7,278.4z&#39;/%3E%3Cpath class=&#39;st0&#39; d=&#39;M114.8,175.7v53.1c14.9,15.5,62.3,30,125.9,32h2c1.9,0,3.7,0.1,5.6,0.1h15.6c1.9,0,3.7-0.1,5.6-0.1h2 c63.6-2,111-16.5,125.9-32v-53.1c-27.5,18.9-85.6,28.9-141.2,28.9S142.3,194.6,114.8,175.7L114.8,175.7z&#39;/%3E%3Cpath class=&#39;st0&#39; d=&#39;M396.4,139.9c-6.3-24.3-55.1-48.2-140.4-48.2c-85.2,0-133.8,23.8-140.4,48.1c-0.5,0.8-0.8,1.8-0.8,2.8v13.1 c16,16.7,69.6,32.2,141.2,32.2s125.2-15.4,141.2-32.2v-13C397.2,141.6,396.9,140.7,396.4,139.9L396.4,139.9z&#39;/%3E%3Cpath class=&#39;st0&#39; d=&#39;M114.8,323.2v46.3c0,0.9,0.2,1.8,0.7,2.5c6.7,27.7,66.3,48.3,140.5,48.3s133.6-20.5,140.5-48.1 c0.5-0.8,0.7-1.8,0.7-2.7v-46.3c-23.3,16.4-71.5,29.4-141.2,29.4S138.2,339.6,114.8,323.2L114.8,323.2z&#39;/%3E%3C/g%3E%3C/svg%3E">
-      <bpmn:extensionElements>
-        <zeebe:taskDefinition type="io.camunda:connector-jdbc:1" />
-        <zeebe:ioMapping>
-          <zeebe:input source="=jdbc.url" target="jdbc.jdbcUrl" />
-          <zeebe:input source="=jdbc.username" target="jdbc.userName" />
-          <zeebe:input source="=jdbc.password" target="jdbc.password" />
-          <zeebe:input source="selectMap" target="command.commandType" />
-          <zeebe:input source="SELECT * FROM Users" target="command.sql" />
-          <zeebe:input source="EMAIL" target="command.mapKey" />
-          <zeebe:input source="={}" target="command.params" />
-        </zeebe:ioMapping>
-        <zeebe:taskHeaders>
-          <zeebe:header key="resultVariable" value="selectRecordMapResult" />
-        </zeebe:taskHeaders>
-      </bpmn:extensionElements>
-      <bpmn:incoming>Flow_0v99c7o</bpmn:incoming>
-      <bpmn:outgoing>Flow_1kz2cbh</bpmn:outgoing>
-    </bpmn:serviceTask>
-    <bpmn:sequenceFlow id="Flow_1kz2cbh" sourceRef="Activity_selectRecordMap" targetRef="Activity_deleteRecord" />
-    <bpmn:serviceTask id="Activity_deleteRecord" name="DELETE Record" zeebe:modelerTemplate="io.camunda.connector.JDBC" zeebe:modelerTemplateVersion="840" zeebe:modelerTemplateIcon="data:image/svg+xml,%3C%3Fxml version=&#39;1.0&#39; encoding=&#39;utf-8&#39;%3F%3E%3C!-- Generator: Adobe Illustrator 26.2.1, SVG Export Plug-In . SVG Version: 6.00 Build 0) --%3E%3Csvg version=&#39;1.1&#39; id=&#39;uuid-29bf2835-028c-4a53-a2c7-a2d36262388a&#39; xmlns=&#39;http://www.w3.org/2000/svg&#39; xmlns:xlink=&#39;http://www.w3.org/1999/xlink&#39; x=&#39;0px&#39; y=&#39;0px&#39; viewBox=&#39;0 0 512 512&#39; style=&#39;enable-background:new 0 0 512 512;&#39; xml:space=&#39;preserve&#39;%3E%3Cstyle type=&#39;text/css&#39;%3E .st0%7Bfill:%23FC5D0D;%7D%0A%3C/style%3E%3Cg%3E%3Cpath class=&#39;st0&#39; d=&#39;M270.7,278.4c-4.9,0.2-9.8,0.2-14.7,0.2s-9.8-0.1-14.8-0.2c-41.5-1.1-74.5-7-98.3-15.3 c-9.9-3.1-19.4-7.6-28.1-13.3v53.1c16.1,16.8,70,32.3,141.2,32.3s125.1-15.5,141.2-32.3v-53.1c-8.8,5.7-18.4,10.2-28.4,13.4 C345,271.5,312.1,277.3,270.7,278.4L270.7,278.4z&#39;/%3E%3Cpath class=&#39;st0&#39; d=&#39;M114.8,175.7v53.1c14.9,15.5,62.3,30,125.9,32h2c1.9,0,3.7,0.1,5.6,0.1h15.6c1.9,0,3.7-0.1,5.6-0.1h2 c63.6-2,111-16.5,125.9-32v-53.1c-27.5,18.9-85.6,28.9-141.2,28.9S142.3,194.6,114.8,175.7L114.8,175.7z&#39;/%3E%3Cpath class=&#39;st0&#39; d=&#39;M396.4,139.9c-6.3-24.3-55.1-48.2-140.4-48.2c-85.2,0-133.8,23.8-140.4,48.1c-0.5,0.8-0.8,1.8-0.8,2.8v13.1 c16,16.7,69.6,32.2,141.2,32.2s125.2-15.4,141.2-32.2v-13C397.2,141.6,396.9,140.7,396.4,139.9L396.4,139.9z&#39;/%3E%3Cpath class=&#39;st0&#39; d=&#39;M114.8,323.2v46.3c0,0.9,0.2,1.8,0.7,2.5c6.7,27.7,66.3,48.3,140.5,48.3s133.6-20.5,140.5-48.1 c0.5-0.8,0.7-1.8,0.7-2.7v-46.3c-23.3,16.4-71.5,29.4-141.2,29.4S138.2,339.6,114.8,323.2L114.8,323.2z&#39;/%3E%3C/g%3E%3C/svg%3E">
-      <bpmn:extensionElements>
-        <zeebe:taskDefinition type="io.camunda:connector-jdbc:1" />
-        <zeebe:ioMapping>
-          <zeebe:input source="=jdbc.url" target="jdbc.jdbcUrl" />
-          <zeebe:input source="=jdbc.username" target="jdbc.userName" />
-          <zeebe:input source="=jdbc.password" target="jdbc.password" />
-          <zeebe:input source="delete" target="command.commandType" />
-          <zeebe:input source="DELETE from USERS where email = ?" target="command.sql" />
-          <zeebe:input source="={}" target="command.params" />
-        </zeebe:ioMapping>
-        <zeebe:taskHeaders>
-          <zeebe:header key="resultVariable" value="deleteRecordMapResult" />
-        </zeebe:taskHeaders>
-      </bpmn:extensionElements>
-      <bpmn:incoming>Flow_1kz2cbh</bpmn:incoming>
-      <bpmn:outgoing>Flow_1j1pzrv</bpmn:outgoing>
-    </bpmn:serviceTask>
-    <bpmn:sequenceFlow id="Flow_1j1pzrv" sourceRef="Activity_deleteRecord" targetRef="Event_1wyy9lw" />
-    <bpmn:serviceTask id="Activity_04bbg3e" name="SELECT List of Records" zeebe:modelerTemplate="io.camunda.connector.JDBC" zeebe:modelerTemplateVersion="840" zeebe:modelerTemplateIcon="data:image/svg+xml,%3C%3Fxml version=&#39;1.0&#39; encoding=&#39;utf-8&#39;%3F%3E%3C!-- Generator: Adobe Illustrator 26.2.1, SVG Export Plug-In . SVG Version: 6.00 Build 0) --%3E%3Csvg version=&#39;1.1&#39; id=&#39;uuid-29bf2835-028c-4a53-a2c7-a2d36262388a&#39; xmlns=&#39;http://www.w3.org/2000/svg&#39; xmlns:xlink=&#39;http://www.w3.org/1999/xlink&#39; x=&#39;0px&#39; y=&#39;0px&#39; viewBox=&#39;0 0 512 512&#39; style=&#39;enable-background:new 0 0 512 512;&#39; xml:space=&#39;preserve&#39;%3E%3Cstyle type=&#39;text/css&#39;%3E .st0%7Bfill:%23FC5D0D;%7D%0A%3C/style%3E%3Cg%3E%3Cpath class=&#39;st0&#39; d=&#39;M270.7,278.4c-4.9,0.2-9.8,0.2-14.7,0.2s-9.8-0.1-14.8-0.2c-41.5-1.1-74.5-7-98.3-15.3 c-9.9-3.1-19.4-7.6-28.1-13.3v53.1c16.1,16.8,70,32.3,141.2,32.3s125.1-15.5,141.2-32.3v-53.1c-8.8,5.7-18.4,10.2-28.4,13.4 C345,271.5,312.1,277.3,270.7,278.4L270.7,278.4z&#39;/%3E%3Cpath class=&#39;st0&#39; d=&#39;M114.8,175.7v53.1c14.9,15.5,62.3,30,125.9,32h2c1.9,0,3.7,0.1,5.6,0.1h15.6c1.9,0,3.7-0.1,5.6-0.1h2 c63.6-2,111-16.5,125.9-32v-53.1c-27.5,18.9-85.6,28.9-141.2,28.9S142.3,194.6,114.8,175.7L114.8,175.7z&#39;/%3E%3Cpath class=&#39;st0&#39; d=&#39;M396.4,139.9c-6.3-24.3-55.1-48.2-140.4-48.2c-85.2,0-133.8,23.8-140.4,48.1c-0.5,0.8-0.8,1.8-0.8,2.8v13.1 c16,16.7,69.6,32.2,141.2,32.2s125.2-15.4,141.2-32.2v-13C397.2,141.6,396.9,140.7,396.4,139.9L396.4,139.9z&#39;/%3E%3Cpath class=&#39;st0&#39; d=&#39;M114.8,323.2v46.3c0,0.9,0.2,1.8,0.7,2.5c6.7,27.7,66.3,48.3,140.5,48.3s133.6-20.5,140.5-48.1 c0.5-0.8,0.7-1.8,0.7-2.7v-46.3c-23.3,16.4-71.5,29.4-141.2,29.4S138.2,339.6,114.8,323.2L114.8,323.2z&#39;/%3E%3C/g%3E%3C/svg%3E">
-      <bpmn:extensionElements>
-        <zeebe:taskDefinition type="io.camunda:connector-jdbc:1" />
-        <zeebe:ioMapping>
-          <zeebe:input source="=jdbc.url" target="jdbc.jdbcUrl" />
-          <zeebe:input source="=jdbc.username" target="jdbc.userName" />
-          <zeebe:input source="=jdbc.password" target="jdbc.password" />
-          <zeebe:input source="selectList" target="command.commandType" />
-          <zeebe:input source="SELECT * from USERS" target="command.sql" />
-          <zeebe:input source="={}" target="command.params" />
-        </zeebe:ioMapping>
-        <zeebe:taskHeaders>
-          <zeebe:header key="resultVariable" value="selectRecordListResult" />
-        </zeebe:taskHeaders>
-      </bpmn:extensionElements>
-      <bpmn:incoming>Flow_06oa1vo</bpmn:incoming>
-      <bpmn:outgoing>Flow_18rg0so</bpmn:outgoing>
-    </bpmn:serviceTask>
-    <bpmn:sequenceFlow id="Flow_18rg0so" sourceRef="Activity_04bbg3e" targetRef="Activity_selectRecord1" />
-    <bpmn:boundaryEvent id="Event_0r2nd7b" attachedToRef="Activity_selectRecord1">
-      <bpmn:outgoing>Flow_10jwhxh</bpmn:outgoing>
-      <bpmn:errorEventDefinition id="ErrorEventDefinition_1phvis6" errorRef="Error_0i1obqm" />
-    </bpmn:boundaryEvent>
-    <bpmn:sequenceFlow id="Flow_10jwhxh" sourceRef="Event_0r2nd7b" targetRef="Activity_insertRecor" />
-    <bpmn:sequenceFlow id="Flow_02li12d" sourceRef="Activity_selectRecord1" targetRef="Gateway_1o37svu" />
   </bpmn:process>
   <bpmn:error id="Error_0i1obqm" name="Error_recordNotFound" errorCode="JDBC_RecordNotFound" />
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
@@ -199,31 +207,26 @@
           <dc:Bounds x="885" y="245" width="90" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_1dq1wbc_di" bpmnElement="Activity_selectRecord1">
-        <dc:Bounds x="390" y="77" width="100" height="80" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="BPMNShape_1e8g99l" bpmnElement="Activity_insertRecor">
+      <bpmndi:BPMNShape id="Activity_1vl0b9q_di" bpmnElement="Activity_insertRecor">
         <dc:Bounds x="520" y="190" width="100" height="80" />
-        <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_1pvsx8t_di" bpmnElement="Activity_selectRecord2">
+      <bpmndi:BPMNShape id="Activity_0kbl5vv_di" bpmnElement="Activity_selectRecord2">
         <dc:Bounds x="750" y="77" width="100" height="80" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="BPMNShape_0q87hkv" bpmnElement="Activity_selectRecordList">
+      <bpmndi:BPMNShape id="Activity_1vx1yud_di" bpmnElement="Activity_selectRecordList">
         <dc:Bounds x="1020" y="77" width="100" height="80" />
-        <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="BPMNShape_0xbwakb" bpmnElement="Activity_selectRecordMap">
+      <bpmndi:BPMNShape id="Activity_1b2dxij_di" bpmnElement="Activity_selectRecordMap">
         <dc:Bounds x="1170" y="77" width="100" height="80" />
-        <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="BPMNShape_1yna7yg" bpmnElement="Activity_deleteRecord">
+      <bpmndi:BPMNShape id="Activity_17f94zj_di" bpmnElement="Activity_deleteRecord">
         <dc:Bounds x="1310" y="77" width="100" height="80" />
-        <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="BPMNShape_09nbwhb" bpmnElement="Activity_04bbg3e">
+      <bpmndi:BPMNShape id="Activity_0asli6o_di" bpmnElement="Activity_04bbg3e">
         <dc:Bounds x="230" y="77" width="100" height="80" />
-        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_12zz1tc_di" bpmnElement="Activity_selectRecord1">
+        <dc:Bounds x="390" y="77" width="100" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Event_1bw3t74_di" bpmnElement="Event_0r2nd7b">
         <dc:Bounds x="442" y="139" width="36" height="36" />

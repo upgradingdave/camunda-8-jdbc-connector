@@ -22,7 +22,7 @@ import org.slf4j.LoggerFactory;
 @OutboundConnector(
     name = "JDBC",
     inputVariables = {INPUT_JDBC, INPUT_COMMAND},
-    type = "io.camunda:connector-jdbc:1")
+    type = "io.camunda:connector-jdbc:8401")
 public class JdbcConnectorFunction implements OutboundConnectorFunction {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(JdbcConnectorFunction.class);
