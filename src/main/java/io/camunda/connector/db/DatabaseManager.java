@@ -8,6 +8,7 @@ package io.camunda.connector.db;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
+import io.camunda.connector.api.error.ConnectorException;
 import io.camunda.connector.params.JDBCParams;
 import java.sql.*;
 import java.util.ArrayList;
@@ -107,7 +108,7 @@ public class DatabaseManager {
       rs.next();
       return getRow(rs);
     } catch (SQLException e) {
-      throw new IllegalStateException(e);
+      throw new ConnectorException(Integer.toString(e.getErrorCode()), e);
     }
   }
 
@@ -119,7 +120,7 @@ public class DatabaseManager {
       ResultSet rs = pst.executeQuery();
       return getList(rs);
     } catch (SQLException e) {
-      throw new IllegalStateException(e);
+      throw new ConnectorException(Integer.toString(e.getErrorCode()), e);
     }
   }
 
@@ -132,7 +133,7 @@ public class DatabaseManager {
       ResultSet rs = pst.executeQuery();
       return getMap(rs, mapKey);
     } catch (SQLException e) {
-      throw new IllegalStateException(e);
+      throw new ConnectorException(Integer.toString(e.getErrorCode()), e);
     }
   }
 
@@ -143,7 +144,7 @@ public class DatabaseManager {
     try (PreparedStatement pst = prepareStatement(statement, params)) {
       return pst.executeUpdate();
     } catch (SQLException e) {
-      throw new IllegalStateException(e);
+      throw new ConnectorException(Integer.toString(e.getErrorCode()), e);
     }
   }
 }
