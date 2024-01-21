@@ -78,9 +78,15 @@ public class DatabaseManagerTest {
     DatabaseManager databaseManager = new DatabaseManager(getJdbcParams());
 
     // INSERT
+    /*
+        String sql =
+            "INSERT INTO users (id, username, password, email, first_name, last_name, created_at)\n"
+                + "VALUES (12, 'user12', 'password12', 'user12@email.com', 'James', 'Madison', '2021-01-01 12:00:00');";
+    */
     String sql =
-        "INSERT INTO users (id, username, password, email, first_name, last_name, created_at)\n"
-            + "VALUES (12, 'user12', 'password12', 'user12@email.com', 'James', 'Madison', '2021-01-01 12:00:00');";
+        "INSERT INTO users (username, password, email, first_name, last_name, created_at)\n"
+            + "VALUES ('user12', 'password12', 'user12@email.com', 'James', 'Madison', CURRENT_TIMESTAMP);";
+
     int resultCount = databaseManager.update(sql, null);
     assertEquals(1, resultCount);
 
@@ -90,7 +96,7 @@ public class DatabaseManagerTest {
     assertEquals(12, resultCount);
 
     // DELETE
-    sql = "DELETE FROM USERS WHERE ID=12";
+    sql = "DELETE FROM USERS WHERE EMAIL='user12@email.com'";
     resultCount = databaseManager.update(sql, null);
     assertEquals(1, resultCount);
   }
