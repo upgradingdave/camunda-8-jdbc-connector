@@ -2,6 +2,7 @@
 data/postgres/pgdata
 data/mysql/data
 data/h2/data
+data/mssql/data
 
 # Compiled class file
 *.class
