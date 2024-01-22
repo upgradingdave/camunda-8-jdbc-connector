@@ -1,6 +1,7 @@
 # database data directories used for testing
 data/postgres/pgdata
 data/mysql/data
+data/h2/data
 
 # Compiled class file
 *.class

@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.springframework.jdbc.datasource.DataSourceUtils;
 
 public class DatabaseManager {
 
@@ -74,9 +75,8 @@ public class DatabaseManager {
     return result;
   }
 
-  public PreparedStatement prepareStatement(String statement, Map<Integer, Object> params)
-      throws SQLException {
-    Connection con = dataSource.getConnection();
+  public PreparedStatement prepareStatement(
+      Connection con, String statement, Map<Integer, Object> params) throws SQLException {
     PreparedStatement pst = con.prepareStatement(statement);
     for (Integer paramNumber : params.keySet()) {
       Object paramValue = params.get(paramNumber);
@@ -103,8 +103,9 @@ public class DatabaseManager {
     if (params == null) {
       params = new HashMap<>();
     }
-    try (PreparedStatement pst = prepareStatement(statement, params)) {
-      ResultSet rs = pst.executeQuery();
+    try (Connection con = DataSourceUtils.getConnection(dataSource);
+        PreparedStatement pst = prepareStatement(con, statement, params);
+        ResultSet rs = pst.executeQuery(); ) {
       rs.next();
       return getRow(rs);
     } catch (SQLException e) {
@@ -116,8 +117,9 @@ public class DatabaseManager {
     if (params == null) {
       params = new HashMap<>();
     }
-    try (PreparedStatement pst = prepareStatement(statement, params)) {
-      ResultSet rs = pst.executeQuery();
+    try (Connection con = DataSourceUtils.getConnection(dataSource);
+        PreparedStatement pst = prepareStatement(con, statement, params);
+        ResultSet rs = pst.executeQuery(); ) {
       return getList(rs);
     } catch (SQLException e) {
       throw new ConnectorException(Integer.toString(e.getErrorCode()), e);
@@ -129,8 +131,9 @@ public class DatabaseManager {
     if (params == null) {
       params = new HashMap<>();
     }
-    try (PreparedStatement pst = prepareStatement(statement, params)) {
-      ResultSet rs = pst.executeQuery();
+    try (Connection con = DataSourceUtils.getConnection(dataSource);
+        PreparedStatement pst = prepareStatement(con, statement, params);
+        ResultSet rs = pst.executeQuery(); ) {
       return getMap(rs, mapKey);
     } catch (SQLException e) {
       throw new ConnectorException(Integer.toString(e.getErrorCode()), e);
@@ -141,7 +144,8 @@ public class DatabaseManager {
     if (params == null) {
       params = new HashMap<>();
     }
-    try (PreparedStatement pst = prepareStatement(statement, params)) {
+    try (Connection con = DataSourceUtils.getConnection(dataSource);
+        PreparedStatement pst = prepareStatement(con, statement, params); ) {
       return pst.executeUpdate();
     } catch (SQLException e) {
       throw new ConnectorException(Integer.toString(e.getErrorCode()), e);
