@@ -9,7 +9,7 @@ services:
       - "5432:5432"
     volumes:
       - ./data/postgres/pgdata:/var/lib/postgresql/data
-      - ./data/init:/docker-entrypoint-initdb.d
+      - ./data/postgres/init:/docker-entrypoint-initdb.d
 
   mysql:
     image: mysql
@@ -23,4 +23,4 @@ services:
       - "3306:3306"
     volumes:
       - ./data/mysql/data:/var/lib/mysql
-      - ./data/init:/docker-entrypoint-initdb.d
+      - ./data/mysql/init:/docker-entrypoint-initdb.d

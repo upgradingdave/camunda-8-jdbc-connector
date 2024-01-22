@@ -127,7 +127,7 @@ Then try experimenting with [this](src/test/resources/SamplePostgresJdbcProcess.
 If needed, open a shell into the container and connect to the db using `psql`
 
 ```shell
-psql --username postgres --password postgres
+psql --username postgres --password camunda
 Password: camunda
 ```
 

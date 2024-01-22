@@ -1,7 +1,7 @@
 -- USERS
 
 INSERT INTO users (username, password, email, first_name, last_name, created_at)
-VALUES ('user1', 'password1', 'user1@email.com', 'John', 'Doe', CURRENT_TIMESTAMP());
+VALUES ('user1', 'password1', 'user1@email.com', 'John', 'Doe');
 INSERT INTO users (username, password, email, first_name, last_name, created_at)
 VALUES ('user2', 'password2', 'user2@email.com', 'Jane', 'Smith', CURRENT_TIMESTAMP());
 INSERT INTO users (username, password, email, first_name, last_name, created_at)

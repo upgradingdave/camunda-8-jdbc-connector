@@ -8,14 +8,21 @@ The version of this project reflects compatability with the version of [Camunda 
 
 ### Unreleased
 
-- Postgresql should work, but need to finish regression testing and adding a sample bpmn. 
+- Add support for Microsoft SQL Server (mssql)
 
 ## 8.4.0-SNAPSHOT (January 2024)
 
 ### Added
-- Added Spring Boot Profiles for mysql and h2
-- Added comprehensive bpmn process diagrams to demonstrate against mysql and h2 databases
-- Unit tests work for H2, and mysql. 
+- Added Spring Boot Profiles for h2
+- Added comprehensive bpmn process diagrams to demonstrate connecting to h2
+- Unit tests run successfully for h2
+- Added Spring Boot Profiles for mysql
+- Added comprehensive bpmn process diagrams to demonstrate connecting to mysql
+- Unit tests run successfully for mysql
+- Added Spring Boot Profiles for postgres
+- Added comprehensive bpmn process diagrams to demonstrate connecting to postgres
+- Unit tests run successfully for postgres
+
 ### Changed
 - Updated this project to be compatible with the `8.4.0-SNAPSHOT` Camunda Connectors sdk
 
