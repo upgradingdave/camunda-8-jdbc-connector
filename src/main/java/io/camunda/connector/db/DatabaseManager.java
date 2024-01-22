@@ -36,7 +36,8 @@ public class DatabaseManager {
     final Map<String, Object> row = new HashMap<>();
     int colCount = rs.getMetaData().getColumnCount();
     for (int i = 0; i < colCount; i++) {
-      row.put(rs.getMetaData().getColumnName(i + 1), rs.getObject(i + 1));
+      String colName = rs.getMetaData().getColumnName(i + 1);
+      row.put(colName.toUpperCase(), rs.getObject(i + 1));
     }
     return row;
   }
@@ -50,7 +51,7 @@ public class DatabaseManager {
     int colNumber = -1;
     for (int i = 0; i < colCount; i++) {
       String colName = rs.getMetaData().getColumnName(i + 1);
-      if (colName.equals(mapKey)) {
+      if (colName.toUpperCase().equals(mapKey.toUpperCase())) {
         colNumber = i + 1;
       }
     }

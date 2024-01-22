@@ -84,7 +84,7 @@ Choose the `SELECT and return Map` option under the `SQL Command` properties pan
 
 Instead of returning results as a List, this option returns them as a Map. The trick here is to define which column to use as the Map Key. In this example, we define the `Map Key Column Name` as `EMAIL`. This way, the results are indexed using the value from the `USERS.EMAIL` column.
 
-> [!WARNING] The case of the `Map Key Column Name` must match exactly with the case of the column name found in the query results. For example, in H2 databases, column names in results are uppercase. However, other databases might return column names as lowercase.
+> [!WARNING] Unfortunately, sometimes column names are returned as upper case, sometimes not. For example, in H2 databases, column names in results are uppercase. However, other databases might return column names as lowercase. In order for this library to work as consistently as possible across all types of databases, I chose to always treat column names as UPPER CASE.
 
 ![SELECT Map](images/SELECTMap.png)
 
@@ -124,6 +124,14 @@ docker compose -f docker-compose.yaml up -d
 
 Then try experimenting with [this](src/test/resources/SamplePostgresJdbcProcess.bpmn) sample bpmn process
 
+If needed, open a shell into the container and connect to the db using `psql`
+
+```shell
+psql --username postgres --password postgres
+Password: camunda
+```
+
+
 # MySql
 
 The [docker-compose.yaml](docker-compose.yaml) contains a `mysql` service which is useful for testing this connector against MySql.
@@ -131,10 +139,20 @@ The [docker-compose.yaml](docker-compose.yaml) contains a `mysql` service which 
 Run the following to start MySql listening on 3306 and accessible using username `camunda` and password `camunda`:
 
 ```shell
-docker compose -f docker-compose.yaml up
+docker compose -f docker-compose.yaml up -d
 ```
 
-Then try experimenting with [this](src/test/resources/SampleMySqlJdbcProcess.bpmn) sample bpmn process
+Then try experimenting with [this](src/test/resources/SampleMySqlJdbcProcess.bpmn) sample bpmn process.
+
+If needed, open a shell into the container and connect to the db using `mysql`
+
+```shell
+mysql --user camunda --password camunda
+Enter password: camunda
+```
+
+> [!NOTE] The mysql database state will be stored under [data/mysql/data](data/mysql/data)
+
 
 # Other Database Types
 

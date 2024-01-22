@@ -195,7 +195,7 @@
     {
       "id": "command.mapKey",
       "label": "Map Key Column Name",
-      "description": "Enter the name of the column to be used to index the results as a Map. For example, if the query results contain an `EMAIL` column, then entering `EMAIL` here will index results using email addresses as the Keys of the Result Map.",
+      "description": "Enter the upper case name of the column to be used to index the results as a Map. For example, if the query results contain an `email` column, then entering `EMAIL` here will index results using email addresses as the Keys of the Result Map. Note that column names are converted to uppercase",
       "group": "command",
       "type": "Text",
       "value": "",
