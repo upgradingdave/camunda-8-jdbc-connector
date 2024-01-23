@@ -12,6 +12,7 @@ the following types of databases (and the drivers for these types of databases a
 - [H2](#h2)
 - [MySql](#mysql)
 - [Postgres](#postgres)
+- [Microsoft SQL Server (mssql)](#mssql)
 
 # Configure Desktop Modeler
 
@@ -131,7 +132,6 @@ psql --username postgres --password camunda
 Password: camunda
 ```
 
-
 # MySql
 
 The [docker-compose.yaml](docker-compose.yaml) contains a `mysql` service which is useful for testing this connector against MySql.
@@ -153,6 +153,17 @@ Enter password: camunda
 
 > [!NOTE] The mysql database state will be stored under [data/mysql/data](data/mysql/data)
 
+# MsSql
+
+The [docker-compose.yaml](docker-compose.yaml) contains a `mssql` service which is useful for testing this connector against Microsoft SQL Server.
+
+Run the following to start Microsoft SQL Server listening on 1433 and accessible using username `SA` and password `C4munD4!!`:
+
+```shell
+docker compose -f docker-compose.yaml up -d
+```
+
+Then try experimenting with the [SampleMsSqlJdbcProcess.bpmn](src/test/resources/SampleMsSqlJdbcProcess.bpmn) sample bpmn process.
 
 # Other Database Types
 
