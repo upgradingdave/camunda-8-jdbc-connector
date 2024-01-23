@@ -8,11 +8,14 @@ The version of this project reflects compatability with the version of [Camunda 
 
 ### Unreleased
 
-- Add support for Microsoft SQL Server (mssql)
+- still need to get Unit tests to run successfully for mssql. mssql uses schema names (unlike the other db flavors)
 
 ## 8.4.0-SNAPSHOT (January 2024)
 
 ### Added
+- Added Spring Boot Profiles for mssql
+- Added comprehensive bpmn process diagrams to demonstrate connecting mssql 
+
 - Added Spring Boot Profiles for h2
 - Added comprehensive bpmn process diagrams to demonstrate connecting to h2
 - Unit tests run successfully for h2
@@ -27,7 +30,7 @@ The version of this project reflects compatability with the version of [Camunda 
 - Updated this project to be compatible with the `8.4.0-SNAPSHOT` Camunda Connectors sdk
 
 ### Fixed
-- Improved [DatabaseManager](./src/main/java/io/camunda/connector/db/DatabaseManager.java) code by closing connections, result sets and prepared statements correctly. 
+- Improved [DatabaseManager](./src/main/java/io/camunda/connector/db/DatabaseManager.java) code by closing connections, result sets and prepared statements correctly.
 
 
 ## 0.1.0-SNAPSHOT (January 2023)

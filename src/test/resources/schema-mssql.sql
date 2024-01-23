@@ -1,28 +1,23 @@
-CREATE SCHEMA camunda;
+IF NOT EXISTS (SELECT name FROM sys.schemas WHERE name = 'camunda')
+BEGIN
+    EXEC ('CREATE SCHEMA [camunda] AUTHORIZATION [dbo]')
+END;
 
-CREATE TABLE camunda.users
-(
-    id INT NOT NULL IDENTITY(1,1),
-    username TEXT NOT NULL,
-    password TEXT NOT NULL,
-    email TEXT NOT NULL,
-    first_name TEXT NOT NULL,
-    last_name TEXT NOT NULL,
-    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    PRIMARY KEY (id)
-);
-
-INSERT INTO [camunda.users] (username, password, email, first_name, last_name)
-VALUES
-    ('user1', 'password1', 'user1@email.com', 'John', 'Doe'),
-    ('user2', 'password2', 'user2@email.com', 'Jane', 'Smith'),
-    ('user3', 'password3', 'user3@email.com', 'Bob', 'Johnson'),
-    ('user4', 'password4', 'user4@email.com', 'Sally', 'Williams'),
-    ('user5', 'password5', 'user5@email.com', 'Tom', 'Brown'),
-    ('user6', 'password6', 'user6@email.com', 'Linda', 'Jones'),
-    ('user7', 'password7', 'user7@email.com', 'Alex', 'Miller'),
-    ('user8', 'password8', 'user8@email.com', 'Lisa', 'Davis'),
-    ('user9', 'password9', 'user9@email.com', 'David', 'Garcia'),
-    ('user10', 'password10', 'user10@email.com', 'Katie', 'Martinez'),
-    ('user11', 'password11', 'user11@email.com', 'Mike', 'Robinson')
+IF (NOT EXISTS (SELECT *
+            FROM INFORMATION_SCHEMA.TABLES
+            WHERE TABLE_SCHEMA = 'camunda'
+              AND  TABLE_NAME = 'users'))
+BEGIN
+    CREATE TABLE camunda.users
+    (
+        id INT NOT NULL IDENTITY(1,1),
+        username VARCHAR(255) NOT NULL,
+        password VARCHAR(255) NOT NULL,
+        email VARCHAR(255) UNIQUE,
+        first_name VARCHAR(255) NOT NULL,
+        last_name VARCHAR(255) NOT NULL,
+        created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+        updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+        PRIMARY KEY (id)
+    )
+END;
