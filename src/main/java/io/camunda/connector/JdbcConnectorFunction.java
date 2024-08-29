@@ -6,8 +6,6 @@
  */
 package io.camunda.connector;
 
-import static io.camunda.connector.JdbcConnectorRequest.*;
-
 import io.camunda.connector.api.annotation.OutboundConnector;
 import io.camunda.connector.api.outbound.OutboundConnectorContext;
 import io.camunda.connector.api.outbound.OutboundConnectorFunction;
@@ -21,7 +19,7 @@ import org.slf4j.LoggerFactory;
 
 @OutboundConnector(
     name = "JDBC",
-    inputVariables = {INPUT_JDBC, INPUT_COMMAND},
+    inputVariables = {"jdbc", "command"},
     type = "io.camunda:connector-jdbc:8401")
 public class JdbcConnectorFunction implements OutboundConnectorFunction {
 
@@ -31,20 +29,19 @@ public class JdbcConnectorFunction implements OutboundConnectorFunction {
 
   @Override
   public Object execute(OutboundConnectorContext context) {
+
     final var request = context.bindVariables(JdbcConnectorRequest.class);
 
-    LOGGER.info("Executing my connector with request {}", request);
+    LOGGER.debug("Executing my connector with request {}", request);
 
     JDBCParams jdbc = request.getJdbc();
     DatabaseManager db = databaseManagers.get(jdbc);
-
     if (db == null) {
       db = new DatabaseManager(jdbc);
       databaseManagers.put(jdbc, db);
     }
 
     CommandParams command = request.getCommand();
-
     return switch (command.getCommandType()) {
       case "selectOne" -> db.selectOne(command.getSql(), command.getParams());
       case "selectList" -> db.selectList(command.getSql(), command.getParams());

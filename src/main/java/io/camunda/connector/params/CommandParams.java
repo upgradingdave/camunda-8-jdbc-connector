@@ -9,8 +9,12 @@ package io.camunda.connector.params;
 import jakarta.validation.constraints.NotEmpty;
 import java.util.Map;
 import java.util.Objects;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class CommandParams {
+
+  private static final Logger LOGGER = LoggerFactory.getLogger(CommandParams.class);
 
   @NotEmpty private String commandType;
 
@@ -71,6 +75,7 @@ public class CommandParams {
 
   @Override
   public String toString() {
+
     return "JdbcConfig ["
         + "commandType="
         + commandType

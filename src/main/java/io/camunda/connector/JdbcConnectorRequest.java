@@ -9,14 +9,15 @@ package io.camunda.connector;
 import io.camunda.connector.params.CommandParams;
 import io.camunda.connector.params.JDBCParams;
 import java.util.Objects;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class JdbcConnectorRequest {
 
-  private JDBCParams jdbc;
-  static final String INPUT_JDBC = "jdbc";
+  private static final Logger LOGGER = LoggerFactory.getLogger(JdbcConnectorRequest.class);
 
+  private JDBCParams jdbc;
   private CommandParams command;
-  static final String INPUT_COMMAND = "command";
 
   public JDBCParams getJdbc() {
     return jdbc;

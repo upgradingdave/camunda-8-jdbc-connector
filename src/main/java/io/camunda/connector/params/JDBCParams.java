@@ -7,8 +7,12 @@
 package io.camunda.connector.params;
 
 import java.util.Objects;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class JDBCParams {
+
+  private static final Logger LOGGER = LoggerFactory.getLogger(JDBCParams.class);
 
   private String userName;
 
@@ -58,6 +62,7 @@ public class JDBCParams {
 
   @Override
   public String toString() {
+
     return "JdbcConfig ["
         + "jdbcUrl="
         + jdbcUrl

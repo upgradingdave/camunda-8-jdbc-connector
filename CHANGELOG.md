@@ -14,7 +14,7 @@ The version of this project reflects compatability with the version of [Camunda 
 
 ### Added
 - Added Spring Boot Profiles for mssql
-- Added comprehensive bpmn process diagrams to demonstrate connecting mssql 
+- Added comprehensive bpmn process diagrams to demonstrate connecting mssql
 
 - Added Spring Boot Profiles for h2
 - Added comprehensive bpmn process diagrams to demonstrate connecting to h2
